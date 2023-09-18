@@ -1,7 +1,7 @@
 
 const id_key = "id";
 
-function getQuestions() {
+function getAllQuestions() {
   console.log(items);
   const id = JSON.parse(localStorage.getItem(id_key));
   localStorage.removeItem(id_key);
@@ -13,12 +13,27 @@ function getQuestions() {
   
 }
 
+function getQuestion(title) {
+  //This if is not really necessary and I added it before reading the requirement
+  if (localStorage.getItem(title) === null) {
+    return null;
+  }
+  return JSON.parse(localStorage.getItem(title));
+}
+
 function deleteQuestions(title) {
+  if (localStorage.getItem(title) === null) {
+    return "no such item";
+  }
   localStorage.removeItem(title);
+  return "item " + title + " removed.";
 }
 
 function postQuestion(data) {
   //title should be unique
+  if (localStorage.getItem(data.title) !== null) {
+    return "Question with the same title already exists";
+  }
   console.log(data);  
   const id = JSON.parse(localStorage.getItem(id_key));
   console.log(typeof(data));
@@ -32,6 +47,7 @@ function postQuestion(data) {
   const jsonData = JSON.stringify(data);
 
   localStorage.setItem(data.title, jsonData);
+  return "Question added";
 }
 
-export  {postQuestion, deleteQuestions, getQuestions};
+export  {postQuestion, deleteQuestions, getAllQuestions, getQuestion};
