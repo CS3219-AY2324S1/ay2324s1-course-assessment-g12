@@ -27,7 +27,7 @@ const Difficulty =[
 function SubmitButton() {
   
   const { register, handleSubmit, formState: { errors } } = useForm();
-
+  
   return (
     <div className="wrapper_submit">
         <h1> Submit your questions here:</h1>
@@ -68,6 +68,9 @@ function SubmitButton() {
               </Grid>
               <Grid xs={12} item>
                 <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
+              </Grid>
+              <Grid xs={12} item>
+                <Button type="reset" variant="contained" color="primary" fullWidth> Reset form</Button>
               </Grid>
         </Grid >
         </form>
