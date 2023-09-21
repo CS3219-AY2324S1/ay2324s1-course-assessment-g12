@@ -7,11 +7,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
+import {deleteQuestions} from "./LocalStorageHandler.js"
 
 function QuestionList() {
   const [questions, setQuestions] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
-  const [expandText, setExpandText] = useState("Expand");
+  //const [expandText, setExpandText] = useState("Expand");
+  //Rather than storing 1 String for all button, each button got a state to store
+  const [expandState, setExpandState] = useState([]);
+  const [curr, setCurr] = useState(-1);
 
   useEffect(() => {
     const id_key = "id";
@@ -19,21 +23,35 @@ function QuestionList() {
     if (id) {
       const items = { ...localStorage };
       const questionArray = [];
+      const expandState = [];
 
       for (const key in items) {
         if (key !== id_key) {
           const parsedItem = JSON.parse(items[key]);
           questionArray.push(parsedItem);
+          expandState.push("Expand");
         }
       }
-
+      setExpandState(expandState);
       setQuestions(questionArray);
     }
   }, []);
 
   const handleExpandClick = (index) => {
+    const isSameIndex = index === curr;
+    const newExpandState = expandState;
+    
+    if (isSameIndex) {
+      newExpandState[index] = expandState[index] === "Expand" ? "Collapse" : "Expand";
+    } else {
+      newExpandState[curr] = "Expand";
+      newExpandState[index] = "Collapse";
+      setCurr(index);
+    }
+  
     setExpandedCard(expandedCard === index ? null : index);
-    setExpandText(expandText === "Expand" ? "Collapse" : "Expand");
+    //setExpandText(newExpandState[index] === "Expand" ? "Collapse" : "Expand");
+    setExpandState(newExpandState);
   };
 
   return (
@@ -51,7 +69,15 @@ function QuestionList() {
                 aria-expanded={expandedCard === index}
                 aria-label="show more"
               >
-                {expandText}
+                {expandState[index]}
+              </button>
+              <button
+                onClick={() => {
+                  deleteQuestions(question.title);
+                  window.location.reload();
+                }}
+              >
+                Delete
               </button>
               <Collapse in={expandedCard === index}>
                 <List>
