@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<QuestionPage />} />
-          {/* <Route path="/UserProfile" element={<UserProfile />} /> */} /* if want to add extra page  just copy and change the path
+          <Route path="/UserProfile" element={<UserProfile />} /> */ /* if want to add extra page  just copy and change the path
         </Routes>
       </BrowserRouter>
       </header>
