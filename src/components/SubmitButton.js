@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm,reset } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -26,7 +26,14 @@ const Difficulty =[
 
 function SubmitButton() {
   
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm(); 
+  const onSubmit = (data) => {
+    // Call your submit logic here, for example:
+    postQuestion(data);
+
+    // Reset the form after successful submission
+    reset();
+  };
 
   return (
     <div className="wrapper_submit">
@@ -70,7 +77,7 @@ function SubmitButton() {
                 <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
               </Grid>
         </Grid >
-        </form>
+        </form >
     </div>
     
   );
