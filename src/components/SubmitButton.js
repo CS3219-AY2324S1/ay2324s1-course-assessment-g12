@@ -26,14 +26,7 @@ const Difficulty =[
 
 function SubmitButton() {
   
-  const { register, handleSubmit, formState: { errors } } = useForm(); 
-  const onSubmit = (data) => {
-    // Call your submit logic here, for example:
-    postQuestion(data);
-
-    // Reset the form after successful submission
-    reset();
-  };
+  const { register, handleSubmit, reset, formState: { errors } } = useForm(); 
 
   return (
     <div className="wrapper_submit">
