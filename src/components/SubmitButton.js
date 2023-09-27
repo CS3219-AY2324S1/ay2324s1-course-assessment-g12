@@ -69,9 +69,9 @@ function SubmitButton() {
               <Grid xs={12} item>
                 <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
               </Grid>
-              <Grid xs={12} item>
+              {/* <Grid xs={12} item>
                 <Button type="reset" variant="contained" color="primary" fullWidth> Reset form</Button>
-              </Grid>
+              </Grid> */}
         </Grid >
         </form>
     </div>
