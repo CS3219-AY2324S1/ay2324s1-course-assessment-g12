@@ -9,14 +9,12 @@ initializeApp({
 
 const db = getFirestore();
 
-async function getUser(uid) {
-    const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('uid', '==', uid).limit(1).get();
-    if (snapshot.empty) {
-        throw new Error('No user with the specified UID')
-    } else {
-        const userData = snapshot.docs[0].data();
-        return userData; 
+async function getUser(username) {
+    try {
+        const user = await db.collection('users').doc(username).get();
+        return user;        
+    } catch (error) {
+        console.error(error);
     }
 }
 
