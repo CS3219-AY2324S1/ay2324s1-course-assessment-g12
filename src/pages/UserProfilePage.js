@@ -1,9 +1,10 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import UserProfile from '../components/UserProfile';   
 import { useState } from 'react';
 
-function UserProfile() {
+function UserProfilePage() {
 
     const [uid, setUser] = useState({
         name: 'John Doe',
@@ -23,6 +24,7 @@ function UserProfile() {
     return (
       <div className="App">
         <header className="App-header">
+        <UserProfile/>
         <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
             Delete Account
         </Button>
@@ -31,4 +33,4 @@ function UserProfile() {
     );
   }
 
-  export default UserProfile;
+  export default UserProfilePage;
