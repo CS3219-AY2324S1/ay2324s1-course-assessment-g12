@@ -32,7 +32,9 @@ function deleteQuestions(title) {
 function postQuestion(data) {
   //title should be unique
   if (localStorage.getItem(data.title) !== null) {
-    return "Question with the same title already exists";
+    //return "Question with the same title already exists";
+    alert("Question with the same title already exists");
+    return;
   }
   console.log(data);  
   const id = JSON.parse(localStorage.getItem(id_key));
@@ -47,6 +49,7 @@ function postQuestion(data) {
   const jsonData = JSON.stringify(data);
 
   localStorage.setItem(data.title, jsonData);
+  window.location.reload();
   return "Question added";
 }
 
