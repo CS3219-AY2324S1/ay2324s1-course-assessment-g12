@@ -33,6 +33,16 @@ app.post("/addUser", async (req, res) => {
     }
 })
 
+app.get("/getUser", async (req, res) => {
+    try {
+        const uid = req.params.uid;
+        const response = await read.getUser(uid);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
 });
