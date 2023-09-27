@@ -1,7 +1,6 @@
 const express = require("express");
 const write = require("./writeFunctions.js");
 const read = require("./readFunctions.js");
-const external = require("./external.js")
 var app = express();
 const PORT = 3005;
 
@@ -9,34 +8,33 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.post("/removeUser", async (req, res) => {
+app.post("/delete", async (req, res) => {
     try {
-        const userID = req.params.userID;
-        const response = await write.removeUser(userID);
+        const uid = req.params.uid;
+        const response = await write.removeUser(uid);
         res.send(response);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.post("/addUser", async (req, res) => {
+app.post("/add", async (req, res) => {
     try {
         const username = req.body.username;
         const email = req.body.email;
         const language = req.body.language;
         const level = req.body.level;
-        const uid = await external.generateUID(username);
-        const response = await write.addUser(username, email, language, level, uid);
+        const response = await write.addUser(username, email, language, level);
         res.send(response);
     } catch (error) {
         console.error(error);
     }
 })
 
-app.get("/getUser", async (req, res) => {
+app.get("/get", async (req, res) => {
     try {
-        const uid = req.params.uid;
-        const response = await read.getUser(uid);
+        const username = req.params.username;
+        const response = await read.getUser(username);
         res.send(response);
     } catch (error) {
         console.error(error);

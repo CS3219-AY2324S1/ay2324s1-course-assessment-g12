@@ -20,16 +20,15 @@ async function removeUser(userID) {
     }
 }
 
-async function addUser(username, email, language, level, uid) {
+async function addUser(username, email, language, level) {
     try {
         const data = {
             username: username,
             email: email,
             language: language,
             level: level,
-            uid: uid
         };
-        const res = await db.collection('users').doc(username + ' ' + uid).set(data);
+        const res = await db.collection('users').doc(username).set(data);
         return res;
     } catch (error) {
         console.error(error);
