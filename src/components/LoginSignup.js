@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
+const userURL = 'http://localhost:3001';
 
 const LoginSignup = () => {
   const [email, setEmail] = useState('');
@@ -26,19 +27,19 @@ const LoginSignup = () => {
     e.preventDefault();
     if (isLoginView) {
       try {
-        await axios.post('http://localhost:3001/handleLogin', { email, password });
+        await axios.post(`${userURL}/handleLogin`, { email, password });
       } catch (error) {
         console.error('Error logging in:', error);
       }
     } else {
       try {
-        const response = await axios.post('http://localhost:3001/checkUserExists', { email, password });
+        const response = await axios.post('${userURL}/checkUserExists', { email, password });
 
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
-            await axios.post('http://localhost:3001/handleLogin', {email, password});
-          await axios.post('http://localhost:3001/addUserData', {
+            await axios.post(`${userURL}/handleLogin`, {email, password});
+          await axios.post(`${userURL}/addUserData`, {
             email,
             password,
             username,

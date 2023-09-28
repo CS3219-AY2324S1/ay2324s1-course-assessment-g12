@@ -1,7 +1,6 @@
 const express = require('express');
 var app = express();
 const axios = require("axios");
-const external = require("./external.js")
 const PORT = 3001;
 const backendURL = "https://localhost:3005"
 
@@ -31,6 +30,24 @@ app.get("/getUser", async (req, res) => {
         console.error(error);
     }
 })
+
+app.post("/checkUserExists", async (req, res) => {
+    try {
+        const response = await axios.post(`${backendURL}/checkUserExists`, req.body);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.post("/handleLogin", async (req, res) => {
+    try {
+        const response = await axios.post(`${backendURL}/handleLogin`, req.body);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

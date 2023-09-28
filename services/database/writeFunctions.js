@@ -7,7 +7,7 @@ const auth = getAuth();
 async function handleLogin(email, password) {
     try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-   
+        res.status(200).send("Logged in successfully");
       } catch (error) {
         console.error('Error signing in:', error);
       }
