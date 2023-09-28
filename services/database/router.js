@@ -9,6 +9,27 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.post("/checkUserExists", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const response = await read.checkUserExists(email, password);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.post("/handleLogin", async (req, res) => {
+    try {
+        const email = req.body.email; 
+        const password = req.body.password;
+        const response = await write.handleLogin(email, password); 
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.post("/removeUser", async (req, res) => {
     try {
         const userID = req.params.userID;
@@ -26,7 +47,7 @@ app.post("/addUser", async (req, res) => {
         const language = req.body.language;
         const level = req.body.level;
         const uid = await external.generateUID(username);
-        const response = await write.addUser(username, email, language, level, uid);
+        const response = await write.addUser(username, email, password, language, level, uid);
         res.send(response);
     } catch (error) {
         console.error(error);
