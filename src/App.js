@@ -9,8 +9,9 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
+import LoginPage from './pages/LoginPage'
 import QuestionPage from './pages/QuestionPage';
-import UserProfile from './pages/UserProfile';
+import UserProfilePage from './pages/UserProfilePage';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<QuestionPage />} />
-          <Route path="/UserProfile" element={<UserProfile />} /> */ /* if want to add extra page  just copy and change the path
+          <Route path ="/LoginPage" element={<LoginPage />} />
+          <Route path="/UserProfile" element={<UserProfilePage />} /> */ /* if want to add extra page  just copy and change the path
         </Routes>
       </BrowserRouter>
       </header>
