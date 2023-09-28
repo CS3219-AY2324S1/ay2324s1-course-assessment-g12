@@ -11,8 +11,12 @@ app.get("/", (req, res) => {
 app.post("/checkUserExists", async (req, res) => {
     try {
         const { email, password } = req.body;
-        const response = await read.checkUserExists(email, password);
-        res.send(response);
+        const exists = await read.checkUserExists(email, password);
+        if (exists) {
+            res.status(200).json({ userExists: true });
+        } else {
+            res.status(200).json({ userExists: false });
+        }
     } catch (error) {
         console.error(error);
     }
