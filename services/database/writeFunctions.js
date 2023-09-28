@@ -1,13 +1,5 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
-
-const serviceAccount = require('./serviceAccountKey.json');
-
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
-const db = getFirestore();
+const firebaseAdmin = require('./firebase.js');
+const db = firebaseAdmin.firestore();
 
 
 // function to remove user from db
@@ -35,4 +27,4 @@ async function addUser(username, email, language, level) {
     }
 }
 
-module.exports( removeUser, addUser );
+module.exports = { removeUser, addUser }
