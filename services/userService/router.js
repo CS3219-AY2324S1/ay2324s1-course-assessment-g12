@@ -31,3 +31,7 @@ app.get("/getUser", async (req, res) => {
         console.error(error);
     }
 })
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
