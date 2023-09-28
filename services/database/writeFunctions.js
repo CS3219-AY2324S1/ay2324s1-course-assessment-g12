@@ -1,6 +1,18 @@
 const firebaseAdmin = require('./firebase.js');
 const db = firebaseAdmin.firestore();
 
+const auth = getAuth();
+
+//function to handle log in 
+async function handleLogin(email, password) {
+    try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+   
+      } catch (error) {
+        console.error('Error signing in:', error);
+      }
+
+}
 
 // function to remove user from db
 async function removeUser(userID) {
@@ -17,6 +29,7 @@ async function addUser(username, email, language, level) {
         const data = {
             username: username,
             email: email,
+            password: password,
             language: language,
             level: level,
         };
@@ -27,4 +40,4 @@ async function addUser(username, email, language, level) {
     }
 }
 
-module.exports = { removeUser, addUser }
+module.exports( handleLogin, removeUser, addUser );

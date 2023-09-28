@@ -8,6 +8,27 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.post("/checkUserExists", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const response = await read.checkUserExists(email, password);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.post("/handleLogin", async (req, res) => {
+    try {
+        const email = req.body.email; 
+        const password = req.body.password;
+        const response = await write.handleLogin(email, password); 
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.post("/delete", async (req, res) => {
     try {
         const uid = req.params.uid;
