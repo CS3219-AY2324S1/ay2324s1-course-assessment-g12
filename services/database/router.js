@@ -1,8 +1,12 @@
 const express = require("express");
 const write = require("./writeFunctions.js");
 const read = require("./readFunctions.js");
+const cors = require("cors");
 var app = express();
 const PORT = 3005;
+
+app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("Hello World");
@@ -35,9 +39,10 @@ app.post("/handleLogin", async (req, res) => {
 
 app.post("/delete", async (req, res) => {
     try {
-        const uid = req.params.uid;
-        const response = await write.removeUser(uid);
-        res.send(response);
+        const username = req.body.username;
+        console.log(username)
+        await write.removeUser(username);
+        res.send('User removed');
     } catch (error) {
         console.error(error);
     }
@@ -49,7 +54,8 @@ app.post("/add", async (req, res) => {
         const email = req.body.email;
         const language = req.body.language;
         const level = req.body.level;
-        const response = await write.addUser(username, email, language, level);
+        const password = req.body.password;
+        const response = await write.addUser(username, email, password, language, level);
         res.send(response);
     } catch (error) {
         console.error(error);
@@ -58,7 +64,7 @@ app.post("/add", async (req, res) => {
 
 app.get("/get", async (req, res) => {
     try {
-        const username = req.params.username;
+        const username = req.query.username;
         const response = await read.getUser(username);
         res.send(response);
     } catch (error) {

@@ -1,4 +1,5 @@
 const firebaseAdmin = require('./firebase.js');
+const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
 const db = firebaseAdmin.firestore();
 
 const auth = getAuth();
@@ -6,7 +7,7 @@ const auth = getAuth();
 //function to handle log in 
 async function handleLogin(email, password) {
     try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        await auth.signInWithEmailAndPassword(email, password);
         res.status(200).send("Logged in successfully");
       } catch (error) {
         console.error('Error signing in:', error);
@@ -15,16 +16,16 @@ async function handleLogin(email, password) {
 }
 
 // function to remove user from db
-async function removeUser(userID) {
+async function removeUser(username) {
     try {
-        const res = await db.collection('users').doc(userID).delete();
+        const res = await db.collection('users').doc(username).delete();
         return res;
     } catch (error) {
-        console.error(error);
+        throw new Error(error);
     }
 }
 
-async function addUser(username, email, language, level) {
+async function addUser(username, email, password, language, level) {
     try {
         const data = {
             username: username,
@@ -40,4 +41,4 @@ async function addUser(username, email, language, level) {
     }
 }
 
-module.exports( handleLogin, removeUser, addUser );
+module.exports = { handleLogin, removeUser, addUser };

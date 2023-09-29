@@ -1,15 +1,10 @@
-const db = getFirestore();
-const auth = getAuth();
+const firebaseAdmin = require('./firebase.js');
+const db = firebaseAdmin.firestore();
 
-async function getUser(uid) {
+async function getUser(username) {
     const usersRef = db.collection("users");
-    const snapshot = await usersRef.where("uid", "==", uid).limit(1).get();
-    if (snapshot.empty) {
-        throw new Error("No user with the specified UID");
-    } else {
-        const userData = snapshot.docs[0].data();
-        return userData;
-    }
+    const doc = await usersRef.doc(username).get();
+    return doc;
 }
 
 async function checkUserExists(email, password) {
@@ -25,4 +20,4 @@ async function checkUserExists(email, password) {
     }
 }
 
-module.exports(getUser, checkUserExists);
+module.exports = { getUser, checkUserExists };
