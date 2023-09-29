@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"npm run frontend\" \"npm run database\" \"npm run userService\"",
+    "start": "concurrently \"npm run frontend\" \"npm run start-database\" \"npm run start-userService\"",
     "start-frontend": "react-scripts start",
     "start-database": "node services/database/router.js",
     "start-userService": "node services/userService/router.js",
