@@ -1,38 +1,31 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const firebaseAdmin = require('./firebase.js');
 const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
-const serviceAccount = require('./serviceAccountKey.json');
+const db = firebaseAdmin.firestore();
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
-const db = getFirestore();
 const auth = getAuth();
 
 //function to handle log in 
 async function handleLogin(email, password) {
     try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-   
+        await auth.signInWithEmailAndPassword(email, password);
+        res.status(200).send("Logged in successfully");
       } catch (error) {
         console.error('Error signing in:', error);
       }
 
 }
 
-
 // function to remove user from db
-async function removeUser(userID) {
+async function removeUser(username) {
     try {
-        const res = await db.collection('users').doc(userID).delete();
+        const res = await db.collection('users').doc(username).delete();
         return res;
     } catch (error) {
-        console.error(error);
+        throw new Error(error);
     }
 }
 
-async function addUser(username, email, password, language, level, uid) {
+async function addUser(username, email, password, language, level) {
     try {
         const data = {
             username: username,
@@ -41,11 +34,11 @@ async function addUser(username, email, password, language, level, uid) {
             language: language,
             level: level,
         };
-        const res = await db.collection('users').doc(username + ' ' + uid).set(data);
+        const res = await db.collection('users').doc(username).set(data);
         return res;
     } catch (error) {
         console.error(error);
     }
 }
 
-module.exports( handleLogin, removeUser, addUser );
+module.exports = { handleLogin, removeUser, addUser };
