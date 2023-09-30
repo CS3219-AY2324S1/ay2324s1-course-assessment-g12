@@ -6,11 +6,17 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Select from '@mui/material/Select';
 import axios from 'axios';
+import { auth } from '../firebase-config'; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+
 
 const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
+const userURL = 'http://localhost:3001';
 
 const LoginSignup = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -26,26 +32,32 @@ const LoginSignup = () => {
     e.preventDefault();
     if (isLoginView) {
       try {
-        await axios.post('http://localhost:3001/handleLogin', { email, password });
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log('User signed in successfully:', user);
+        navigate('/UserProfile');
       } catch (error) {
         console.error('Error logging in:', error);
       }
     } else {
       try {
-        const response = await axios.post('http://localhost:3001/checkUserExists', { email, password });
+        const data = {"email": email, "password": password};
+        const response = await axios.post(`${userURL}/checkUserExists`, data);
 
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
-            await axios.post('http://localhost:3001/handleLogin', {email, password});
-          await axios.post('http://localhost:3001/addUserData', {
-            email,
-            password,
-            username,
-            language,
-            level,
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user; 
+          await axios.post(`${userURL}/addUser`, {
+            "email": email,
+            "password": password,
+            "username": username,
+            "language": language,
+            "level": level,
           });
-          console.log('User signed up successfully.');
+          console.log('User signed up successfully.', user);
+          navigate('/UserProfile');
         }
       } catch (error) {
         console.error('Error signing up:', error);

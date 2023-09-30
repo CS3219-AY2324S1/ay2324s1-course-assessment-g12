@@ -1,38 +1,48 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
-const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
-const serviceAccount = require('./serviceAccountKey.json');
+const firebaseAdmin = require('./firebase.js');
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+const db = firebaseAdmin.firestore();
 
-const db = getFirestore();
-const auth = getAuth();
+const auth = firebaseAdmin.auth();
 
 //function to handle log in 
-async function handleLogin(email, password) {
+async function handleSignup(email, password) {
     try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-   
+        await auth.createUser({email: email, password: password});
+        return 200;
       } catch (error) {
         console.error('Error signing in:', error);
       }
 
 }
 
+async function handleLogin(email, password) {
+    try {
+       
+        const userRecord = await auth.getUserByEmail(email);
+        console.log(userRecord.password)
+        console.log(password)
+        if (userRecord && userRecord.password === password) {
+          console.log('User logged in successfully.');
+        } else {
+          console.error('Invalid credentials.');
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+      } 
+      
+}
 
 // function to remove user from db
-async function removeUser(userID) {
+async function removeUser(username) {
     try {
-        const res = await db.collection('users').doc(userID).delete();
+        const res = await db.collection('users').doc(username).delete();
         return res;
     } catch (error) {
-        console.error(error);
+        throw new Error(error);
     }
 }
 
-async function addUser(username, email, password, language, level, uid) {
+async function addUser(username, email, password, language, level) {
     try {
         const data = {
             username: username,
@@ -41,11 +51,11 @@ async function addUser(username, email, password, language, level, uid) {
             language: language,
             level: level,
         };
-        const res = await db.collection('users').doc(username + ' ' + uid).set(data);
+        const res = await db.collection('users').doc(username).set(data);
         return res;
     } catch (error) {
         console.error(error);
     }
 }
 
-module.exports( handleLogin, removeUser, addUser );
+module.exports = { handleLogin, handleSignup, removeUser, addUser };
