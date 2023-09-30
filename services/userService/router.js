@@ -39,7 +39,16 @@ app.get("/getUser", async (req, res) => {
 app.post("/checkUserExists", async (req, res) => {
     try {
         const response = await axios.post(`${backendURL}/checkUserExists`, req.body);
-        res.send(response);
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.post("/handleSignup", async (req, res) => {
+    try {
+        const response = await axios.post(`${backendURL}/handleSignup`, req.body);
+        res.send(response.data);
     } catch (error) {
         console.error(error);
     }
@@ -48,7 +57,7 @@ app.post("/checkUserExists", async (req, res) => {
 app.post("/handleLogin", async (req, res) => {
     try {
         const response = await axios.post(`${backendURL}/handleLogin`, req.body);
-        res.send(response);
+        res.send(response.data);
     } catch (error) {
         console.error(error);
     }

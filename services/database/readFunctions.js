@@ -9,7 +9,7 @@ async function getUser(username) {
 
 async function checkUserExists(email, password) {
     const usersRef = db.collection("users");
-    const snapshot = usersRef
+    const snapshot = await usersRef
         .where("email", "==", email)
         .where("password", "==", password)
         .get();
