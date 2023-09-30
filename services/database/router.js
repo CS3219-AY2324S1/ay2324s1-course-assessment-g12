@@ -77,8 +77,8 @@ app.post("/add", async (req, res) => {
 
 app.get("/get", async (req, res) => {
     try {
-        const username = req.query.username;
-        const response = await read.getUser(username);
+        const email = req.query.email;
+        const response = await read.getUser(email);
         res.send(response);
     } catch (error) {
         console.error(error);

@@ -1,5 +1,5 @@
 const firebaseAdmin = require('./firebase.js');
-// import { getAuth, signInWithEmailAndPassword }  from 'firebase/auth';
+
 const db = firebaseAdmin.firestore();
 
 const auth = firebaseAdmin.auth();
@@ -15,13 +15,21 @@ async function handleSignup(email, password) {
 
 }
 
-async function handleLogin(email,) {
+async function handleLogin(email, password) {
     try {
-        await auth.getUserByEmail(email);
-        res.status(200).send("Logged in successfully");
+       
+        const userRecord = await auth.getUserByEmail(email);
+        console.log(userRecord.password)
+        console.log(password)
+        if (userRecord && userRecord.password === password) {
+          console.log('User logged in successfully.');
+        } else {
+          console.error('Invalid credentials.');
+        }
       } catch (error) {
-        console.error('Error signing in:', error);
-      }
+        console.error('Error logging in:', error);
+      } 
+      
 }
 
 // function to remove user from db
