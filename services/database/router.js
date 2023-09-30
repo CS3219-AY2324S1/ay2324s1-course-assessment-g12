@@ -14,10 +14,12 @@ app.get("/", (req, res) => {
 
 app.post("/checkUserExists", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const email = req.body.email;
+        const password = req.body.password;
         const exists = await read.checkUserExists(email, password);
+        console.log(exists)
         if (exists) {
-            res.status(200).json({ userExists: true });
+            res.status(200).send({ userExists: true });
         } else {
             res.status(200).json({ userExists: false });
         }
@@ -36,6 +38,17 @@ app.post("/handleLogin", async (req, res) => {
         console.error(error);
     }
 });
+
+app.post("/handleSignup", async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const response = await write.handleSignup(email, password);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+}); 
 
 app.post("/delete", async (req, res) => {
     try {
