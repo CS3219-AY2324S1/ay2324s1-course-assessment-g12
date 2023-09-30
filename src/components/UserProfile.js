@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { auth } from '../firebase-config'; 
 
+const userURL = 'http://localhost:3001';
+
 function UserProfile() {
   const [userData, setUserData] = useState(null);
 
@@ -14,7 +16,7 @@ function UserProfile() {
         return;
       }
       console.log('Username:', user.email);
-      const response = await axios.get(`http://localhost:3001/getUser`, {'email': user.email});
+      const response = await axios.get(`${userURL}/getUser`, {params: {'email': user.email}});
       console.log(response.data)
       
       setUserData(response.data);
