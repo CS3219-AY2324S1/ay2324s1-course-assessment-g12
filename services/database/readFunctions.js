@@ -8,16 +8,14 @@ async function getUser(email) {
     const doc = await usersRef.doc(username).get();
     return doc;
     */
-   console.log('what is going on')
-   console.log(email)
     const usersRef = db.collection("users");
     const querySnapshot = await usersRef.where("email", "==", email).get();
   
     if (querySnapshot.empty) {
       return null; 
     }
-    console.log(querySnapshot.docs[0])
-    return querySnapshot.docs[0];
+    console.log(querySnapshot.docs[0].data())
+    return querySnapshot.docs[0].data();
 }
 
 async function checkUserExists(email, password) {
