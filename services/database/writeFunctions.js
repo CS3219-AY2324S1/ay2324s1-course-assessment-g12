@@ -67,7 +67,6 @@ async function updateUser(username, language, level) {
         const res = await db.collection('users').doc(username).update(data);
         return res;
     } catch (error) {
-        console.log("disini atau")
         console.error(error);
     }
 }
