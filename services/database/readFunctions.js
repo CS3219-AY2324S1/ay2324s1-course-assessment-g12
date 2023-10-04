@@ -2,12 +2,7 @@ const firebaseAdmin = require('./firebase.js');
 const db = firebaseAdmin.firestore();
 
 async function getUser(email) {
-    /** 
-    console.log('Username:', username);
-    const usersRef = db.collection("users");
-    const doc = await usersRef.doc(username).get();
-    return doc;
-    */
+
     const usersRef = db.collection("users");
     const querySnapshot = await usersRef.where("email", "==", email).get();
   
