@@ -85,6 +85,18 @@ app.get("/get", async (req, res) => {
     }
 })
 
+app.patch("/updateUser", async (req, res) => {
+    try {
+        const username = req.body.username; 
+        const language = req.body.language;
+        const level = req.body.level;
+        const response = await write.updateUser(username, language, level);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
 });

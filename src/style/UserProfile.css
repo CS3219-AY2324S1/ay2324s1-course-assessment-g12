@@ -1,0 +1,51 @@
+.user-profile-container {
+  position: relative; 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 2px solid #3B3B44;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #3B3B44;
+  max-width: 600px;
+  width: 100%;
+  min-height: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.profile-picture-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 20px;
+}
+
+.user-info {
+  text-align: left;
+  color: white; 
+}
+
+.user-info-item {
+  margin-bottom: 2vh;
+}
+
+.select-button {
+  color: white;
+  max-height: 30px;
+}
+.signout-delete-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signout-delete-container button {
+  margin-right: 10px; 
+}
+
+.edit-button:hover {
+  cursor: pointer;
+  color: darkmagenta;
+  transition: transform 0.3s ease; 
+}
