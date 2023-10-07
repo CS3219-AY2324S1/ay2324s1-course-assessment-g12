@@ -1,39 +1,73 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const firebaseAdmin = require('./firebase.js');
 
-const serviceAccount = require('./serviceAccountKey.json');
+const db = firebaseAdmin.firestore();
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+const auth = firebaseAdmin.auth();
 
-const db = getFirestore();
+//function to handle log in 
+async function handleSignup(email, password) {
+    try {
+        await auth.createUser({email: email, password: password});
+        return 200;
+      } catch (error) {
+        console.error('Error signing in:', error);
+      }
 
+}
+
+async function handleLogin(email, password) {
+    try {
+       
+        const userRecord = await auth.getUserByEmail(email);
+        console.log(userRecord.password)
+        console.log(password)
+        if (userRecord && userRecord.password === password) {
+          console.log('User logged in successfully.');
+        } else {
+          console.error('Invalid credentials.');
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+      } 
+      
+}
 
 // function to remove user from db
-async function removeUser(userID) {
+async function removeUser(username) {
     try {
-        const res = await db.collection('users').doc(userID).delete();
+        const res = await db.collection('users').doc(username).delete();
         return res;
     } catch (error) {
-        console.error(error);
+        throw new Error(error);
     }
 }
 
-async function addUser(username, email, language, level, uid) {
+async function addUser(username, email, password, language, level) {
     try {
         const data = {
             username: username,
             email: email,
+            password: password,
             language: language,
             level: level,
-            uid: uid
         };
-        const res = await db.collection('users').doc(username + ' ' + uid).set(data);
+        const res = await db.collection('users').doc(username).set(data);
         return res;
     } catch (error) {
         console.error(error);
     }
 }
 
-module.exports( removeUser, addUser );
+async function updateUser(username, language, level) {
+    try {
+        const data = {
+            language: language,
+            level: level,
+        };
+        const res = await db.collection('users').doc(username).update(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+module.exports = { handleLogin, handleSignup, removeUser, addUser, updateUser };

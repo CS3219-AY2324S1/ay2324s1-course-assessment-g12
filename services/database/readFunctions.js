@@ -1,23 +1,29 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const firebaseAdmin = require('./firebase.js');
+const db = firebaseAdmin.firestore();
 
-const serviceAccount = require('./serviceAccountKey.json');
+async function getUser(email) {
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+    const usersRef = db.collection("users");
+    const querySnapshot = await usersRef.where("email", "==", email).get();
+  
+    if (querySnapshot.empty) {
+      return null; 
+    }
+    console.log(querySnapshot.docs[0].data())
+    return querySnapshot.docs[0].data();
+}
 
-const db = getFirestore();
-
-async function getUser(uid) {
-    const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('uid', '==', uid).limit(1).get();
+async function checkUserExists(email, password) {
+    const usersRef = db.collection("users");
+    const snapshot = await usersRef
+        .where("email", "==", email)
+        .where("password", "==", password)
+        .get();
     if (snapshot.empty) {
-        throw new Error('No user with the specified UID')
+        return false;
     } else {
-        const userData = snapshot.docs[0].data();
-        return userData; 
+        return true;
     }
 }
 
-module.exports( getUser )
+module.exports = { getUser, checkUserExists };

@@ -5,12 +5,16 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.1",
+    "concurrently": "^8.2.1",
     "express": "^4.18.2",
+    "firebase": "^10.4.0",
+    "nodemon": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
@@ -19,11 +23,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"npm run frontend\" \"npm run start-database\" \"npm run start-userService\"",
+    "start-frontend": "react-scripts start",
+    "start-database": "nodemon services/database/router.js",
+    "start-userService": "nodemon services/userService/router.js",
+    "frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "userService": "node services/userService/router.js"
+    "userService": "concurrently \"npm run start-userService\" \"npm run start-database\""
   },
   "eslintConfig": {
     "extends": [
