@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /services/database/node_modules
+/services/userService/node_modules
 
 # testing
 /coverage
