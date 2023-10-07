@@ -123,14 +123,21 @@ app.post("/question", async (req, res) => {
 
 app.get("/question", async (req, res) => {
     try {
-        const response = null;
-        if (req.title === undefined) {
-            response = await read.getAllQuestions();
-        } else {
-            const title = req.query.title;
-            response = await read.getQuestion(title);
-        }
+        const title = req.query.title;
+        response = await read.getQuestion(title);
 
+        if (response === null) {
+            res.status(404).send("Question not found");
+        }
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+app.get("/questions", async (req, res) => {
+    try {
+        response = await read.getAllQuestions();
         if (response === null) {
             res.status(404).send("Question not found");
         }
