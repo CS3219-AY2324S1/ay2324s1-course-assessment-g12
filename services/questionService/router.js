@@ -22,6 +22,11 @@ app.get("/question", async(req, res) => {
     res.send(response.data);
 })
 
+app.get("/questions", async(req, res) => {
+    const response = await axios.get(`${databaseURL}/questions`);
+    res.send(response.data);
+})
+
 app.delete("/question", async(req, res) => {
     const response = await axios.delete(`${databaseURL}/question`, {params: req.query});
     res.send(response.data);
