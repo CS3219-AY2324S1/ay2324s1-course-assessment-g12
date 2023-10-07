@@ -27,11 +27,13 @@
     "start-frontend": "react-scripts start",
     "start-database": "nodemon services/database/router.js",
     "start-userService": "nodemon services/userService/router.js",
+    "start-questionService": "nodemon services/questionService/router.js",
     "frontend": "react-scripts start",
+    "userService": "concurrently \"npm run start-userService\" \"npm run start-database\"",
+    "questionService": "concurrently \"npm run start-questionService\" \"npm run start-database\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "userService": "concurrently \"npm run start-userService\" \"npm run start-database\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

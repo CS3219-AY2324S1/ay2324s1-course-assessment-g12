@@ -70,4 +70,29 @@ async function updateUser(username, language, level) {
         console.error(error);
     }
 }
-module.exports = { handleLogin, handleSignup, removeUser, addUser, updateUser };
+
+async function addQuestion(title, category, difficulty, description) {
+    try {
+        const data = {
+            title: title,
+            category: category,
+            difficulty: difficulty,
+            description: description,
+        };
+        const res = await db.collection('questions').doc(title).set(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function deleteQuestion(title) {
+    try {
+        const res = await db.collection('questions').doc(title).delete();
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { handleLogin, handleSignup, removeUser, addUser, updateUser, addQuestion, deleteQuestion };

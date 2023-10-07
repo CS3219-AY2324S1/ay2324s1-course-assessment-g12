@@ -1,56 +1,47 @@
-
 const id_key = "id";
+const axios = import("axios");
+const questionURL = "http://localhost:3002/questions";
 
-function getAllQuestions() {
-  console.log(items);
-  const id = JSON.parse(localStorage.getItem(id_key));
-  localStorage.removeItem(id_key);
-  
-  const items = { ...localStorage };
-  localStorage.setItem(id_key, JSON.stringify(id));
+async function getAllQuestions() {
+    const response = await axios.get(questionURL);
+    if (response.status === 404) {
+        return "no such item";
+    } else if (response.status === 500) {
+        return "server error";
+    }
 
-  return items;
-  
+    const items = response.data;
+    return items;
 }
 
-function getQuestion(title) {
-  //This if is not really necessary and I added it before reading the requirement
-  if (localStorage.getItem(title) === null) {
-    return null;
-  }
-  return JSON.parse(localStorage.getItem(title));
+async function getQuestion(title) {
+    const response = await axios.get(questionURL, { params: { title: title } });
+    if (response.status === 404) {
+        return "no such item";
+    } else if (response.status === 500) {
+        return "server error";
+    }
+
+    const item = response.data;
+    return item;
 }
 
-function deleteQuestions(title) {
-  if (localStorage.getItem(title) === null) {
-    return "no such item";
-  }
-  localStorage.removeItem(title);
-  return "item " + title + " removed.";
+async function deleteQuestions(title) {
+    try {
+        await axios.delete(questionURL, { params: { title: title } });
+        return title + " deleted";
+    } catch (error) {
+        return error;
+    }
 }
 
 function postQuestion(data) {
-  //title should be unique
-  if (localStorage.getItem(data.title) !== null) {
-    //return "Question with the same title already exists";
-    alert("Question with the same title already exists");
-    return;
-  }
-  console.log(data);  
-  const id = JSON.parse(localStorage.getItem(id_key));
-  console.log(typeof(data));
-  let curr_id = 1;
-  if (id !== null) {
-    curr_id = id + 1;
-  }
-  localStorage.setItem(id_key, JSON.stringify(curr_id));
-  data.id = curr_id
-  console.log(data);
-  const jsonData = JSON.stringify(data);
-
-  localStorage.setItem(data.title, jsonData);
-  window.location.reload();
-  return "Question added";
+    try {
+        const response = axios.post(questionURL, data);
+        return "Question added";
+    } catch (error) {
+        return error;
+    }
 }
 
-export  {postQuestion, deleteQuestions, getAllQuestions, getQuestion};
+export { postQuestion, deleteQuestions, getAllQuestions, getQuestion };
