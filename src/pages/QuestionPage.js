@@ -27,6 +27,7 @@ function QuestionPage() {
         </p>
         <button onClick={() => handleSubmit()}>MATCHING</button>
        <SubmitButton />
+       </div>
        <QuestionList />
       </header>
     </div>
