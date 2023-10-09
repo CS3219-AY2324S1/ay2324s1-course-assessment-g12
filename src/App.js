@@ -1,7 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import SubmitButton from './components/SubmitButton';
-import QuestionList from './components/QuestionList';
 import {
   BrowserRouter,
   Route,
@@ -12,19 +9,18 @@ import {
 import LoginPage from './pages/LoginPage'
 import QuestionPage from './pages/QuestionPage';
 import UserProfilePage from './pages/UserProfilePage';
+import Layout from './pages/Layout';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
       <BrowserRouter>
         <Routes>
-          <Route index element={<QuestionPage />} />
+          <Route index element={<Layout> <QuestionPage /> </Layout>} />
           <Route path ="/LoginPage" element={<LoginPage />} />
-          <Route path="/UserProfile" element={<UserProfilePage />} /> */ /* if want to add extra page  just copy and change the path
+          <Route path="/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> */ /* if want to add extra page  just copy and change the path
         </Routes>
       </BrowserRouter>
-      </header>
     </div>
   );
 }
