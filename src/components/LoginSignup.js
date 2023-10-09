@@ -35,7 +35,7 @@ const LoginSignup = () => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log('User signed in successfully:', user);
-        navigate('/UserProfile');
+        navigate('/');
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -57,7 +57,7 @@ const LoginSignup = () => {
             "level": level,
           });
           console.log('User signed up successfully.', user);
-          navigate('/UserProfile');
+          navigate('/');
         }
       } catch (error) {
         console.error('Error signing up:', error);
