@@ -38,12 +38,14 @@ function UserProfilePage() {
   }, []);  
 
   return (
+    <div className='App-header'> 
     <div className="user-profile-page">
       {userData ? (
         <UserProfile userData={userData} user={user} /> 
       ) : (
         <p>Loading user data...</p>
       )}
+    </div>
     </div>
   );
 }
