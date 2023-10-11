@@ -3,7 +3,7 @@ import LoginSignup from '../components/LoginSignup';
 
 const LoginPage = () => {
   return (
-    <div>
+    <div className="App-header">
       <LoginSignup />
     </div>
   );
