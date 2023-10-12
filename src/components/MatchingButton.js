@@ -27,7 +27,7 @@ function MatchingButton() {
     const handleSubmission = (data) => {
         console.log(data)
         console.log("submitting");
-        socket.emit("joinQueue", data.Difficulty);
+        socket.emit("joinQueue", data.difficulty);
         document.getElementById("matching").innerHTML = "Matching...";
         console.log("supo");
     }
@@ -41,24 +41,24 @@ function MatchingButton() {
     return (
         <div>
             <form onSubmit={handleSubmit(handleSubmission)}>
-            <Grid xl={12} item>
-                <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",
-                '& .MuiInputBase-input': {
-                    color: 'black', // Change this to your desired text color
-                    textAlign: 'left',
-                  },}}
-                  select defaultValue="" label="Difficulty" name="Difficulty" placeholder="Medium" variant="filled" fullWidth required {...register("difficulty", { required: true })}>
-                  {Difficulty.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))} </TextField>
-              </Grid>
+                <Grid xl={12} item>
+                    <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",
+                    '& .MuiInputBase-input': {
+                        color: 'black', // Change this to your desired text color
+                        textAlign: 'left',
+                    },}}
+                    select defaultValue="" label="Difficulty" name="Difficulty" placeholder="Medium" variant="filled" fullWidth required {...register("difficulty", { required: true })}>
+                    {Difficulty.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                            </MenuItem>
+                        ))} </TextField>
+                </Grid>
+                <div className="MatchingButton">
+                    <p style={{colors:'white'}} id="matching" label="Outlined" variant="outlined"></p>
+                    <Button type="submit" variant="contained" color="primary" fullWidth>Matching</Button>
+                </div>
             </form>
-            <div className="MatchingButton">
-                <p style={{colors:'white'}} id="matching" label="Outlined" variant="outlined"></p>
-                <Button type="submit" variant="contained" color="primary" fullWidth>MATCHING</Button>
-            </div>
         </div>
     );
 }
