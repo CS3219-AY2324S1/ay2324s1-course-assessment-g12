@@ -33,12 +33,13 @@
     "frontend": "react-scripts start",
     "userService": "concurrently \"npm run start-userService\" \"npm run start-database\"",
     "questionService": "concurrently \"npm run start-questionService\" \"npm run start-database\"",
+    "matchingService": "concurrently \"npm run start-questionService\" \"npm run start-matchingService\" \"npm run start-database\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-user1": "set PORT=3000 && react-scripts start",
     "start-user2": "set PORT=3006 && react-scripts start",
-    "test-matching": "concurrently \"npm run start-user1\" \"npm run start-user2\" \"npm run start-matchingService\""
+    "test-matching": "concurrently \"npm run start-user1\" \"npm run start-user2\" \"npm run matchingService\""
   },
   "eslintConfig": {
     "extends": [
