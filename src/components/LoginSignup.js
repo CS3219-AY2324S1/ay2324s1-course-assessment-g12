@@ -33,6 +33,8 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await axios.post(`${userURL}/token`, username);
+        console.log("User token has been refreshed.");
         const user = userCredential.user;
         console.log('User signed in successfully:', user);
         navigate('/');
@@ -41,21 +43,24 @@ const LoginSignup = () => {
       }
     } else {
       try {
-        const data = {"email": email, "password": password};
-        const response = await axios.post(`${userURL}/user/check`, data);
+        const data = {"email": email};
+        const response = await axios.get(`${userURL}/user/check`, {params: data});
 
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, username);
           const user = userCredential.user; 
           await axios.post(`${userURL}/user`, {
             "email": email,
-            "password": password,
             "username": username,
             "language": language,
             "level": level,
+            "role": "registered user",
+            "refreshToken": refreshToken,
           });
+          localStorage.setItem('accessToken', accessToken);
           console.log('User signed up successfully.', user);
           navigate('/');
         }

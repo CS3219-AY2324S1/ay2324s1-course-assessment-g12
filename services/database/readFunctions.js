@@ -13,11 +13,10 @@ async function getUser(criteria, flag) {
     return querySnapshot.docs[0].data();
 }
 
-async function checkUserExists(email, password) {
+async function checkUserExists(email) {
     const usersRef = db.collection("users");
     const snapshot = await usersRef
         .where("email", "==", email)
-        .where("password", "==", password)
         .get();
     if (snapshot.empty) {
         return false;

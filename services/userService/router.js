@@ -1,13 +1,12 @@
+require('dotenv').config({path: __dirname + '/.env'});
 const express = require('express');
-var app = express();
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3001;
 const databaseURL = "http://localhost:3005"
-const userURL = "http://localhost:3001"
-const jwt = require("jsonwebtoken")
-const external = require("./external.js")
+const jwt = require('jsonwebtoken');
 
+var app = express();
 app.use(express.json());
 app.use(cors());
 
@@ -50,18 +49,35 @@ app.patch("/user", async (req, res) => {
     }
 });
 
-app.post("/checkUserExists", async (req, res) => {
+app.get("/user/check", async (req, res) => {
     try {
-        const response = await axios.post(`${databaseURL}/checkUserExists`, req.body);
+        const response = await axios.get(`${databaseURL}/user/check`, { params: req.query });
         res.send(response.data);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.get("/userToken", async (req, res) => {
+app.post("/token", async (req, res) => {
     try {
-        const username = req.query.username;
+        const userData = await axios.get(`${databaseURL}/user`, { params: {username: req.body.username} });
+        const refreshToken = userData.refreshToken;
+        if (refreshToken === null) return res.sendStatus(401);
+        const payload = {
+            username: userData.username,
+            email: userData.email,
+            role: userData.role
+        }
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+        res.json({ accessToken: accessToken });
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.post("/signup", async (req, res) => {
+    try {
+        const username = req.body.username;
         const response = await axios.get(`${databaseURL}/user`, { params: { username: username } });
 
         const payload = {
@@ -69,46 +85,14 @@ app.get("/userToken", async (req, res) => {
             email: response.data.email,
             role: response.data.role
         }
-        const secretKey = await axios.get(`${userURL}/secretKey`, { params: { username: username } });
 
-        const token = jwt.sign(payload, secretKey.data);
-        console.log("User token generated: " + token)
-        res.send(token)
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+        res.json({accessToken: accessToken, refreshToken: refreshToken})
     } catch (error) {
         console.error(error);
     }
 })
-
-app.get("/secretKey", async (req, res) => {
-    try {
-        const username = req.query.username;
-        const response = await external.hashUsername(username);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }
-})
-
-// ------------------ Signup/Login Functions ------------------
-
-app.post("/user/signup", async (req, res) => {
-    try {
-        const response = await axios.post(`${databaseURL}/user/signup`, req.body);
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-app.post("/user/login", async (req, res) => {
-    try {
-        const response = await axios.post(`${databaseURL}/user/login`, req.body);
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

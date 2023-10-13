@@ -12,46 +12,6 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-// ------------------ Signup/Login Functions ------------------
-
-app.post("/user/check", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const exists = await read.checkUserExists(email, password);
-        console.log(exists);
-        if (exists) {
-            res.status(200).send({ userExists: true });
-        } else {
-            res.status(200).json({ userExists: false });
-        }
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-app.post("/user/login", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const response = await write.handleLogin(email, password);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-app.post("/user/signup", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const response = await write.handleSignup(email, password);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
 // ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
@@ -71,15 +31,15 @@ app.post("/user", async (req, res) => {
         const email = req.body.email;
         const language = req.body.language;
         const level = req.body.level;
-        const password = req.body.password;
         const role = req.body.role;
+        const refreshToken = req.body.refreshToken;
         const response = await write.addUser(
             username,
             email,
-            password,
             language,
             level,
-            role
+            role,
+            refreshToken
         );
         res.send(response);
     } catch (error) {
@@ -110,6 +70,21 @@ app.patch("/user", async (req, res) => {
         const level = req.body.level;
         const response = await write.updateUser(username, language, level);
         res.send(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/user/check", async (req, res) => {
+    try {
+        const email = req.query.email;
+        const exists = await read.checkUserExists(email);
+        console.log(exists);
+        if (exists) {
+            res.status(200).send({ userExists: true });
+        } else {
+            res.status(200).json({ userExists: false });
+        }
     } catch (error) {
         console.error(error);
     }

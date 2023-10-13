@@ -27,6 +27,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # environments
+/services/userService/.env
 
 # account keys
 /services/database/serviceAccountKey.json

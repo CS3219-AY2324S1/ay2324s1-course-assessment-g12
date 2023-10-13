@@ -6,9 +6,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import axios from "axios"; 
+import axios from "axios";
 
 const questionURL = 'http://localhost:3002';
+const authHeader = {
+  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+}
 
 function QuestionList() {
   const [questions, setQuestions] = useState([]);
@@ -17,7 +20,7 @@ function QuestionList() {
   const [curr, setCurr] = useState(-1);
 
   useEffect(() => {
-  
+
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(`${questionURL}/questions`);
@@ -37,9 +40,21 @@ function QuestionList() {
     try {
       const response = await axios.delete(`${questionURL}/question`, {
         params: { title: title },
+        headers: authHeader,
+      })
+        .then(response => {
+          // Handle the success response here
+          console.log('DELETE Request Successful:', response.data);
+        })
+        .catch(error => {
+          // Handle errors here
+          console.error('DELETE Request Error:', error);
 
-      });
-      console.log(response.data);
+          if (error.response && error.response.status === 403) {
+            // Handle 403 Forbidden error (permissions issue)
+            alert('You do not have the required permissions to delete questions.');
+          }
+        });
       setQuestions((prevQuestions) =>
         prevQuestions.filter((question) => question.title !== title)
       );
@@ -47,7 +62,7 @@ function QuestionList() {
       console.error("Error:", error);
     }
   };
-  
+
   const handleExpandClick = (index) => {
     const isSameIndex = index === curr;
     const newExpandState = [...expandState];
@@ -82,7 +97,7 @@ function QuestionList() {
                 {expandState[index]}
               </button>
               <button
-                onClick={() => {deleteQuestion(question.title)}}
+                onClick={() => { deleteQuestion(question.title) }}
               >
                 Delete
               </button>
