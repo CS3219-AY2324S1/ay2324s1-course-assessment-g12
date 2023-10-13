@@ -42,7 +42,7 @@ const LoginSignup = () => {
     } else {
       try {
         const data = {"email": email, "password": password};
-        const response = await axios.post(`${userURL}/checkUserExists`, data);
+        const response = await axios.post(`${userURL}/user/check`, data);
 
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');

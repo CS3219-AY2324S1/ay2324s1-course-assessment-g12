@@ -7,29 +7,28 @@ const auth = firebaseAdmin.auth();
 //function to handle log in 
 async function handleSignup(email, password) {
     try {
-        await auth.createUser({email: email, password: password});
+        await auth.createUser({ email: email, password: password });
         return 200;
-      } catch (error) {
+    } catch (error) {
         console.error('Error signing in:', error);
-      }
+    }
 
 }
 
 async function handleLogin(email, password) {
     try {
-       
         const userRecord = await auth.getUserByEmail(email);
         console.log(userRecord.password)
         console.log(password)
         if (userRecord && userRecord.password === password) {
-          console.log('User logged in successfully.');
+            console.log('User logged in successfully.');
         } else {
-          console.error('Invalid credentials.');
+            console.error('Invalid credentials.');
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error logging in:', error);
-      } 
-      
+    }
+
 }
 
 // function to remove user from db
@@ -42,7 +41,7 @@ async function removeUser(username) {
     }
 }
 
-async function addUser(username, email, password, language, level) {
+async function addUser(username, email, password, language, level, role) {
     try {
         const data = {
             username: username,
@@ -50,6 +49,7 @@ async function addUser(username, email, password, language, level) {
             password: password,
             language: language,
             level: level,
+            role: role
         };
         const res = await db.collection('users').doc(username).set(data);
         return res;

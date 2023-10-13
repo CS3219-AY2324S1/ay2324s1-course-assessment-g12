@@ -2,9 +2,9 @@ const { query } = require("express");
 const firebaseAdmin = require("./firebase.js");
 const db = firebaseAdmin.firestore();
 
-async function getUser(email) {
+async function getUser(criteria, flag) {
     const usersRef = db.collection("users");
-    const querySnapshot = await usersRef.where("email", "==", email).get();
+    const querySnapshot = await usersRef.where(`${flag}`, "==", criteria).get();
 
     if (querySnapshot.empty) {
         return null;

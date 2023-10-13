@@ -12,7 +12,9 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.post("/checkUserExists", async (req, res) => {
+// ------------------ Signup/Login Functions ------------------
+
+app.post("/user/check", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -28,7 +30,7 @@ app.post("/checkUserExists", async (req, res) => {
     }
 });
 
-app.post("/handleLogin", async (req, res) => {
+app.post("/user/login", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -39,7 +41,7 @@ app.post("/handleLogin", async (req, res) => {
     }
 });
 
-app.post("/handleSignup", async (req, res) => {
+app.post("/user/signup", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -49,6 +51,8 @@ app.post("/handleSignup", async (req, res) => {
         console.error(error);
     }
 });
+
+// ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
     try {
@@ -68,12 +72,14 @@ app.post("/user", async (req, res) => {
         const language = req.body.language;
         const level = req.body.level;
         const password = req.body.password;
+        const role = req.body.role;
         const response = await write.addUser(
             username,
             email,
             password,
             language,
-            level
+            level,
+            role
         );
         res.send(response);
     } catch (error) {
@@ -83,8 +89,14 @@ app.post("/user", async (req, res) => {
 
 app.get("/user", async (req, res) => {
     try {
+        const username = req.query.username;
         const email = req.query.email;
-        const response = await read.getUser(email);
+        var response = null;
+        if (username !== undefined) {
+            response = await read.getUser(username, "username");
+        } else {
+            response = await read.getUser(email, "email");
+        }
         res.send(response);
     } catch (error) {
         console.error(error);
@@ -102,6 +114,8 @@ app.patch("/user", async (req, res) => {
         console.error(error);
     }
 });
+
+// ------------------ Question Functions ------------------
 
 app.post("/question", async (req, res) => {
     try {
