@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/services/userService/node_modules
 /.pnp
 .pnp.js
 
