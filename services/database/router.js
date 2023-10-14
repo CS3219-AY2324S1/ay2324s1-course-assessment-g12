@@ -12,45 +12,9 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.post("/checkUserExists", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const exists = await read.checkUserExists(email, password);
-        console.log(exists);
-        if (exists) {
-            res.status(200).send({ userExists: true });
-        } else {
-            res.status(200).json({ userExists: false });
-        }
-    } catch (error) {
-        console.error(error);
-    }
-});
+// ------------------ User Functions ------------------
 
-app.post("/handleLogin", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const response = await write.handleLogin(email, password);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-app.post("/handleSignup", async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const response = await write.handleSignup(email, password);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-app.post("/delete", async (req, res) => {
+app.delete("/user", async (req, res) => {
     try {
         const username = req.body.username;
         console.log(username);
@@ -61,19 +25,21 @@ app.post("/delete", async (req, res) => {
     }
 });
 
-app.post("/add", async (req, res) => {
+app.post("/user", async (req, res) => {
     try {
         const username = req.body.username;
         const email = req.body.email;
         const language = req.body.language;
         const level = req.body.level;
-        const password = req.body.password;
+        const role = req.body.role;
+        const refreshToken = req.body.refreshToken;
         const response = await write.addUser(
             username,
             email,
-            password,
             language,
-            level
+            level,
+            role,
+            refreshToken
         );
         res.send(response);
     } catch (error) {
@@ -81,17 +47,23 @@ app.post("/add", async (req, res) => {
     }
 });
 
-app.get("/get", async (req, res) => {
+app.get("/user", async (req, res) => {
     try {
+        const username = req.query.username;
         const email = req.query.email;
-        const response = await read.getUser(email);
+        var response = null;
+        if (username !== undefined) {
+            response = await read.getUser(username, "username");
+        } else {
+            response = await read.getUser(email, "email");
+        }
         res.send(response);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.patch("/updateUser", async (req, res) => {
+app.patch("/user", async (req, res) => {
     try {
         const username = req.body.username;
         const language = req.body.language;
@@ -103,17 +75,36 @@ app.patch("/updateUser", async (req, res) => {
     }
 });
 
+app.get("/user/check", async (req, res) => {
+    try {
+        const email = req.query.email;
+        const exists = await read.checkUserExists(email);
+        console.log(exists);
+        if (exists) {
+            res.status(200).send({ userExists: true });
+        } else {
+            res.status(200).json({ userExists: false });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+// ------------------ Question Functions ------------------
+
 app.post("/question", async (req, res) => {
     try {
         const title = req.body.title;
         const category = req.body.category;
         const difficulty = req.body.difficulty;
         const description = req.body.description;
+        const tags = req.body.tags;
         const response = await write.addQuestion(
             title,
             category,
             difficulty,
-            description
+            description,
+            tags
         );
         res.status(200).send(response);
     } catch (error) {
@@ -156,6 +147,16 @@ app.delete("/question", async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+app.get("/questions/tags", async (req, res) => {
+    try {
+        const tags = req.query.tags;
+        const response = await read.getQuestionsByTags(tags);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
 
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);

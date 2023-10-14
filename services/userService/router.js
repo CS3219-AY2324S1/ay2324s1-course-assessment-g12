@@ -1,76 +1,98 @@
+require('dotenv').config({path: __dirname + '/.env'});
 const express = require('express');
-var app = express();
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3001;
-const backendURL = "http://localhost:3005"
+const databaseURL = "http://localhost:3005"
+const jwt = require('jsonwebtoken');
 
+var app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post("/removeUser", async (req, res) => {
+// ------------------ User Functions ------------------
+
+app.delete("/user", async (req, res) => {
     try {
-        const response = await axios.post(`${backendURL}/delete`, req.body);
+        const response = await axios.delete(`${databaseURL}/user`, req.body);
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-app.post("/addUser", async (req, res) => {
+app.post("/user", async (req, res) => {
     try {
         const data = req.body;
-        const response = await axios.post(`${backendURL}/add`, data);
+        const response = await axios.post(`${databaseURL}/user`, data);
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 
-app.get("/getUser", async (req, res) => {
+app.get("/user", async (req, res) => {
     try {
-        const response = await axios.get(`${backendURL}/get`, {params: req.query});
+        const response = await axios.get(`${databaseURL}/user`, { params: req.query });
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 
-app.post("/checkUserExists", async (req, res) => {
+app.patch("/user", async (req, res) => {
     try {
-        const response = await axios.post(`${backendURL}/checkUserExists`, req.body);
+        const response = await axios.patch(`${databaseURL}/user`, req.body);
         res.send(response.data);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.post("/handleSignup", async (req, res) => {
+app.get("/user/check", async (req, res) => {
     try {
-        const response = await axios.post(`${backendURL}/handleSignup`, req.body);
+        const response = await axios.get(`${databaseURL}/user/check`, { params: req.query });
         res.send(response.data);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.post("/handleLogin", async (req, res) => {
+app.post("/token", async (req, res) => {
     try {
-        const response = await axios.post(`${backendURL}/handleLogin`, req.body);
-        res.send(response.data);
+        const userData = await axios.get(`${databaseURL}/user`, { params: {username: req.body.username} });
+        const refreshToken = userData.refreshToken;
+        if (refreshToken === null) return res.sendStatus(401);
+        const payload = {
+            username: userData.username,
+            email: userData.email,
+            role: userData.role
+        }
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+        res.json({ accessToken: accessToken });
     } catch (error) {
         console.error(error);
     }
-});
+})
 
-app.patch("/updateUser", async (req, res) => {
+app.post("/signup", async (req, res) => {
     try {
-        const response = await axios.patch(`${backendURL}/updateUser`, req.body);
-        res.send(response.data);
+        const username = req.body.username;
+        const response = await axios.get(`${databaseURL}/user`, { params: { username: username } });
+
+        const payload = {
+            username: response.data.username,
+            email: response.data.email,
+            role: response.data.role
+        }
+
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+        res.json({accessToken: accessToken, refreshToken: refreshToken})
     } catch (error) {
         console.error(error);
     }
-});
+})
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
