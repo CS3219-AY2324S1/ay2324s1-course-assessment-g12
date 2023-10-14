@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm,reset } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +9,9 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
+import axios from 'axios';
 import {postQuestion} from "./LocalStorageHandler.js"
+
 
 const Categories = [
   { value: 'Algorithm', label: 'Algorithm' },
@@ -24,14 +26,39 @@ const Difficulty =[
   { value: 'Hard', label: 'Hard' },
 ]
 
+const questionURL = 'http://localhost:3002';
+
 function SubmitButton() {
   
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   
+  const handleSubmission = async (data) => {
+    const { title, description, category, difficulty } = data;
+    console.log(title, description, category, difficulty);
+
+    try {
+      const response = await axios.post(`${questionURL}/question`, {
+        "title": title,
+        "category": category,
+        "difficulty": difficulty,
+        "description": description,
+      });
+      console.log(response.data);
+      reset({
+      title: "",
+      description: "",
+      category: "",
+      difficulty: ""
+    });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <div className="wrapper_submit">
         <h1> Submit your questions here:</h1>
-        <form onSubmit={handleSubmit(postQuestion)}>
+        <form onSubmit={handleSubmit(handleSubmission)}>
         <Grid container spacing={1}>
               <Grid xs={12} item>
                 <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" }}} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })}/>
@@ -73,7 +100,7 @@ function SubmitButton() {
                 <Button type="reset" variant="contained" color="primary" fullWidth> Reset form</Button>
               </Grid> */}
         </Grid >
-        </form>
+        </form >
     </div>
     
   );

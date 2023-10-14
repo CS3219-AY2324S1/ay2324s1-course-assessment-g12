@@ -63,6 +63,15 @@ app.post("/handleLogin", async (req, res) => {
     }
 });
 
+app.patch("/updateUser", async (req, res) => {
+    try {
+        const response = await axios.patch(`${backendURL}/updateUser`, req.body);
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });

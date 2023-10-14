@@ -1,23 +1,16 @@
-const firebaseAdmin = require('./firebase.js');
+const { query } = require("express");
+const firebaseAdmin = require("./firebase.js");
 const db = firebaseAdmin.firestore();
 
 async function getUser(email) {
-    /** 
-    console.log('Username:', username);
-    const usersRef = db.collection("users");
-    const doc = await usersRef.doc(username).get();
-    return doc;
-    */
-   console.log('what is going on')
-   console.log(email)
     const usersRef = db.collection("users");
     const querySnapshot = await usersRef.where("email", "==", email).get();
-  
+
     if (querySnapshot.empty) {
-      return null; 
+        return null;
     }
-    console.log(querySnapshot.docs[0])
-    return querySnapshot.docs[0];
+    console.log(querySnapshot.docs[0].data());
+    return querySnapshot.docs[0].data();
 }
 
 async function checkUserExists(email, password) {
@@ -33,4 +26,38 @@ async function checkUserExists(email, password) {
     }
 }
 
-module.exports = { getUser, checkUserExists };
+async function getQuestion(title) {
+    try {
+        const questionsRef = db.collection("questions");
+        const querySnapshot = await questionsRef
+            .where("title", "==", title)
+            .get();
+        if (querySnapshot.empty) {
+            return null;
+        } else {
+            return querySnapshot.docs[0].data();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getAllQuestions() {
+    try {
+        const questionsRef = db.collection("questions");
+        const querySnapshot = await questionsRef.get();
+        if (querySnapshot.empty) {
+            return null;
+        } else {
+            const questions = [];
+            querySnapshot.forEach((doc) => {
+                questions.push(doc.data());
+            });
+            return questions;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions };

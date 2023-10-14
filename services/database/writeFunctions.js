@@ -58,4 +58,41 @@ async function addUser(username, email, password, language, level) {
     }
 }
 
-module.exports = { handleLogin, handleSignup, removeUser, addUser };
+async function updateUser(username, language, level) {
+    try {
+        const data = {
+            language: language,
+            level: level,
+        };
+        const res = await db.collection('users').doc(username).update(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function addQuestion(title, category, difficulty, description) {
+    try {
+        const data = {
+            title: title,
+            category: category,
+            difficulty: difficulty,
+            description: description,
+        };
+        const res = await db.collection('questions').doc(title).set(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function deleteQuestion(title) {
+    try {
+        const res = await db.collection('questions').doc(title).delete();
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { handleLogin, handleSignup, removeUser, addUser, updateUser, addQuestion, deleteQuestion };

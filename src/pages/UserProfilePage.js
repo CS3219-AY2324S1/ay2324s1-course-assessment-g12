@@ -1,36 +1,53 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React, { useEffect, useState } from 'react';
+import UserProfile from '../components/UserProfile';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase-config';
 import axios from 'axios';
-import UserProfile from '../components/UserProfile';   
-import { useState } from 'react';
+import '../style/UserProfilePage.css';
+
+const userURL = 'http://localhost:3001';
 
 function UserProfilePage() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  const [user, setUser] = useState(null);
+  
+  const fetchUserData = async () => {
 
-    const [uid, setUser] = useState({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-      });
+    try {
+      const user = auth.currentUser;
+      setUser(user);
 
-    const handleDeleteAccount = async () => {
-            try {
-                /*const response = await axios.post(`${backendUrl}/delete-user`, uid); 
-                console.log(response);*/
-                console.log("Account deleted");
-            } catch (error) {
-                console.error(error);
-            }
+      if (!user) {
+        console.error("No user logged in.");
+        return;
+      }
+
+      const response = await axios.get(`${userURL}/getUser`, { params: { 'email': user.email } });
+      console.log(response.data);
+
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Error:", error);
     }
     
-    return (
-      <div className="App">
-        <header className="App-header">
-        <UserProfile/>
-        <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
-            Delete Account
-        </Button>
-        </header>
-      </div>
-    );
-  }
+  };
 
-  export default UserProfilePage;
+  useEffect(() => {
+    fetchUserData();  
+  }, []);  
+
+  return (
+    <div className='App-header'> 
+    <div className="user-profile-page">
+      {userData ? (
+        <UserProfile userData={userData} user={user} /> 
+      ) : (
+        <p>Loading user data...</p>
+      )}
+    </div>
+    </div>
+  );
+}
+
+export default UserProfilePage;

@@ -6,41 +6,52 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import {deleteQuestions} from "./LocalStorageHandler.js"
+import axios from "axios"; 
+
+const questionURL = 'http://localhost:3002';
 
 function QuestionList() {
   const [questions, setQuestions] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
-  //const [expandText, setExpandText] = useState("Expand");
-  //Rather than storing 1 String for all button, each button got a state to store
   const [expandState, setExpandState] = useState([]);
   const [curr, setCurr] = useState(-1);
 
   useEffect(() => {
-    const id_key = "id";
-    const id = JSON.parse(localStorage.getItem(id_key));
-    if (id) {
-      const items = { ...localStorage };
-      const questionArray = [];
-      const expandState = [];
-
-      for (const key in items) {
-        if (key !== id_key) {
-          const parsedItem = JSON.parse(items[key]);
-          questionArray.push(parsedItem);
-          expandState.push("Expand");
-        }
+  
+    const fetchQuestions = async () => {
+      try {
+        const response = await axios.get(`${questionURL}/questions`);
+        const questionArray = response.data;
+        const expandState = Array(questionArray.length).fill("Expand");
+        setExpandState(expandState);
+        setQuestions(questionArray);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
       }
-      setExpandState(expandState);
-      setQuestions(questionArray);
-    }
+    };
+
+    fetchQuestions();
   }, []);
 
+  const deleteQuestion = async (title) => {
+    try {
+      const response = await axios.delete(`${questionURL}/question`, {
+        params: { title: title },
+
+      });
+      console.log(response.data);
+      setQuestions((prevQuestions) =>
+        prevQuestions.filter((question) => question.title !== title)
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
   const handleExpandClick = (index) => {
     const isSameIndex = index === curr;
-    const newExpandState = expandState;
-    
+    const newExpandState = [...expandState];
+
     if (isSameIndex) {
       newExpandState[index] = expandState[index] === "Expand" ? "Collapse" : "Expand";
     } else {
@@ -48,9 +59,8 @@ function QuestionList() {
       newExpandState[index] = "Collapse";
       setCurr(index);
     }
-  
+
     setExpandedCard(expandedCard === index ? null : index);
-    //setExpandText(newExpandState[index] === "Expand" ? "Collapse" : "Expand");
     setExpandState(newExpandState);
   };
 
@@ -72,10 +82,7 @@ function QuestionList() {
                 {expandState[index]}
               </button>
               <button
-                onClick={() => {
-                  deleteQuestions(question.title);
-                  window.location.reload();
-                }}
+                onClick={() => {deleteQuestion(question.title)}}
               >
                 Delete
               </button>
