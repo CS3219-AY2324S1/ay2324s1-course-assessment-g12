@@ -28,6 +28,7 @@ yarn-error.log*
 /services/exerciseScraper
 
 # environments
+/services/userService/.env
 
 # account keys
 /services/database/serviceAccountKey.json
