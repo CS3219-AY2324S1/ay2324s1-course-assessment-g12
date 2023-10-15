@@ -62,4 +62,26 @@ async function deleteQuestion(title) {
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, deleteQuestion };
+async function addQuestionToUser(username, question, partner, completed, date, code) {
+    try {
+        const questionData = {
+            question: question,
+            partner: partner,
+            completed: completed,
+            date: date,
+            code: code
+        }
+        const userQuestionRef = db.collection('users').doc(username).collection('questions').doc(question);
+        var res;
+        if (userQuestionRef.exists) {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).update(questionData);
+        } else {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).set(questionData);
+        }
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, deleteQuestion, addQuestionToUser };

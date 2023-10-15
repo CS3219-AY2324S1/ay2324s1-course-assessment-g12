@@ -94,6 +94,24 @@ app.post("/signup", async (req, res) => {
     }
 })
 
+app.post('/user/question', async (req, res) => {
+    try {
+        const response = await axios.post(`${databaseURL}/user/question`, req.body);
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }   
+})
+
+app.get('/user/questions', async (req, res) => {
+    try {
+        const response = await axios.get(`${databaseURL}/user/questions`, { params: req.query });
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
