@@ -27,20 +27,8 @@ app.delete("/user", async (req, res) => {
 
 app.post("/user", async (req, res) => {
     try {
-        const username = req.body.username;
-        const email = req.body.email;
-        const language = req.body.language;
-        const level = req.body.level;
-        const role = req.body.role;
-        const refreshToken = req.body.refreshToken;
-        const response = await write.addUser(
-            username,
-            email,
-            language,
-            level,
-            role,
-            refreshToken
-        );
+        const data = req.body.data;
+        const response = await write.addUser(data);
         res.send(response);
     } catch (error) {
         console.error(error);

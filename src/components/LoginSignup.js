@@ -51,17 +51,17 @@ const LoginSignup = () => {
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, username);
-          const user = userCredential.user;
           await axios.post(`${userURL}/user`, {
             "email": email,
             "username": username,
             "language": language,
             "level": level,
-            "role": "registered user",
-            "refreshToken": refreshToken,
+            "role": "registered user"
           });
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, username);
+          const user = userCredential.user;
+          
           localStorage.setItem('username', username);
           localStorage.setItem('accessToken', accessToken);
           console.log('User signed up successfully.', user);

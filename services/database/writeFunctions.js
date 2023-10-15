@@ -11,17 +11,9 @@ async function removeUser(username) {
     }
 }
 
-async function addUser(username, email, language, level, role, refreshToken) {
+async function addUser(data) {
     try {
-        const data = {
-            username: username,
-            email: email,
-            language: language,
-            level: level,
-            role: role,
-            refreshToken: refreshToken
-        };
-        const res = await db.collection('users').doc(username).set(data);
+        const res = await db.collection('users').doc(data.username).set(data);
         return res;
     } catch (error) {
         console.error(error);
