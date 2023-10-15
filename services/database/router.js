@@ -66,9 +66,8 @@ app.get("/user", async (req, res) => {
 app.patch("/user", async (req, res) => {
     try {
         const username = req.body.username;
-        const language = req.body.language;
-        const level = req.body.level;
-        const response = await write.updateUser(username, language, level);
+        const data = req.body.data;
+        const response = await write.updateUser(username, data);
         res.send(response);
     } catch (error) {
         console.error(error);

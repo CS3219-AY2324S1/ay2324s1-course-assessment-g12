@@ -31,11 +31,14 @@ function UserProfile({ userData, user }) {
 
   const handleSaveClick = async () => {
     try {
+      data = {
+        level: editedLevel,
+        language: editedLanguage,
+      }
       // Send a request to update the user's level and language
       const response = await axios.patch(`${userURL}/updateUser`, {
         username: userData.username,
-        level: editedLevel,
-        language: editedLanguage,
+        data: data,
       });
 
       if (response.status === 200) {

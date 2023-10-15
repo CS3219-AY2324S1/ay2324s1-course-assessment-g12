@@ -28,12 +28,8 @@ async function addUser(username, email, language, level, role, refreshToken) {
     }
 }
 
-async function updateUser(username, language, level) {
+async function updateUser(username, data) {
     try {
-        const data = {
-            language: language,
-            level: level,
-        };
         const res = await db.collection('users').doc(username).update(data);
         return res;
     } catch (error) {
