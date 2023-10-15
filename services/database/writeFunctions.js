@@ -28,12 +28,8 @@ async function addUser(username, email, language, level, role, refreshToken) {
     }
 }
 
-async function updateUser(username, language, level) {
+async function updateUser(username, data) {
     try {
-        const data = {
-            language: language,
-            level: level,
-        };
         const res = await db.collection('users').doc(username).update(data);
         return res;
     } catch (error) {
@@ -66,4 +62,26 @@ async function deleteQuestion(title) {
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, deleteQuestion };
+async function addQuestionToUser(username, question, partner, completed, date, code) {
+    try {
+        const questionData = {
+            question: question,
+            partner: partner,
+            completed: completed,
+            date: date,
+            code: code
+        }
+        const userQuestionRef = db.collection('users').doc(username).collection('questions').doc(question);
+        var res;
+        if (userQuestionRef.exists) {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).update(questionData);
+        } else {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).set(questionData);
+        }
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, deleteQuestion, addQuestionToUser };

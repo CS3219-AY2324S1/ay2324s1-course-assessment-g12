@@ -7,11 +7,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import '../style/UserProfile.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase-config'; 
+import { auth } from '../firebase-config';
 
 const userURL = 'http://localhost:3001';
 
-function UserProfile({ userData, user}) {
+function UserProfile({ userData, user }) {
   const navigate = useNavigate();
   const [editedLevel, setEditedLevel] = useState('');
   const [editedLanguage, setEditedLanguage] = useState('');
@@ -31,17 +31,20 @@ function UserProfile({ userData, user}) {
 
   const handleSaveClick = async () => {
     try {
+      data = {
+        level: editedLevel,
+        language: editedLanguage,
+      }
       // Send a request to update the user's level and language
       const response = await axios.patch(`${userURL}/updateUser`, {
         username: userData.username,
-        level: editedLevel,
-        language: editedLanguage,
+        data: data,
       });
 
       if (response.status === 200) {
         console.log('User information updated successfully.');
         setIsEditing(false);
-    
+
       } else {
         console.error('Failed to update user information.');
       }
@@ -57,34 +60,34 @@ function UserProfile({ userData, user}) {
     }).catch((error) => {
       console.error('Error signing out:', error);
     });
-  
+
   }
   const handleDeleteAccount = async () => {
     try {
-    
+
       const confirmDelete = window.confirm("Are you sure you want to delete your account?");
-  
+
       if (confirmDelete) {
         try {
           //delete from db in firebase admin
-          const response = await axios.post(`${userURL}/removeUser`, {username: userData.username});
-          console.log(response);  
-         
+          const response = await axios.post(`${userURL}/removeUser`, { username: userData.username });
+          console.log(response);
+
           // delete user from firebase client side
           user.delete().then(() => {
-                console.log('User auth account deleted successfully');
-            })
-          .catch((error) => {
-            console.error('Error deleting user auth account:', error);
-              });
-            
-          
+            console.log('User auth account deleted successfully');
+          })
+            .catch((error) => {
+              console.error('Error deleting user auth account:', error);
+            });
+
+
           navigate('/LoginPage');
-          
-      } catch (error) {
-        console.error(error);
+
+        } catch (error) {
+          console.error(error);
+        }
       }
-     }
 
     } catch (error) {
       console.error('Error:', error);
@@ -93,7 +96,7 @@ function UserProfile({ userData, user}) {
 
   return (
     <div className="user-profile-container">
-      
+
       <div className="profile-picture-placeholder"></div>
       <div className="user-info">
         <p className='user-info-item'>@{userData.username}</p>
@@ -103,8 +106,10 @@ function UserProfile({ userData, user}) {
             <Select
               value={editedLevel}
               onChange={(e) => setEditedLevel(e.target.value)}
-              style={{ color: 'white',
-              maxHeight: '30px' }}
+              style={{
+                color: 'white',
+                maxHeight: '30px'
+              }}
             >
               <MenuItem value="Beginner">Beginner</MenuItem>
               <MenuItem value="Intermediate">Intermediate</MenuItem>
@@ -119,8 +124,10 @@ function UserProfile({ userData, user}) {
             <Select
               value={editedLanguage}
               onChange={(e) => setEditedLanguage(e.target.value)}
-              style={{ color: 'white',
-                maxHeight: '30px' }}
+              style={{
+                color: 'white',
+                maxHeight: '30px'
+              }}
             >
               <MenuItem value="Python">Python</MenuItem>
               <MenuItem value="Java">Java</MenuItem>
@@ -130,22 +137,23 @@ function UserProfile({ userData, user}) {
             editedLanguage
           )}
         </p>
+        <p className='user-info-item'>{userData.role}</p>
         <div className='signout-delete-container'>
-        <Button variant="contained" color="secondary" onClick={signOutAccount}>
-          Sign Out
-        </Button>
-        <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
-          Delete Account
-        </Button>
+          <Button variant="contained" color="secondary" onClick={signOutAccount}>
+            Sign Out
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
+            Delete Account
+          </Button>
         </div>
       </div>
       <EditIcon
-          className="edit-button"
-          color="secondary"
-          onClick={isEditing ? handleSaveClick : handleEditClick}
-        />
+        className="edit-button"
+        color="secondary"
+        onClick={isEditing ? handleSaveClick : handleEditClick}
+      />
     </div>
-    
+
   );
 }
 

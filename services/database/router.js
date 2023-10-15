@@ -66,9 +66,8 @@ app.get("/user", async (req, res) => {
 app.patch("/user", async (req, res) => {
     try {
         const username = req.body.username;
-        const language = req.body.language;
-        const level = req.body.level;
-        const response = await write.updateUser(username, language, level);
+        const data = req.body.data;
+        const response = await write.updateUser(username, data);
         res.send(response);
     } catch (error) {
         console.error(error);
@@ -89,6 +88,31 @@ app.get("/user/check", async (req, res) => {
         console.error(error);
     }
 });
+
+app.post('/user/question', async (req, res) => {
+    try {
+        const username = req.body.username;
+        const question = req.body.question;
+        const partner = req.body.partner;
+        const completed = req.body.completed;
+        const date = req.body.date;
+        const code = req.body.code;
+        const response = await write.addQuestionToUser(username, question, partner, completed, date, code);
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }   
+})
+
+app.get('/user/questions', async (req, res) => {
+    try {
+        const username = req.query.username;
+        const response = await read.getQuestionsFromUser(username);
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+    }   
+})
 
 // ------------------ Question Functions ------------------
 
