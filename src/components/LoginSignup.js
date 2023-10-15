@@ -33,6 +33,7 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
         const user = userCredential.user;
         console.log('User signed in successfully:', user);
         navigate('/');
