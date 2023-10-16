@@ -31,7 +31,7 @@ function UserProfile({ userData, user }) {
 
   const handleSaveClick = async () => {
     try {
-      data = {
+      const data = {
         level: editedLevel,
         language: editedLanguage,
       }

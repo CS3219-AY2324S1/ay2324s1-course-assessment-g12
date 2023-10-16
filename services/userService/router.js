@@ -78,12 +78,13 @@ app.post("/token", async (req, res) => {
 app.post("/signup", async (req, res) => {
     try {
         const username = req.body.username;
-        const response = await axios.get(`${databaseURL}/user`, { params: { username: username } });
+        const email = req.body.email;
+        const role = req.body.role;
 
         const payload = {
-            username: response.data.username,
-            email: response.data.email,
-            role: response.data.role
+            username: username,
+            email: email,
+            role: role
         }
 
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });

@@ -52,7 +52,12 @@ const LoginSignup = () => {
           console.log('User already exists. Please log in.');
         } else {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, username);
+          const userData = {
+            "username": username,
+            "email": email,
+            "role": "registered user"
+          }
+          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, userData);
           const user = userCredential.user;
           await axios.post(`${userURL}/user`, {
             "email": email,
