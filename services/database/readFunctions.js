@@ -78,4 +78,30 @@ async function getQuestionsByTags(tags) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByTags };
+async function getQuestionsFromUser(username) {
+    try {
+        const questions = [];
+        const questionsRef = db.collection("users").doc(username).collection("questions");
+        const querySnapshot = await questionsRef.get();
+        
+        if(querySnapshot.empty) {
+            return null;
+        }
+
+        const questionPromises = querySnapshot.docs.map(async (completedQuestion) => {
+            const questionsDesc = await db.collection("questions").doc(completedQuestion.data().question).get();
+            return Object.assign({}, completedQuestion.data(), questionsDesc.data());
+        });
+
+        const questionData = await Promise.all(questionPromises);
+        questionData.forEach((question) => {
+            questions.push(question);
+        });
+
+        if (querySnapshot.size === questions.length) return questions;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByTags, getQuestionsFromUser };
