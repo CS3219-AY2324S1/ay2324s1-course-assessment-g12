@@ -34,7 +34,7 @@ const LoginSignup = () => {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         // cant get accessToken from here bc username is empty  
-        const { accessToken } = await axios.post(`${userURL}/token`, {username: username});
+        const { accessToken } = await axios.post(`${userURL}/token`, {email: email});
         localStorage.setItem('username', username);
         localStorage.setItem('accessToken', accessToken);
         console.log("User token has been refreshed.");

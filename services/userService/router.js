@@ -60,7 +60,8 @@ app.get("/user/check", async (req, res) => {
 
 app.post("/token", async (req, res) => {
     try {
-        const userData = await axios.get(`${databaseURL}/user`, { params: {username: req.body.username} });
+
+        const userData = await axios.get(`${databaseURL}/user`, { params: req.body });
         const refreshToken = userData.refreshToken;
         if (refreshToken === null) return res.sendStatus(401);
         const payload = {
