@@ -35,15 +35,15 @@ function SubmitButton() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const handleSubmission = async (data) => {
-    const { title, description, category, difficulty } = data;
-    console.log(title, description, category, difficulty);
+    const { title, content, category, difficulty } = data;
+    console.log(title, content, category, difficulty);
 
     try {
       const response = await axios.post(`${questionURL}/question`, {
         "title": title,
         "category": category,
         "difficulty": difficulty,
-        "description": description,
+        "content": content,
       }, { headers: authHeader }).then(response => {
         // Handle the success response here
         console.log('ADD Request Successful:', response.data);
@@ -59,7 +59,7 @@ function SubmitButton() {
       });
       reset({
         title: "",
-        description: "",
+        content: "",
         category: "",
         difficulty: ""
       });
@@ -78,7 +78,7 @@ function SubmitButton() {
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Decription" name="Message" multiline
-              placeholder="Enter Description" variant="filled" fullWidth {...register("description", { required: true })} />
+              placeholder="Enter Question Content (in html)" variant="filled" fullWidth {...register("content", { required: true })} />
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{

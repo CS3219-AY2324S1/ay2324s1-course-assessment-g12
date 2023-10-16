@@ -24,14 +24,19 @@ app.get("/question", async(req, res) => {
     res.send(response.data);
 })
 
-app.get("/questions", async(req, res) => {
-    const response = await axios.get(`${databaseURL}/questions`);
+app.patch("/question", async(req, res) => {
+    const response = await axios.patch(`${databaseURL}/question`, req.body);
     res.send(response.data);
 })
 
 app.delete("/question", authenticateToken, async(req, res) => {
     if (req.role != "admin") res.status(403).json({ error: 'You do not have the required permissions to delete questions.' });
     const response = await axios.delete(`${databaseURL}/question`, {params: req.query});
+    res.send(response.data);
+})
+
+app.get("/questions", async(req, res) => {
+    const response = await axios.get(`${databaseURL}/questions`);
     res.send(response.data);
 })
 

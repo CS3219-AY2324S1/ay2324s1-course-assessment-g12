@@ -102,7 +102,7 @@ function QuestionList() {
               <Collapse in={expandedCard === index}>
                 <List>
                   <ListItem>
-                    <ListItemText primary={`Description: ${question.description}`} />
+                    <ListItemText primary={`Content: ${question.content}`} />
                   </ListItem>
                   <ListItem>
                     <ListItemText primary={`Category: ${question.category}`} />

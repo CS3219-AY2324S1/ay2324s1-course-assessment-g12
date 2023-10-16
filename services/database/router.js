@@ -110,14 +110,12 @@ app.post("/question", async (req, res) => {
         const title = req.body.title;
         const category = req.body.category;
         const difficulty = req.body.difficulty;
-        const description = req.body.description;
-        const tags = req.body.tags;
+        const content = req.body.content;
         const response = await write.addQuestion(
             title,
             category,
             difficulty,
-            description,
-            tags
+            content
         );
         res.status(200).send(response);
     } catch (error) {
@@ -134,6 +132,17 @@ app.get("/question", async (req, res) => {
             res.status(404).send("Question not found");
         }
         res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+app.patch("/question", async (req, res) => {
+    try {
+        const title = req.body.title;
+        const data = req.body.data;
+        await write.updateQuestion(title, data);
+        res.status(200).send("Question updated");
     } catch (error) {
         res.status(500).send(error);
     }
