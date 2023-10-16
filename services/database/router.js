@@ -55,6 +55,7 @@ app.patch("/user", async (req, res) => {
     try {
         const username = req.body.username;
         const data = req.body.data;
+        console.log(data);
         const response = await write.updateUser(username, data);
         res.send(response);
     } catch (error) {
