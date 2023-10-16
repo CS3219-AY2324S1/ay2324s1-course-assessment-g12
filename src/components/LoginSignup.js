@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Select from '@mui/material/Select';
 import axios from 'axios';
-import { auth } from '../firebase-config'; 
+import { auth } from '../firebase-config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,6 +33,11 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        // cant get accessToken from here bc username is empty  
+        const { accessToken } = await axios.post(`${userURL}/token`, {username: username});
+        localStorage.setItem('username', username);
+        localStorage.setItem('accessToken', accessToken);
+        console.log("User token has been refreshed.");
         const user = userCredential.user;
         console.log('User signed in successfully:', user);
         navigate('/');
@@ -41,21 +46,29 @@ const LoginSignup = () => {
       }
     } else {
       try {
-        const data = {"email": email, "password": password};
-        const response = await axios.post(`${userURL}/checkUserExists`, data);
+        const data = { "email": email };
+        const response = await axios.get(`${userURL}/user/check`, { params: data });
 
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user; 
-          await axios.post(`${userURL}/addUser`, {
+          await axios.post(`${userURL}/user`, {
             "email": email,
-            "password": password,
             "username": username,
             "language": language,
             "level": level,
+            "role": "registered user"
           });
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const tokens = await axios.post(`${userURL}/signup`, {username: username});
+          const refreshToken = tokens.data.refreshToken;
+          const accessToken = tokens.data.accessToken;
+          console.log(refreshToken, accessToken)
+          if (refreshToken) await axios.patch(`${userURL}/user`, {username, data: {"refreshToken": refreshToken}});
+          const user = userCredential.user;
+          
+          localStorage.setItem('username', username);
+          localStorage.setItem('accessToken', accessToken);
           console.log('User signed up successfully.', user);
           navigate('/');
         }
@@ -73,7 +86,7 @@ const LoginSignup = () => {
         </Typography>
         <form style={{ display: 'flex', flexDirection: 'column', marginTop: '1em' }} onSubmit={handleSubmit}>
           <TextField
-            sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" }}}
+            sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }}
             label="Email"
             variant="outlined"
             value={email}
@@ -81,7 +94,7 @@ const LoginSignup = () => {
             style={{ marginBottom: '1em' }}
           />
           <TextField
-            sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" }}}
+            sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }}
             label="Password"
             type="password"
             variant="outlined"
@@ -92,7 +105,7 @@ const LoginSignup = () => {
           {!isLoginView && (
             <>
               <TextField
-                sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" }}}
+                sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }}
                 label="Username"
                 variant="outlined"
                 value={username}
@@ -100,29 +113,29 @@ const LoginSignup = () => {
                 style={{ marginBottom: '1em' }}
               />
               <Select
-            label="Level"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            style={{ marginBottom: '1em', backgroundColor: '#ffff'}}
-          >
-            {levelOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-          <Select
-            label="Language"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            style={{ marginBottom: '1em', backgroundColor: '#ffff'  }}
-          >
-            {languageOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
+                label="Level"
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                style={{ marginBottom: '1em', backgroundColor: '#ffff' }}
+              >
+                {levelOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Select
+                label="Language"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                style={{ marginBottom: '1em', backgroundColor: '#ffff' }}
+              >
+                {languageOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
             </>
           )}
           <Button variant="contained" color="primary" type="submit">
