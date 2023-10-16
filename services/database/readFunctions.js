@@ -58,18 +58,18 @@ async function getAllQuestions() {
     }
 }
 
-async function getQuestionsByTags(tags) {
+async function getQuestionsByCategories(categories) {
     try {
         const questionsRef = db.collection("questions");
         const querySnapshot = await questionsRef
-            .where("tags", "array-contains-any", tags)
+            .where("categories", "array-contains-any", categories)
             .get();
         if (querySnapshot.empty) {
             return null;
         } else {
             const questions = [];
             querySnapshot.forEach((doc) => {
-                if (tags.every(tag => doc.data().tags.includes(tag))) questions.push(doc.data());
+                if (categories.every(category => doc.data().categories.includes(category))) questions.push(doc.data());
             });
             return questions;
         }
@@ -104,4 +104,4 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByTags, getQuestionsFromUser };
+module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByCategories, getQuestionsFromUser };

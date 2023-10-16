@@ -35,13 +35,13 @@ function SubmitButton() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const handleSubmission = async (data) => {
-    const { title, content, category, difficulty } = data;
-    console.log(title, content, category, difficulty);
+    const { title, content, categories, difficulty } = data;
+    console.log(title, content, categories, difficulty);
 
     try {
       const response = await axios.post(`${questionURL}/question`, {
         "title": title,
-        "category": category,
+        "categories": categories,
         "difficulty": difficulty,
         "content": content,
       }, { headers: authHeader }).then(response => {
@@ -60,7 +60,7 @@ function SubmitButton() {
       reset({
         title: "",
         content: "",
-        category: "",
+        categories: "",
         difficulty: ""
       });
     } catch (error) {
@@ -88,7 +88,7 @@ function SubmitButton() {
                 textAlign: 'left',
               },
             }}
-              select defaultValue="" label="Category" name="Category" placeholder="Algorithm" variant="filled" fullWidth required {...register("category", { required: true })}>
+              select defaultValue="" label="Categories" name="Categories" placeholder="Algorithm" variant="filled" fullWidth required {...register("categories", { required: true })}>
               {Categories.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}

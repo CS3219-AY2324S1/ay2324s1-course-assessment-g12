@@ -29,11 +29,11 @@ async function updateUser(username, data) {
     }
 }
 
-async function addQuestion(title, category, difficulty, content) {
+async function addQuestion(title, categories, difficulty, content) {
     try {
         const data = {
             title: title,
-            category: category,
+            categories: categories,
             difficulty: difficulty,
             content: content
         };

@@ -105,7 +105,7 @@ function QuestionList() {
                     <ListItemText primary={`Content: ${question.content}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Category: ${question.category}`} />
+                    <ListItemText primary={`Categories: ${question.categories}`} />
                   </ListItem>
                   <ListItem>
                     <ListItemText primary={`Difficulty: ${question.difficulty}`} />

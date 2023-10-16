@@ -108,12 +108,12 @@ app.get('/user/questions', async (req, res) => {
 app.post("/question", async (req, res) => {
     try {
         const title = req.body.title;
-        const category = req.body.category;
+        const categories = req.body.categories;
         const difficulty = req.body.difficulty;
         const content = req.body.content;
         const response = await write.addQuestion(
             title,
-            category,
+            categories,
             difficulty,
             content
         );
@@ -170,10 +170,10 @@ app.delete("/question", async (req, res) => {
     }
 });
 
-app.get("/questions/tags", async (req, res) => {
+app.get("/questions/categories", async (req, res) => {
     try {
-        const tags = req.query.tags;
-        const response = await read.getQuestionsByTags(tags);
+        const categories = req.query.categories;
+        const response = await read.getQuestionsByCategories(categories);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
