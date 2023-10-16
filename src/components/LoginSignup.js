@@ -33,7 +33,8 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const { accessToken } = await axios.post(`${userURL}/token`, username);
+        // cant get accessToken from here bc username is empty  
+        const { accessToken } = await axios.post(`${userURL}/token`, {username: username});
         localStorage.setItem('username', username);
         localStorage.setItem('accessToken', accessToken);
         console.log("User token has been refreshed.");
@@ -51,22 +52,21 @@ const LoginSignup = () => {
         if (response.data.userExists) {
           console.log('User already exists. Please log in.');
         } else {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const userData = {
-            "username": username,
-            "email": email,
-            "role": "registered user"
-          }
-          const { accessToken, refreshToken } = await axios.post(`${userURL}/signup`, userData);
-          const user = userCredential.user;
           await axios.post(`${userURL}/user`, {
             "email": email,
             "username": username,
             "language": language,
             "level": level,
-            "role": "registered user",
-            "refreshToken": refreshToken,
+            "role": "registered user"
           });
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const tokens = await axios.post(`${userURL}/signup`, {username: username});
+          const refreshToken = tokens.data.refreshToken;
+          const accessToken = tokens.data.accessToken;
+          console.log(refreshToken, accessToken)
+          if (refreshToken) await axios.patch(`${userURL}/user`, {username, data: {"refreshToken": refreshToken}});
+          const user = userCredential.user;
+          
           localStorage.setItem('username', username);
           localStorage.setItem('accessToken', accessToken);
           console.log('User signed up successfully.', user);
