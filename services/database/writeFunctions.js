@@ -84,4 +84,15 @@ async function addQuestionToUser(username, question, partner, completed, date, c
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser };
+async function incrementPopularity(title) {
+    try {
+        const res = await db.collection('questions').doc(title).update({
+            popularity: firebaseAdmin.firestore.FieldValue.increment(1)
+        });
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementPopularity };

@@ -49,6 +49,15 @@ app.get("/questions/categories", async (req, res) => {
     }
 })
 
+app.post("/question/popularity", async (req, res) => {
+    try {
+        const response = await axios.post(`${databaseURL}/question/popularity`, req.body);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]

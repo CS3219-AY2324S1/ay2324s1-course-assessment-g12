@@ -170,6 +170,16 @@ app.delete("/question", async (req, res) => {
     }
 });
 
+app.post("/question/popularity", async (req, res) => {
+    try {
+        const title = req.body.title;
+        const response = await write.incrementPopularity(title);
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
 app.get("/questions/categories", async (req, res) => {
     try {
         const categories = req.query.categories;
