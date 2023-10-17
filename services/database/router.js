@@ -180,10 +180,11 @@ app.post("/question/visit", async (req, res) => {
     }
 })
 
-app.get("/questions/categories", async (req, res) => {
+app.get("/questions/filter", async (req, res) => {
     try {
         const categories = req.query.categories;
-        const response = await read.getQuestionsByCategories(categories);
+        const limit = req.query.limit;
+        const response = await read.getQuestionsByCategories(categories, limit);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
