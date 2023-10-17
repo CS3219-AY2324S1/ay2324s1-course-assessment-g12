@@ -56,11 +56,11 @@ export default function LevelMenu({ selectedLevel, onLevelChange }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //onTagChange('All Topics'); // Reset to 'All Topics' when the menu is closed
+    //onCategoryChange('All Topics'); // Reset to 'All Topics' when the menu is closed
   };
 
-  const handleMenuItemClick = (tag) => {
-    onLevelChange(tag);
+  const handleMenuItemClick = (category) => {
+    onLevelChange(category);
     handleClose();
   };
 

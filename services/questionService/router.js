@@ -40,9 +40,9 @@ app.get("/questions", async(req, res) => {
     res.send(response.data);
 })
 
-app.get("/questions/tags", async (req, res) => {
+app.get("/questions/categories", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/questions/tags`, {params: req.query});
+        const response = await axios.get(`${databaseURL}/questions/categories`, {params: req.query});
         res.status(200).json(response.data);
     } catch (error) {
         console.error(error);
