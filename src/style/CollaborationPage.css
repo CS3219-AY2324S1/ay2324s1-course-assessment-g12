@@ -1,0 +1,46 @@
+.Collab_page {
+    font-family: sans-serif;
+    text-align: center;
+   }
+   
+   .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) ;
+    grid-template-rows: repeat(2, 1fr) ;
+    gap: 10px;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+   }
+   
+   .messaging-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+   .coding-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+   .question-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+.code-execution{
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+}

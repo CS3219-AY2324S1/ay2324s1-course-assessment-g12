@@ -11,6 +11,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
 import axios from 'axios';
+import { useState } from 'react';
+import "../style/LoadingBox.css"
 const socket = io('http://localhost:3003');
 
 
@@ -21,25 +23,51 @@ const Difficulty =[
   ]
 
 function MatchingButton() {
+     // whether or not to show the loading dialog
+  const [isLoading, setIsLoading] = useState(false);
+
+  // data to display
+  const [loadedData, setLoadedData] = useState();
+
+  // match is found
+  const [isMatchFound, setIsMatchFound] = useState(false);
+
+
+  // this function will be called when the button get clicked
+  const buttonHandler = async () => {
+    // show the loading dialog
+    setIsLoading(true);
+  };
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const handleSubmission = (data) => {
+        buttonHandler();
         console.log(data)
         console.log("submitting");
-        socket.emit("joinQueue", data.difficulty);
-        document.getElementById("matching").innerHTML = "Matching...";
+        socket.timeout(7000).emit("joinQueue", data.difficulty, (err) => {
+            if(err) {
+                setIsLoading(false);
+                socket.emit("timeout", data.difficulty);
+            }
+        });
         console.log("supo");
     }
-    
     socket.on("matchFound", (room, user1_id, user2_id) => {
         console.log("Match found: " + room);
+        setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
     });
 
 
     return (
         <div>
+            <div style={{ display: isLoading ? 'flex' : 'none' }} className='modal'>
+                <div className='modal-content'>
+                <div className='loader'></div>
+                <div className='modal-text'>Matching...</div>
+                </div>
+            </div>
             <form onSubmit={handleSubmit(handleSubmission)}>
                 <Grid xl={12} item>
                     <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",

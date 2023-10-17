@@ -83,6 +83,10 @@ socketServer.on("connection", (socket) => {
         } else {
             hardQueue.shift();
         }
+
+        console.log(easyQueue)
+        console.log(mediumQueue)
+        console.log(hardQueue)
     });
 
     socket.on("cancel", (difficulty) => {
