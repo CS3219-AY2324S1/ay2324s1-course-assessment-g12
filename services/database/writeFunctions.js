@@ -84,10 +84,10 @@ async function addQuestionToUser(username, question, partner, completed, date, c
     }
 }
 
-async function incrementPopularity(title) {
+async function incrementVisits(title) {
     try {
         const res = await db.collection('questions').doc(title).update({
-            popularity: firebaseAdmin.firestore.FieldValue.increment(1)
+            visits: firebaseAdmin.firestore.FieldValue.increment(1)
         });
         return res;
     } catch (error) {
@@ -95,4 +95,4 @@ async function incrementPopularity(title) {
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementPopularity };
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits };

@@ -170,10 +170,10 @@ app.delete("/question", async (req, res) => {
     }
 });
 
-app.post("/question/popularity", async (req, res) => {
+app.post("/question/visit", async (req, res) => {
     try {
         const title = req.body.title;
-        const response = await write.incrementPopularity(title);
+        const response = await write.incrementVisits(title);
         res.status(200).send(response);
     } catch (error) {
         res.status(500).send(error);
