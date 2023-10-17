@@ -46,6 +46,7 @@ async function addQuestion(title, categories, difficulty, content) {
 
 async function updateQuestion(title, data) {
     try {
+        console.log(data)
         const res = await db.collection('questions').doc(title).update(data);
         return res;
     } catch (error) {
