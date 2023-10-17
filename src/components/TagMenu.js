@@ -56,7 +56,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //oncategoryChange('All Topics'); // Reset to 'All Topics' when the menu is closed
+    //onCategoryChange('All Topics'); // Reset to 'All Topics' when the menu is closed
   };
 
   const handleMenuItemClick = (category) => {
@@ -86,22 +86,22 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => oncategoryChange('All Topics')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('All Topics')} disableRipple>
           All Topics
         </MenuItem>
-        <MenuItem onClick={() => oncategoryChange('Algorithm')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Algorithm')} disableRipple>
           Algorithm
         </MenuItem>
-        <MenuItem onClick={() => oncategoryChange('Data Structure')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Data Structure')} disableRipple>
           Data Structure
         </MenuItem>
-        <MenuItem onClick={() => oncategoryChange('Database')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Database')} disableRipple>
           Database
         </MenuItem>
-        <MenuItem onClick={() => oncategoryChange('Operating System')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Operating System')} disableRipple>
           Operating System
         </MenuItem>
-        <MenuItem onClick={() => oncategoryChange('Network')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Network')} disableRipple>
           Network
         </MenuItem>
       </StyledMenu>
