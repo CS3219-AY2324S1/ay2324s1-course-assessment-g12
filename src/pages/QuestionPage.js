@@ -2,18 +2,18 @@ import SubmitButton from '../components/SubmitButton';
 import QuestionList from '../components/QuestionList';
 import MatchingButton from '../components/MatchingButton';
 import { TextField, colors } from '@mui/material';
-import TagMenu from '../components/TagMenu';
+import CategoryMenu from '../components/CategoryMenu';
 import LevelMenu from '../components/LevelMenu';
 import { useState } from 'react';
 
 function QuestionPage() {
 
-  const [selectedTag, setSelectedTag] = useState('All Topics'); // Default value
+  const [selectedCategory, setSelectedCategory] = useState('All Topics'); // Default value
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
 
-  const handleTagChange = (tag) => {
-    setSelectedTag(tag);
-    console.log(tag);
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    console.log(category);
   };
 
   const handleLevelChange = (level) => {
@@ -25,10 +25,10 @@ function QuestionPage() {
     <div className="App">
       <header className="App-header">
         <div> 
-        <TagMenu selectedTag={selectedTag} onTagChange={handleTagChange}/>
+        <CategoryMenu selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange}/>
         <LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/>
         </div>        
-        <QuestionList selectedTag={selectedTag} selectedLevel={selectedLevel}/>
+        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel}/>
       </header>
     </div>
   );

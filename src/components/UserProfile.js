@@ -31,11 +31,14 @@ function UserProfile({ userData, user }) {
 
   const handleSaveClick = async () => {
     try {
-      // Send a request to update the user's level and language
-      const response = await axios.patch(`${userURL}/updateUser`, {
-        username: userData.username,
+      const data = {
         level: editedLevel,
         language: editedLanguage,
+      }
+      // Send a request to update the user's level and language
+      const response = await axios.patch(`${userURL}/user`, {
+        username: userData.username,
+        data: data,
       });
 
       if (response.status === 200) {
@@ -71,7 +74,7 @@ function UserProfile({ userData, user }) {
       if (confirmDelete) {
         try {
           //delete from db in firebase admin
-          const response = await axios.post(`${userURL}/removeUser`, { username: userData.username });
+          const response = await axios.delete(`${userURL}/user`, { username: userData.username });
           console.log(response);
 
           // delete user from firebase client side
