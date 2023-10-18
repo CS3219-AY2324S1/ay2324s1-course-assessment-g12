@@ -170,10 +170,21 @@ app.delete("/question", async (req, res) => {
     }
 });
 
-app.get("/questions/categories", async (req, res) => {
+app.post("/question/visit", async (req, res) => {
+    try {
+        const title = req.body.title;
+        const response = await write.incrementVisits(title);
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+app.get("/questions/filter", async (req, res) => {
     try {
         const categories = req.query.categories;
-        const response = await read.getQuestionsByCategories(categories);
+        const limit = req.query.limit;
+        const response = await read.getQuestionsByCategories(categories, limit);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);

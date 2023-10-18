@@ -58,12 +58,20 @@ async function getAllQuestions() {
     }
 }
 
-async function getQuestionsByCategories(categories) {
+async function getQuestionsByCategories(categories, limit) {
     try {
         const questionsRef = db.collection("questions");
-        const querySnapshot = await questionsRef
-            .where("categories", "array-contains-any", categories)
-            .get();
+        var querySnapshot;
+        if (limit === undefined) {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .orderBy("visits").get();
+        } else {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+        }
+
         if (querySnapshot.empty) {
             return null;
         } else {
@@ -83,8 +91,8 @@ async function getQuestionsFromUser(username) {
         const questions = [];
         const questionsRef = db.collection("users").doc(username).collection("questions");
         const querySnapshot = await questionsRef.get();
-        
-        if(querySnapshot.empty) {
+
+        if (querySnapshot.empty) {
             return null;
         }
 
