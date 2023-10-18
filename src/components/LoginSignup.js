@@ -33,8 +33,11 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        // cant get accessToken from here bc username is empty  
-        const { accessToken } = await axios.post(`${userURL}/token`, {username: username});
+        console.log(userCredential)
+        const { accessToken } = await axios.post(`${userURL}/token`, {email: email});
+        console.log("User token has been refreshed: " + accessToken);
+        const userData = await axios.get(`${userURL}/user`, { params: { email: email } });
+        const username = userData.data.username;
         localStorage.setItem('username', username);
         localStorage.setItem('accessToken', accessToken);
         console.log("User token has been refreshed.");

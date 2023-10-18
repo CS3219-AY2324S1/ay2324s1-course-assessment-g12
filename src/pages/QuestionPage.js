@@ -11,9 +11,9 @@ function QuestionPage() {
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
   const [selectedList, setSelectedList] = useState('List All'); // Default value
   
-  const handleCategoryChange = (cat) => {
-    setSelectedCategory(cat);
-    console.log(cat);
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    console.log(category);
   };
 
   const handleLevelChange = (level) => {
@@ -36,7 +36,7 @@ function QuestionPage() {
         </div>        
         <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel}/>
       </div>
-    </div>
+      </div>
   );
 }
 

@@ -42,7 +42,7 @@ async function getQuestion(title) {
 
 async function getAllQuestions() {
     try {
-        const questionsRef = db.collection("questions").limit(50);
+        const questionsRef = db.collection("questions").limit(20);
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;
@@ -58,18 +58,26 @@ async function getAllQuestions() {
     }
 }
 
-async function getQuestionsByTags(tags) {
+async function getQuestionsByCategories(categories, limit) {
     try {
         const questionsRef = db.collection("questions");
-        const querySnapshot = await questionsRef
-            .where("tags", "array-contains-any", tags)
-            .get();
+        var querySnapshot;
+        if (limit === undefined) {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .orderBy("visits").get();
+        } else {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+        }
+
         if (querySnapshot.empty) {
             return null;
         } else {
             const questions = [];
             querySnapshot.forEach((doc) => {
-                if (tags.every(tag => doc.data().tags.includes(tag))) questions.push(doc.data());
+                if (categories.every(category => doc.data().categories.includes(category))) questions.push(doc.data());
             });
             return questions;
         }
@@ -83,8 +91,8 @@ async function getQuestionsFromUser(username) {
         const questions = [];
         const questionsRef = db.collection("users").doc(username).collection("questions");
         const querySnapshot = await questionsRef.get();
-        
-        if(querySnapshot.empty) {
+
+        if (querySnapshot.empty) {
             return null;
         }
 
@@ -104,4 +112,4 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByTags, getQuestionsFromUser };
+module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsByCategories, getQuestionsFromUser };

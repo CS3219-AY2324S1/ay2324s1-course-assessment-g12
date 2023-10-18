@@ -108,16 +108,14 @@ app.get('/user/questions', async (req, res) => {
 app.post("/question", async (req, res) => {
     try {
         const title = req.body.title;
-        const category = req.body.category;
+        const categories = req.body.categories;
         const difficulty = req.body.difficulty;
-        const description = req.body.description;
-        const tags = req.body.tags;
+        const content = req.body.content;
         const response = await write.addQuestion(
             title,
-            category,
+            categories,
             difficulty,
-            description,
-            tags
+            content
         );
         res.status(200).send(response);
     } catch (error) {
@@ -134,6 +132,17 @@ app.get("/question", async (req, res) => {
             res.status(404).send("Question not found");
         }
         res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+app.patch("/question", async (req, res) => {
+    try {
+        const title = req.body.title;
+        const data = req.body.data;
+        await write.updateQuestion(title, data);
+        res.status(200).send("Question updated");
     } catch (error) {
         res.status(500).send(error);
     }
@@ -161,10 +170,21 @@ app.delete("/question", async (req, res) => {
     }
 });
 
-app.get("/questions/tags", async (req, res) => {
+app.post("/question/visit", async (req, res) => {
     try {
-        const tags = req.query.tags;
-        const response = await read.getQuestionsByTags(tags);
+        const title = req.body.title;
+        const response = await write.incrementVisits(title);
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+app.get("/questions/filter", async (req, res) => {
+    try {
+        const categories = req.query.categories;
+        const limit = req.query.limit;
+        const response = await read.getQuestionsByCategories(categories, limit);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);

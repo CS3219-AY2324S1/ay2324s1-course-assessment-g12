@@ -56,11 +56,11 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //onTagChange('All Topics'); // Reset to 'All Topics' when the menu is closed
+    //onCategoryChange('All Topics'); // Reset to 'All Topics' when the menu is closed
   };
 
-  const handleMenuItemClick = (tag) => {
-    onCategoryChange(tag);
+  const handleMenuItemClick = (category) => {
+    onCategoryChange(category);
     handleClose();
   };
 

@@ -29,16 +29,25 @@ async function updateUser(username, data) {
     }
 }
 
-async function addQuestion(title, category, difficulty, description, tags) {
+async function addQuestion(title, categories, difficulty, content) {
     try {
         const data = {
             title: title,
-            category: category,
+            categories: categories,
             difficulty: difficulty,
-            description: description,
-            tags: tags
+            content: content
         };
         const res = await db.collection('questions').doc(title).set(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function updateQuestion(title, data) {
+    try {
+        console.log(data)
+        const res = await db.collection('questions').doc(title).update(data);
         return res;
     } catch (error) {
         console.error(error);
@@ -76,4 +85,15 @@ async function addQuestionToUser(username, question, partner, completed, date, c
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, deleteQuestion, addQuestionToUser };
+async function incrementVisits(title) {
+    try {
+        const res = await db.collection('questions').doc(title).update({
+            visits: firebaseAdmin.firestore.FieldValue.increment(1)
+        });
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits };

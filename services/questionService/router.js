@@ -24,8 +24,8 @@ app.get("/question", async(req, res) => {
     res.send(response.data);
 })
 
-app.get("/questions", async(req, res) => {
-    const response = await axios.get(`${databaseURL}/questions`);
+app.patch("/question", async(req, res) => {
+    const response = await axios.patch(`${databaseURL}/question`, req.body);
     res.send(response.data);
 })
 
@@ -35,9 +35,23 @@ app.delete("/question", authenticateToken, async(req, res) => {
     res.send(response.data);
 })
 
-app.get("/questions/tags", async (req, res) => {
+app.get("/questions", async(req, res) => {
+    const response = await axios.get(`${databaseURL}/questions`);
+    res.send(response.data);
+})
+
+app.get("/questions/filter", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/questions/tags`, {params: req.query});
+        const response = await axios.get(`${databaseURL}/questions/filter`, {params: req.query});
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.post("/question/visit", async (req, res) => {
+    try {
+        const response = await axios.post(`${databaseURL}/question/visit`, req.body);
         res.status(200).json(response.data);
     } catch (error) {
         console.error(error);

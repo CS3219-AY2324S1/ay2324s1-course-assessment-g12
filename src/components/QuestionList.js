@@ -9,6 +9,7 @@ const QuestionList = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
+    
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(`${questionURL}/questions`);

@@ -35,15 +35,15 @@ function SubmitButton() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const handleSubmission = async (data) => {
-    const { title, description, category, difficulty } = data;
-    console.log(title, description, category, difficulty);
+    const { title, content, categories, difficulty } = data;
+    console.log(title, content, categories, difficulty);
 
     try {
       const response = await axios.post(`${questionURL}/question`, {
         "title": title,
-        "category": category,
+        "categories": categories,
         "difficulty": difficulty,
-        "description": description,
+        "content": content,
       }, { headers: authHeader }).then(response => {
         // Handle the success response here
         console.log('ADD Request Successful:', response.data);
@@ -59,8 +59,8 @@ function SubmitButton() {
       });
       reset({
         title: "",
-        description: "",
-        category: "",
+        content: "",
+        categories: "",
         difficulty: ""
       });
     } catch (error) {
@@ -78,7 +78,7 @@ function SubmitButton() {
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Decription" name="Message" multiline
-              placeholder="Enter Description" variant="filled" fullWidth {...register("description", { required: true })} />
+              placeholder="Enter Question Content (in html)" variant="filled" fullWidth {...register("content", { required: true })} />
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{
@@ -88,7 +88,7 @@ function SubmitButton() {
                 textAlign: 'left',
               },
             }}
-              select defaultValue="" label="Category" name="Category" placeholder="Algorithm" variant="filled" fullWidth required {...register("category", { required: true })}>
+              select defaultValue="" label="Categories" name="Categories" placeholder="Algorithm" variant="filled" fullWidth required {...register("categories", { required: true })}>
               {Categories.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
