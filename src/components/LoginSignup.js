@@ -33,6 +33,7 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log(userCredential)
         const { accessToken } = await axios.post(`${userURL}/token`, {email: email});
         console.log("User token has been refreshed: " + accessToken);
         const userData = await axios.get(`${userURL}/user`, { params: { email: email } });

@@ -36,7 +36,7 @@ function UserProfile({ userData, user }) {
         language: editedLanguage,
       }
       // Send a request to update the user's level and language
-      const response = await axios.patch(`${userURL}/updateUser`, {
+      const response = await axios.patch(`${userURL}/user`, {
         username: userData.username,
         data: data,
       });
@@ -74,7 +74,7 @@ function UserProfile({ userData, user }) {
       if (confirmDelete) {
         try {
           //delete from db in firebase admin
-          const response = await axios.post(`${userURL}/removeUser`, { username: userData.username });
+          const response = await axios.delete(`${userURL}/user`, { username: userData.username });
           console.log(response);
 
           // delete user from firebase client side

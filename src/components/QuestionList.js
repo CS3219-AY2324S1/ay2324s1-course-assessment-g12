@@ -13,6 +13,35 @@ const authHeader = {
   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 }
 
+const dummyQuestions = [
+  {
+    title: "Two Sum",
+    difficulty: "Easy",
+    description: "hello world"
+  },
+  {
+    title: "Add Two Numbers",
+    difficulty: "Medium",
+    description: "hello world"
+  },
+  {
+    title: "Longest Substring Without Repeating Characters",
+    difficulty: "Medium",
+    description: "hello world"
+  },
+  {
+    title: "Median of Two Sorted Arrays",
+    difficulty: "Hard", 
+    description: "hello world"
+  },
+  {
+    title: "Longest Palindromic Substring",
+    difficulty: "Medium", 
+    description: "hello world"
+  },
+  // Add more dummy questions as needed
+];
+
 function QuestionList() {
   const [questions, setQuestions] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
@@ -20,6 +49,7 @@ function QuestionList() {
   const [curr, setCurr] = useState(-1);
 
   useEffect(() => {
+    
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(`${questionURL}/questions`);
@@ -105,7 +135,7 @@ function QuestionList() {
                     <ListItemText primary={`Content: ${question.content}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Categories: ${question.categories}`} />
+                    <ListItemText primary={`Category: ${question.categories}`} />
                   </ListItem>
                   <ListItem>
                     <ListItemText primary={`Difficulty: ${question.difficulty}`} />
