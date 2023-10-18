@@ -5,7 +5,7 @@ import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 const Navbar = () => {
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" style={{ backgroundColor: '#A3A6FF' }}>
       <Toolbar>
         <Typography variant="h6">
           PeerPrep

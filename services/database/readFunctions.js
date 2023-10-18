@@ -42,7 +42,7 @@ async function getQuestion(title) {
 
 async function getAllQuestions() {
     try {
-        const questionsRef = db.collection("questions");
+        const questionsRef = db.collection("questions").limit(50);
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;

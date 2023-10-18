@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const StyledMenu = styled((props) => (
-  <Menu
+  <Menu 
     elevation={0}
     anchorOrigin={{
       vertical: 'bottom',
@@ -46,7 +46,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function TagMenu({ selectedTag, onTagChange }) {
+export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -60,7 +60,7 @@ export default function TagMenu({ selectedTag, onTagChange }) {
   };
 
   const handleMenuItemClick = (tag) => {
-    onTagChange(tag);
+    onCategoryChange(tag);
     handleClose();
   };
 
@@ -74,7 +74,7 @@ export default function TagMenu({ selectedTag, onTagChange }) {
         disableElevation
         onClick={handleClick}
       >
-        {selectedTag}
+        {selectedCategory}
         <KeyboardArrowDownIcon />
       </Button>
       <StyledMenu
@@ -86,22 +86,22 @@ export default function TagMenu({ selectedTag, onTagChange }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => onTagChange('All Topics')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('All Topics')} disableRipple>
           All Topics
         </MenuItem>
-        <MenuItem onClick={() => onTagChange('Algorithm')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Algorithm')} disableRipple>
           Algorithm
         </MenuItem>
-        <MenuItem onClick={() => onTagChange('Data Structure')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Data Structure')} disableRipple>
           Data Structure
         </MenuItem>
-        <MenuItem onClick={() => onTagChange('Database')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Database')} disableRipple>
           Database
         </MenuItem>
-        <MenuItem onClick={() => onTagChange('Operating System')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Operating System')} disableRipple>
           Operating System
         </MenuItem>
-        <MenuItem onClick={() => onTagChange('Network')} disableRipple>
+        <MenuItem onClick={() => onCategoryChange('Network')} disableRipple>
           Network
         </MenuItem>
       </StyledMenu>

@@ -1,35 +1,41 @@
-import SubmitButton from '../components/SubmitButton';
 import QuestionList from '../components/QuestionList';
-import MatchingButton from '../components/MatchingButton';
-import { TextField, colors } from '@mui/material';
-import TagMenu from '../components/TagMenu';
+import CategoryMenu from '../components/CategoryMenu';
 import LevelMenu from '../components/LevelMenu';
+import ListMenu from '../components/ListMenu';
 import { useState } from 'react';
+import '../style/QuestionPage.css';
 
 function QuestionPage() {
 
-  const [selectedTag, setSelectedTag] = useState('All Topics'); // Default value
+  const [selectedCategory, setSelectedCategory] = useState('All Topics'); // Default value
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
-
-  const handleTagChange = (tag) => {
-    setSelectedTag(tag);
-    console.log(tag);
+  const [selectedList, setSelectedList] = useState('List All'); // Default value
+  
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    console.log(cat);
   };
 
   const handleLevelChange = (level) => {
     setSelectedLevel(level);
-    console.log(level)
+    console.log(level);
+  };
+
+  const handleListChange = (list) => {
+    setSelectedList(list);
+    console.log(list);
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div> 
-        <TagMenu selectedTag={selectedTag} onTagChange={handleTagChange}/>
-        <LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/>
+      <div className="Question-header">
+        <div className="menu-item-div"> 
+        <div className='menu-item'><CategoryMenu selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange}/></div>
+        <div className='menu-item'><LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/></div>
+        <div className='menu-item'><ListMenu selectedList={selectedList} onListChange={handleListChange}/></div>
         </div>        
-        <QuestionList selectedTag={selectedTag} selectedLevel={selectedLevel}/>
-      </header>
+        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel}/>
+      </div>
     </div>
   );
 }
