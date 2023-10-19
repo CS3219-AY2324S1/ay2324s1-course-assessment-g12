@@ -79,10 +79,13 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     min-width: 100vh; 
+    max-height: 80vh; 
     min-height: 80vh; 
-    max-width: 100vh; /* Adjust the maximum width of the card */
+    max-width: 150vh; /* Adjust the maximum width of the card */
     word-wrap: break-word;
     text-align: left;
+    overflow-y: scroll;
+    overflow-x: auto;
   }
   
   .question-card .card-header {
@@ -103,5 +106,11 @@
     text-align: left;
   }
   
+  /*tag styles*/
+
+.tag-div{
+    border-radius: 5px; 
+    background-color: aqua;
+  }
 
   

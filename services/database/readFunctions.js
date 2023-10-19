@@ -58,13 +58,14 @@ async function getAllQuestions() {
     }
 }
 
-async function getQuestionsByCategories(categories, limit) {
+async function getQuestionsByCategories(categories, difficulty, limit) {
+    
     try {
         const questionsRef = db.collection("questions");
         var querySnapshot;
         if (limit === undefined) {
             querySnapshot = await questionsRef
-                .where("categories", "array-contains-any", categories)
+                .where("categories", "array-contains-any", categories) 
                 .orderBy("visits").get();
         } else {
             querySnapshot = await questionsRef

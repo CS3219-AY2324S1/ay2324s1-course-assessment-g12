@@ -7,7 +7,7 @@ import '../style/QuestionPage.css';
 
 function QuestionPage() {
 
-  const [selectedCategory, setSelectedCategory] = useState('All Topics'); // Default value
+  const [selectedCategory, setSelectedCategory] = useState([]); // Default value
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
   const [selectedList, setSelectedList] = useState('List All'); // Default value
   
@@ -34,7 +34,7 @@ function QuestionPage() {
         <div className='menu-item'><LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/></div>
         <div className='menu-item'><ListMenu selectedList={selectedList} onListChange={handleListChange}/></div>
         </div>        
-        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel}/>
+        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={50}/>
       </div>
       </div>
   );
