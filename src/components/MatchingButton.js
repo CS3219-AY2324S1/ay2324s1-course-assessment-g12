@@ -11,8 +11,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import "../style/LoadingBox.css"
+import * as Y from "yjs";
+import Editor from "@monaco-editor/react";
+import { WebrtcProvider } from 'y-webrtc';
+import { MonacoBinding } from 'y-monaco';
 const socket = io('http://localhost:3003');
 
 
@@ -31,6 +35,12 @@ function MatchingButton() {
 
   // match is found
   const [isMatchFound, setIsMatchFound] = useState(false);
+
+  // room ID
+  const [room, setRoom] = useState("");
+
+  // Editor Ref
+  const editorRef = useRef(null);
 
 
   // this function will be called when the button get clicked
@@ -54,20 +64,43 @@ function MatchingButton() {
         console.log("supo");
     }
     socket.on("matchFound", (room, user1_id, user2_id) => {
+        setRoom(room);
         console.log("Match found: " + room);
         setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
     });
 
 
+    function handleMount(editor, monaco){
+        console.log("mounted");
+        editorRef.current = editor;
+        // initializes yjs
+        const doc = new Y.Doc();
+        // connect
+        const provider = new WebrtcProvider(room, doc);
+        const type = doc.getText("monaco");
+        // binding
+        const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);
+    }
+
     return (
         <div>
             <div style={{ display: isLoading ? 'flex' : 'none' }} className='modal'>
                 <div className='modal-content'>
-                <div className='loader'></div>
-                <div className='modal-text'>Matching...</div>
+                    <div className='loader'></div>
+                    <div className='modal-text'>Matching...</div>
                 </div>
             </div>
+            {room && (
+                <div className='collab'>
+                    <Editor
+                    height='50vh'
+                    width='50vw'
+                    theme='vs-dark'
+                    onMount={handleMount}
+                    />
+                </div>
+            )}
             <form onSubmit={handleSubmit(handleSubmission)}>
                 <Grid xl={12} item>
                     <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",
