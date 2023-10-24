@@ -11,14 +11,19 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
 import axios from 'axios';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import "../style/LoadingBox.css"
 import * as Y from "yjs";
 import Editor from "@monaco-editor/react";
-import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from 'y-monaco';
+import * as monaco from 'monaco-editor';
+import { createClient } from '@liveblocks/client';
+import LiveblocksProvider from "@liveblocks/yjs";
 const socket = io('http://localhost:3003');
 
+const client = createClient({
+    publicApiKey: "pk_dev_-iamGGIAHL-AOLUgx1XFpZ3yyHJXxO5cdT4mZ4ZBvSKb2-JF8vKSmdaj7UVE-M_a",
+});
 
 const Difficulty =[
     { value: 'Easy', label: 'Easy' },
@@ -37,11 +42,16 @@ function MatchingButton() {
   const [isMatchFound, setIsMatchFound] = useState(false);
 
   // room ID
-  const [room, setRoom] = useState("");
+  const [roomJoined, setRoomJoined] = useState("");
 
-  // Editor Ref
-  const editorRef = useRef(null);
+  // Editor
+  const [editor, setEditor] = useState(null);
 
+  // Yjs
+  const ydoc = new Y.Doc();
+
+  // Ytype
+  const textType = ydoc.getText("monaco");
 
   // this function will be called when the button get clicked
   const buttonHandler = async () => {
@@ -64,24 +74,36 @@ function MatchingButton() {
         console.log("supo");
     }
     socket.on("matchFound", (room, user1_id, user2_id) => {
-        setRoom(room);
+        setRoomJoined(room);
         console.log("Match found: " + room);
         setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
+
     });
 
+    function handleOnMount(editor22, monaco22) {
+        // Enter a multiplayer room
+        const { room, leave } = client.enterRoom(roomJoined, {
+            initialPresence: {},
+        });
 
-    function handleMount(editor, monaco){
-        console.log("mounted");
-        editorRef.current = editor;
-        // initializes yjs
-        const doc = new Y.Doc();
-        // connect
-        const provider = new WebrtcProvider(room, doc);
-        const type = doc.getText("monaco");
-        // binding
-        const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);
+        console.log(room)
+        console.log(leave)
+        const yProvider = new LiveblocksProvider(room, ydoc);
+        
+        // // Set up the Monaco editor
+        // const parent = document.querySelector('#editor');
+        // const editor = monaco.editor.create(parent, {
+        //     value: '',
+        //     language: 'javascript',
+        // });
+        
+        // console.log(parent)
+        // console.log(editor)
+        // Attach Yjs to Monaco
+        const monacoBinding = new MonacoBinding(textType, editor22.getModel(), new Set([editor22]), yProvider.awareness);
     }
+
 
     return (
         <div>
@@ -91,14 +113,15 @@ function MatchingButton() {
                     <div className='modal-text'>Matching...</div>
                 </div>
             </div>
-            {room && (
-                <div className='collab'>
-                    <Editor
-                    height='50vh'
-                    width='50vw'
-                    theme='vs-dark'
-                    onMount={handleMount}
-                    />
+            {roomJoined && (
+                <div id='editor'>
+                    <div style={{ display: 'flex'}}>
+                        <Editor 
+                        height='50vh'
+                        width='50vw'
+                        theme='vs-dark'
+                        onMount={handleOnMount}></Editor>
+                    </div>
                 </div>
             )}
             <form onSubmit={handleSubmit(handleSubmission)}>
