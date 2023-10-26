@@ -1,5 +1,6 @@
 const firebaseAdmin = require("./firebase.js");
 const db = firebaseAdmin.firestore();
+const getAuth = firebaseAdmin.auth(); 
 
 async function getUser(criteria, flag) {
     const usersRef = db.collection("users");
@@ -23,6 +24,16 @@ async function checkUserExists(email) {
         return true;
     }
 }
+
+async function getUidFromToken(idToken) {
+    try {
+        const decodedToken = await getAuth.verifyIdToken(idToken);
+        return decodedToken.uid;
+    } catch (error) {
+        console.error("Error verifying ID token:", error);
+        throw error; // You can choose to handle the error as needed
+    }
+  }
 
 async function getQuestion(title) {
     try {
@@ -82,11 +93,11 @@ async function getQuestionsByDifficulty(difficulty, limit) {
         if (limit === undefined) {
             querySnapshot = await questionsRef
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits", "desc").get();
+                .orderBy("visits").get();
         } else {
             querySnapshot = await questionsRef
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+                .orderBy("visits").limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -109,12 +120,12 @@ async function getQuestionsByCategories(categories, limit) {
         var querySnapshot;
         if (limit === undefined) {
             querySnapshot = await questionsRef
-                .where("categories", "array-contains-any", categories)
-                .orderBy("visits", "desc").get();
+                .where("categories", "array-contains-any", categories) 
+                .orderBy("visits").get();
         } else {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
-                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+                .orderBy("visits").limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -139,12 +150,12 @@ async function getQuestionsByCategoriesAndDifficulty(categories, difficulty, lim
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits", "desc").get();
+                .orderBy("visits").get();
         } else {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+                .orderBy("visits").limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -187,4 +198,4 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getQuestion, getAllQuestions, getQuestionsFromUser, filterQuestions };
+module.exports = { getUser, checkUserExists, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };

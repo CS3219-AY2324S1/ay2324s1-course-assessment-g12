@@ -1,153 +1,74 @@
-import React, { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import QuestionCard from './QuestionCard';  // Make sure to import the QuestionCard component
 
 const questionURL = 'http://localhost:3002';
-const authHeader = {
-  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-}
 
-const dummyQuestions = [
-  {
-    title: "Two Sum",
-    difficulty: "Easy",
-    description: "hello world"
-  },
-  {
-    title: "Add Two Numbers",
-    difficulty: "Medium",
-    description: "hello world"
-  },
-  {
-    title: "Longest Substring Without Repeating Characters",
-    difficulty: "Medium",
-    description: "hello world"
-  },
-  {
-    title: "Median of Two Sorted Arrays",
-    difficulty: "Hard", 
-    description: "hello world"
-  },
-  {
-    title: "Longest Palindromic Substring",
-    difficulty: "Medium", 
-    description: "hello world"
-  },
-  // Add more dummy questions as needed
-];
-
-function QuestionList() {
+const QuestionList = ({category, level, list}) => {
   const [questions, setQuestions] = useState([]);
-  const [expandedCard, setExpandedCard] = useState(null);
-  const [expandState, setExpandState] = useState([]);
-  const [curr, setCurr] = useState(-1);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
     
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get(`${questionURL}/questions`);
-        const questionArray = response.data;
-        const expandState = Array(questionArray.length).fill("Expand");
-        setExpandState(expandState);
-        setQuestions(questionArray);
+        console.log("category:" + category)
+        const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
+                                                                                    'difficulty': level, 
+                                                                                    'limit': list}}); 
+       setQuestions(response.data);
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        console.error('Error fetching questions:', error);
       }
     };
 
     fetchQuestions();
-  }, []);
+  }, [category, level, list]);
 
-  const deleteQuestion = async (title) => {
-    try {
-      const response = await axios.delete(`${questionURL}/question`, {
-        params: { title: title },
-        headers: authHeader,
-      })
-        .then(response => {
-          // Handle the success response here
-          console.log('DELETE Request Successful:', response.data);
-        })
-        .catch(error => {
-          // Handle errors here
-          console.error('DELETE Request Error:', error);
-
-          if (error.response && error.response.status === 403) {
-            // Handle 403 Forbidden error (permissions issue)
-            alert('You do not have the required permissions to delete questions.');
-          }
-        });
-      setQuestions((prevQuestions) =>
-        prevQuestions.filter((question) => question.title !== title)
-      );
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleRowClick = async (question) => {
+    setSelectedQuestion(question);
+    const response = await axios.patch(`${questionURL}/question/visit`, {title: question.title}); 
+    document.body.style.overflow = "hidden";
   };
-  const handleExpandClick = (index) => {
-    const isSameIndex = index === curr;
-    const newExpandState = [...expandState];
 
-    if (isSameIndex) {
-      newExpandState[index] = expandState[index] === "Expand" ? "Collapse" : "Expand";
-    } else {
-      newExpandState[curr] = "Expand";
-      newExpandState[index] = "Collapse";
-      setCurr(index);
-    }
-
-    setExpandedCard(expandedCard === index ? null : index);
-    setExpandState(newExpandState);
+  const handleCloseCard = () => {
+    setSelectedQuestion(null);
+    document.body.style.overflow = "auto"; 
   };
 
   return (
     <div>
-      <h1>Questions</h1>
-      <div>
-        {questions.map((question, index) => (
-          <Card key={index} style={{ margin: "10px 0" }}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                {question.title}
-              </Typography>
-              <button
-                onClick={() => handleExpandClick(index)}
-                aria-expanded={expandedCard === index}
-                aria-label="show more"
-              >
-                {expandState[index]}
-              </button>
-              <button
-                onClick={() => { deleteQuestion(question.title) }}
-              >
-                Delete
-              </button>
-              <Collapse in={expandedCard === index}>
-                <List>
-                  <ListItem>
-                    <ListItemText primary={`Content: ${question.content}`} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Category: ${question.categories}`} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Difficulty: ${question.difficulty}`} />
-                  </ListItem>
-                </List>
-              </Collapse>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <table className="table-container">
+        <thead>
+          <tr>
+            <th style={{ textAlign: 'left' }}>Title</th>
+            <th style={{ textAlign: 'left' }}>Difficulty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {questions.map((question, index) => (
+            <tr
+              className='question-row'
+              key={index}
+              onClick={() => handleRowClick(question)}
+            >
+              <td style={{ textAlign: 'left' }}>{question.title}</td>
+              <td style={{ textAlign: 'left' }}>{question.difficulty}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {selectedQuestion && (
+        <div className="modal-background">
+          <QuestionCard
+            question={selectedQuestion}
+            onClose={handleCloseCard}
+          />
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default QuestionList;

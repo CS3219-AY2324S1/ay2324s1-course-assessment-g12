@@ -78,6 +78,17 @@ app.get("/user/check", async (req, res) => {
     }
 });
 
+app.get("/user/verify", async (req, res) => {
+    try {
+        const token = req.query.token;
+        const uid = await read.getUidFromToken(token);
+        console.log(uid); 
+        res.status(200).send({ uid: uid });
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.post('/user/question', async (req, res) => {
     try {
         const username = req.body.username;
@@ -185,7 +196,12 @@ app.get("/questions/filter", async (req, res) => {
         const categories = req.query.categories;
         const difficulty = req.query.difficulty;
         const limit = req.query.limit;
-        const response = await read.filterQuestions(categories, difficulty, limit);
+        var response = null;
+        if (categories === undefined) {
+            response = await read.getAllQuestions();
+        } else {
+            response = await read.filterQuestions(categories, difficulty, limit);
+        }
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
