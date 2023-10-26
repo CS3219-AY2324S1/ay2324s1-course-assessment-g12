@@ -47,6 +47,12 @@ function MatchingButton() {
   // Editor
   const [editor, setEditor] = useState(null);
 
+    //chat log
+    const [chatLog, setChatLog] = useState("");
+
+    //user input message
+  const [userMessage, setUserMessage] = useState("");
+
   // Yjs
   const ydoc = new Y.Doc();
 
@@ -80,6 +86,16 @@ function MatchingButton() {
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
 
     });
+
+    function handleSendMessage() {
+        setUserMessage(userMessage+"\n")
+        socket.emit("send-message", userMessage, socket.id, roomJoined)
+    }
+
+    socket.on("get-message", msg => {
+        setChatLog(chatLog+msg)
+        console.log(msg)
+    })
 
     function handleOnMount(editor22, monaco22) {
         // Enter a multiplayer room
@@ -124,6 +140,24 @@ function MatchingButton() {
                     </div>
                 </div>
             )}
+
+            {/* Chat Box */}
+          <div className="chat-box">
+            <div className="chat-window">
+              {chatLog}
+            </div>
+      
+            <div className="chat-input">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                value={userMessage}
+                onChange={(e) => setUserMessage(e.target.value)}
+              />
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
+          </div>
+
             <form onSubmit={handleSubmit(handleSubmission)}>
                 <Grid xl={12} item>
                     <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",

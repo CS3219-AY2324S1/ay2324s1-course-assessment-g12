@@ -108,6 +108,18 @@ socketServer.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("Socket disconnected: " + socket.id);
     });
+
+    socket.on("send-message", (userMessage, socket_id, room) => {
+        console.log(socket_id + " sent message to room " + room);
+        const current_room = rooms.get(room);
+        const player_1 = current_room.players[0];
+        const player_2 = current_room.players[1];
+        const message = socket_id + " : " +userMessage; 
+        console.log(message);
+        player_1.to(room).emit("get-message", message);
+        player_2.to(room).emit("get-message", message);
+    
+    });
 });
 
 //server.listen(PORT, () => {
