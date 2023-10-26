@@ -69,8 +69,52 @@ async function getAllQuestions() {
     }
 }
 
-async function getQuestionsByCategories(categories, difficulty, limit) {
-    
+async function filterQuestions(categories, difficulty, limit) {
+    try {
+        if (categories === undefined || categories.length === 0) {
+            const questions = await getQuestionsByDifficulty(difficulty, limit);
+            return questions;
+        } else if (difficulty === undefined || difficulty.length === 0) {
+            const questions = await getQuestionsByCategories(categories, limit);
+            return questions;
+        } else {
+            const questions = await getQuestionsByCategoriesAndDifficulty(categories, difficulty, limit);
+            return questions;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getQuestionsByDifficulty(difficulty, limit) {
+    try {
+        const questionsRef = db.collection("questions");
+        var querySnapshot;
+        if (limit === undefined) {
+            querySnapshot = await questionsRef
+                .where("difficulty", "==", difficulty)
+                .orderBy("visits").get();
+        } else {
+            querySnapshot = await questionsRef
+                .where("difficulty", "==", difficulty)
+                .orderBy("visits").limit(parseInt(limit)).get();
+        }
+
+        if (querySnapshot.empty) {
+            return null;
+        } else {
+            const questions = [];
+            querySnapshot.forEach((doc) => {
+                questions.push(doc.data());
+            });
+            return questions;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getQuestionsByCategories(categories, limit) {
     try {
         const questionsRef = db.collection("questions");
         var querySnapshot;
@@ -81,7 +125,37 @@ async function getQuestionsByCategories(categories, difficulty, limit) {
         } else {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
-                .orderBy("visits", "desc").limit(parseInt(limit)).get();
+                .orderBy("visits").limit(parseInt(limit)).get();
+        }
+
+        if (querySnapshot.empty) {
+            return null;
+        } else {
+            const questions = [];
+            querySnapshot.forEach((doc) => {
+                if (categories.every(category => doc.data().categories.includes(category))) questions.push(doc.data());
+            });
+            return questions;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getQuestionsByCategoriesAndDifficulty(categories, difficulty, limit) {
+    try {
+        const questionsRef = db.collection("questions");
+        var querySnapshot;
+        if (limit === undefined) {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .where("difficulty", "==", difficulty)
+                .orderBy("visits").get();
+        } else {
+            querySnapshot = await questionsRef
+                .where("categories", "array-contains-any", categories)
+                .where("difficulty", "==", difficulty)
+                .orderBy("visits").limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -124,4 +198,4 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getUidFromToken, getQuestion, getAllQuestions, getQuestionsByCategories, getQuestionsFromUser };
+module.exports = { getUser, checkUserExists, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };

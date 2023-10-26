@@ -194,8 +194,14 @@ app.post("/question/visit", async (req, res) => {
 app.get("/questions/filter", async (req, res) => {
     try {
         const categories = req.query.categories;
+        const difficulty = req.query.difficulty;
         const limit = req.query.limit;
-        const response = await read.getQuestionsByCategories(categories, limit);
+        var response = null;
+        if (categories === undefined) {
+            response = await read.getAllQuestions();
+        } else {
+            response = await read.filterQuestions(categories, difficulty, limit);
+        }
         res.status(200).json(response);
     } catch (error) {
         console.error(error);

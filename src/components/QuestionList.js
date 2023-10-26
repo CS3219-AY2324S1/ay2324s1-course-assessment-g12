@@ -4,7 +4,7 @@ import QuestionCard from './QuestionCard';  // Make sure to import the QuestionC
 
 const questionURL = 'http://localhost:3002';
 
-const QuestionList = (category, level, list) => {
+const QuestionList = ({category, level, list}) => {
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
@@ -12,17 +12,18 @@ const QuestionList = (category, level, list) => {
     
     const fetchQuestions = async () => {
       try {
-        //const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
-         //                                                                            'difficulty': level, 
-          //                                                                           'limit': list}}); 
-       // setQuestions(response.data);
+        console.log("category:" + category)
+        const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
+                                                                                    'difficulty': level, 
+                                                                                    'limit': list}}); 
+       setQuestions(response.data);
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
     };
 
     fetchQuestions();
-  }, []);
+  }, [category, level, list]);
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
