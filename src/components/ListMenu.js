@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { List } from '@mui/material';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -46,7 +47,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
+export default function ListMenu({ selectedList, onListChange }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -56,11 +57,11 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //onCategoryChange('All Topics'); // Reset to 'All Topics' when the menu is closed
+    //onTagChange('All Topics'); // Reset to 'All Topics' when the menu is closed
   };
 
-  const handleMenuItemClick = (category) => {
-    onCategoryChange(category);
+  const handleMenuItemClick = (tag) => {
+    onListChange(List);
     handleClose();
   };
 
@@ -74,7 +75,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
         disableElevation
         onClick={handleClick}
       >
-        {selectedcategory}
+        {selectedList}
         <KeyboardArrowDownIcon />
       </Button>
       <StyledMenu
@@ -86,23 +87,14 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => onCategoryChange('All Topics')} disableRipple>
-          All Topics
+        <MenuItem onClick={() => onListChange('50')} disableRipple>
+          List All
         </MenuItem>
-        <MenuItem onClick={() => onCategoryChange('Algorithm')} disableRipple>
-          Algorithm
+        <MenuItem onClick={() => onListChange('10')} disableRipple>
+          Top 10 Most Popular
         </MenuItem>
-        <MenuItem onClick={() => onCategoryChange('Data Structure')} disableRipple>
-          Data Structure
-        </MenuItem>
-        <MenuItem onClick={() => onCategoryChange('Database')} disableRipple>
-          Database
-        </MenuItem>
-        <MenuItem onClick={() => onCategoryChange('Operating System')} disableRipple>
-          Operating System
-        </MenuItem>
-        <MenuItem onClick={() => onCategoryChange('Network')} disableRipple>
-          Network
+        <MenuItem onClick={() => onListChange('20')} disableRipple>
+          Top 20 Most Popular 
         </MenuItem>
       </StyledMenu>
     </div>

@@ -55,7 +55,6 @@ function UserProfile({ userData, user }) {
 
   const signOutAccount = async () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('username');
     signOut(auth).then(() => {
       console.log('User signed out successfully');
       navigate('/LoginPage');
@@ -66,7 +65,6 @@ function UserProfile({ userData, user }) {
   }
   const handleDeleteAccount = async () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('username');
     try {
 
       const confirmDelete = window.confirm("Are you sure you want to delete your account?");

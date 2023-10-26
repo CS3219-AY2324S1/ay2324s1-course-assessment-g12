@@ -32,18 +32,16 @@ const LoginSignup = () => {
     e.preventDefault();
     if (isLoginView) {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log(userCredential)
-        const { accessToken } = await axios.post(`${userURL}/token`, {email: email});
-        console.log("User token has been refreshed: " + accessToken);
-        const userData = await axios.get(`${userURL}/user`, { params: { email: email } });
-        const username = userData.data.username;
-        localStorage.setItem('username', username);
-        localStorage.setItem('accessToken', accessToken);
-        console.log("User token has been refreshed.");
-        const user = userCredential.user;
-        console.log('User signed in successfully:', user);
-        navigate('/');
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+
+        await auth.currentUser.getIdToken(true).then((idToken) => {
+          localStorage.setItem('accessToken', idToken);
+        }).catch((error) => {
+          console.log(error);
+        });
+        
+        console.log('User signed in successfully:', userCredential.user);
+        navigate('/Home');
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -62,18 +60,17 @@ const LoginSignup = () => {
             "level": level,
             "role": "registered user"
           });
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const tokens = await axios.post(`${userURL}/signup`, {username: username});
-          const refreshToken = tokens.data.refreshToken;
-          const accessToken = tokens.data.accessToken;
-          console.log(refreshToken, accessToken)
-          if (refreshToken) await axios.patch(`${userURL}/user`, {username, data: {"refreshToken": refreshToken}});
-          const user = userCredential.user;
           
-          localStorage.setItem('username', username);
-          localStorage.setItem('accessToken', accessToken);
-          console.log('User signed up successfully.', user);
-          navigate('/');
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+         
+          await auth.currentUser.getIdToken(true).then((idToken) => {
+            localStorage.setItem('accessToken', idToken);
+          }).catch((error) => {
+            console.log(error);
+          });
+        
+          console.log('User signed up successfully.', userCredential.user);
+          navigate('/Home');
         }
       } catch (error) {
         console.error('Error signing up:', error);
