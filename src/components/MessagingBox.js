@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 
-function MessagingBox() {
+function MessagingBox({socket, roomJoined}) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -45,10 +45,14 @@ function MessagingBox() {
 
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
-      setMessages([...messages, newMessage]);
+      socket.emit("send-message", newMessage, socket.id, roomJoined)
       setNewMessage('');
     }
   };
+
+  socket.on("get-message", msg => {
+    setMessages(prevMessages => [...prevMessages, msg]);
+  })
 
   return (
     <div style={containerStyle}>

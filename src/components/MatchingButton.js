@@ -31,39 +31,41 @@ const Difficulty =[
     { value: 'Hard', label: 'Hard' },
   ]
 
-function MatchingButton() {
+function MatchingButton({callback}) {
      // whether or not to show the loading dialog
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-  // data to display
-  const [loadedData, setLoadedData] = useState();
+    // data to display
+    const [loadedData, setLoadedData] = useState();
 
-  // match is found
-  const [isMatchFound, setIsMatchFound] = useState(false);
+    // match is found
+    const [isMatchFound, setIsMatchFound] = useState(false);
 
-  // room ID
-  const [roomJoined, setRoomJoined] = useState("");
+    // room ID
+    const [roomJoined, setRoomJoined] = useState("");
 
-  // Editor
-  const [editor, setEditor] = useState(null);
+    // Editor
+    const [editor, setEditor] = useState(null);
 
     //chat log
     const [chatLog, setChatLog] = useState("");
 
     //user input message
-  const [userMessage, setUserMessage] = useState("");
+    const [userMessage, setUserMessage] = useState("");
 
-  // Yjs
-  const ydoc = new Y.Doc();
+    // Yjs
+    const ydoc = new Y.Doc();
 
-  // Ytype
-  const textType = ydoc.getText("monaco");
+    // Ytype
+    const textType = ydoc.getText("monaco");
 
-  // this function will be called when the button get clicked
-  const buttonHandler = async () => {
-    // show the loading dialog
-    setIsLoading(true);
-  };
+    // this function will be called when the button get clicked
+    const buttonHandler = async () => {
+        // show the loading dialog
+        setIsLoading(true);
+    };
+
+    console.log(callback)
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -84,7 +86,7 @@ function MatchingButton() {
         console.log("Match found: " + room);
         setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
-
+        callback(true)
     });
 
     function handleSendMessage() {
@@ -102,24 +104,9 @@ function MatchingButton() {
         const { room, leave } = client.enterRoom(roomJoined, {
             initialPresence: {},
         });
-
-        console.log(room)
-        console.log(leave)
         const yProvider = new LiveblocksProvider(room, ydoc);
-        
-        // // Set up the Monaco editor
-        // const parent = document.querySelector('#editor');
-        // const editor = monaco.editor.create(parent, {
-        //     value: '',
-        //     language: 'javascript',
-        // });
-        
-        // console.log(parent)
-        // console.log(editor)
-        // Attach Yjs to Monaco
         const monacoBinding = new MonacoBinding(textType, editor22.getModel(), new Set([editor22]), yProvider.awareness);
     }
-
 
     return (
         <div>
