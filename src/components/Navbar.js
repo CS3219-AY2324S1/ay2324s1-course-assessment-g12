@@ -11,7 +11,7 @@ const Navbar = () => {
           PeerPrep
         </Typography>
         <Button component={Link} to="/" color="inherit">Home</Button>
-        <Button component={Link} to="/MatchingPage" color="inherit">Match</Button>
+        <Button component={Link} to="/CollaborationPage" color="inherit">Collaboration</Button>
         <Button component={Link} to="/UserProfile" color="inherit">Profile</Button>
         
       </Toolbar>
