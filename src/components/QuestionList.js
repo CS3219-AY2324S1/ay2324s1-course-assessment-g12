@@ -12,7 +12,6 @@ const QuestionList = ({category, level, list}) => {
     
     const fetchQuestions = async () => {
       try {
-        console.log("category:" + category)
         const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
                                                                                     'difficulty': level, 
                                                                                     'limit': list}}); 
@@ -27,7 +26,7 @@ const QuestionList = ({category, level, list}) => {
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-    const response = await axios.patch(`${questionURL}/question/visit`, {title: question.title}); 
+    const response = await axios.post(`${questionURL}/question/visit`, {title: question.title}); 
     document.body.style.overflow = "hidden";
   };
 
