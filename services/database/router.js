@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 
 app.delete("/user", async (req, res) => {
     try {
-        const username = req.body.username;
+        const username = req.query.username;
         console.log(username);
         await write.removeUser(username);
         res.send("User removed");
@@ -63,15 +63,30 @@ app.patch("/user", async (req, res) => {
     }
 });
 
-app.get("/user/check", async (req, res) => {
+app.get("/user/check/email", async (req, res) => {
     try {
         const email = req.query.email;
-        const exists = await read.checkUserExists(email);
+        const exists = await read.checkUserExistsByEmail(email);
         console.log(exists);
         if (exists) {
-            res.status(200).send({ userExists: true });
+            res.status(200).send({ emailExists: true });
         } else {
-            res.status(200).json({ userExists: false });
+            res.status(200).json({ emailExists: false });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/user/check/username", async (req, res) => {
+    try {
+        const username = req.query.username;
+        const exists = await read.checkUserExistsByUsername(username);
+        console.log(exists);
+        if (exists) {
+            res.status(200).send({ usernameExists: true });
+        } else {
+            res.status(200).json({ usernameExists: false });
         }
     } catch (error) {
         console.error(error);
@@ -197,7 +212,9 @@ app.get("/questions/filter", async (req, res) => {
         const difficulty = req.query.difficulty;
         const limit = req.query.limit;
         var response = null;
-        if (categories === undefined) {
+        console.log(categories)
+        console.log(limit)
+        if (categories === undefined && difficulty === undefined && limit === undefined) {
             response = await read.getAllQuestions();
         } else {
             response = await read.filterQuestions(categories, difficulty, limit);
