@@ -34,7 +34,7 @@ function QuestionPage() {
         <div className='menu-item'><LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/></div>
         <div className='menu-item'><ListMenu selectedList={selectedList} onListChange={handleListChange}/></div>
         </div>        
-        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={50}/>
+        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedList}/>
       </div>
       </div>
   );

@@ -1,40 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import QuestionCard from './QuestionCard';  // Make sure to import the QuestionCard component
+import QuestionCard from './QuestionCard';
 
 const questionURL = 'http://localhost:3002';
 
-const QuestionList = ({category, level, list}) => {
+const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const questionsPerPage = 30; // Define the number of questions to display per page
 
   useEffect(() => {
-    
     const fetchQuestions = async () => {
       try {
-        console.log("category:" + category)
-        const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
-                                                                                    'difficulty': level, 
-                                                                                    'limit': list}}); 
-       setQuestions(response.data);
+        console.log('selectedList:', selectedList)
+        const response = await axios.get(`${questionURL}/questions/filter`, {
+          params: {
+            categories: selectedCategory,
+            difficulty: selectedLevel,
+            limit: selectedList,
+          },
+        });
+        console.log(response.data)
+        setQuestions(response.data);
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
     };
 
     fetchQuestions();
-  }, [category, level, list]);
+  }, [selectedCategory, selectedLevel, selectedList]);
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-    const response = await axios.patch(`${questionURL}/question/visit`, {title: question.title}); 
-    document.body.style.overflow = "hidden";
+    const response = await axios.post(`${questionURL}/question/visit`, {
+      title: question.title,
+    });
+    document.body.style.overflow = 'hidden';
   };
 
   const handleCloseCard = () => {
     setSelectedQuestion(null);
-    document.body.style.overflow = "auto"; 
+    document.body.style.overflow = 'auto';
   };
+
+  // Calculate the range of questions to display based on current page and questionsPerPage
+  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+  const currentQuestions = questions.slice(indexOfFirstQuestion, indexOfLastQuestion);
 
   return (
     <div>
@@ -46,16 +59,24 @@ const QuestionList = ({category, level, list}) => {
           </tr>
         </thead>
         <tbody>
-          {questions.map((question, index) => (
-            <tr
-              className='question-row'
-              key={index}
-              onClick={() => handleRowClick(question)}
-            >
-              <td style={{ textAlign: 'left' }}>{question.title}</td>
-              <td style={{ textAlign: 'left' }}>{question.difficulty}</td>
+          {currentQuestions.length > 0 ? (
+            currentQuestions.map((question, index) => (
+              <tr
+                className="question-row"
+                key={index}
+                onClick={() => handleRowClick(question)}
+              >
+                <td style={{ textAlign: 'left' }}>{question.title}</td>
+                <td style={{ textAlign: 'left' }}>{question.difficulty}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2" style={{ textAlign: 'center' }}>
+                No questions available
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
@@ -67,6 +88,23 @@ const QuestionList = ({category, level, list}) => {
           />
         </div>
       )}
+
+      {/* Pagination controls */}
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>Page {currentPage}</span>
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={indexOfLastQuestion >= questions.length}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

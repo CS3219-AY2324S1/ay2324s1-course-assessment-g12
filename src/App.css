@@ -14,3 +14,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+@font-face {
+  font-family: 'Russo'; /* Font name */
+  src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
+}
