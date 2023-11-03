@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3001;
-const databaseURL = "http://database-service:3005"
+const databaseURL = "database-service-service:3005"
 const jwt = require('jsonwebtoken');
 
 var app = express();
@@ -34,9 +34,11 @@ app.post("/user", async (req, res) => {
 
 app.get("/user", async (req, res) => {
     try {
+        console.log("getting user")
         const response = await axios.get(`${databaseURL}/user`, { params: req.query });
         res.send(response.data);
     } catch (error) {
+
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
@@ -144,6 +146,10 @@ app.get('/user/authenticate', async (req, res) => {
     } catch (error) {
         console.error(error)
     }
+})
+
+app.get("/", (req, res) => {
+    console.log("hello blyat")
 })
 
 app.listen(PORT, () => {
