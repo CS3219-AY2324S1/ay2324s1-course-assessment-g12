@@ -225,6 +225,19 @@ app.get("/questions/filter", async (req, res) => {
     }
 })
 
+app.post("question/like", async(req, res) => {
+    try {
+        const title = req.body.title;
+        const username = req.body.username;
+        await write.incrementVisits(title);
+        const response = await write.addLike(title, username);
+        
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
 });

@@ -73,6 +73,18 @@ app.post("/question/visit", async (req, res) => {
     }
 });
 
+app.post("question/like", async(req, res) => {
+    try {
+        const email = req.body.email;
+        const userData = await axios.get(`${databaseURL}/user`, {params: {email: email}});
+        const username = userData.data.username;
+        const response = await axios.post(`${databaseURL}/question/like`, {username: username, title: req.body.title});
+        res.send(response.data);
+    } catch (error) {
+        console.error (error)
+    }
+})
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];

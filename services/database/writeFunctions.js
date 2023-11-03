@@ -96,4 +96,9 @@ async function incrementVisits(title) {
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits };
+async function addLike(username, title) {
+    const res = db.collection('users').doc(username).collection('likes').doc(title).update();
+    return res;
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits, addLike };

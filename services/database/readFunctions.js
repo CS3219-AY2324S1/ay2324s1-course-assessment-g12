@@ -224,4 +224,30 @@ async function getQuestionsFromUser(username) {
     }
 }
 
+async function getLikedQuestions(username) {
+    try {
+        const questions = [];
+        const questionsRef = db.collection("users").doc(username).collection("likedQuestions");
+        const querySnapshot = await questionsRef.get();
+
+        if (querySnapshot.empty) {
+            return null;
+        }
+
+        const questionPromises = querySnapshot.docs.map(async (likedQuestion) => {
+            const questionsDesc = await db.collection("questions").doc(likedQuestion.data().question).get();
+            return Object.assign({}, likedQuestion.data(), questionsDesc.data());
+        });
+
+        const questionData = await Promise.all(questionPromises);
+        questionData.forEach((question) => {
+            questions.push(question);
+        });
+
+        if (querySnapshot.size === questions.length) return questions;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };
