@@ -38,7 +38,7 @@ app.get("/user", async (req, res) => {
         const response = await axios.get(`${databaseURL}/user`, { params: req.query });
         res.send(response.data);
     } catch (error) {
-
+        console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
