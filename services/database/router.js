@@ -238,6 +238,16 @@ app.post("question/like", async(req, res) => {
     }
 })
 
+app.get("questions/like", async(req, res) => {
+    try {
+        const username = req.query.username;
+        const response = await read.getLikedQuestions(username);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
 });

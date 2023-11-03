@@ -250,4 +250,4 @@ async function getLikedQuestions(username) {
     }
 }
 
-module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };
