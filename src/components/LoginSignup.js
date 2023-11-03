@@ -20,8 +20,8 @@ const LoginSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [language, setLanguage] = useState('');
-  const [level, setLevel] = useState('');
+  const [language, setLanguage] = useState('Python');
+  const [level, setLevel] = useState('Beginner');
   const [isLoginView, setIsLoginView] = useState(true);
 
   const handleToggleView = () => {
@@ -30,10 +30,15 @@ const LoginSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password || (!isLoginView && (!username || !language || !level))) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+  
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
-
         await auth.currentUser.getIdToken(true).then((idToken) => {
           localStorage.setItem('accessToken', idToken);
         }).catch((error) => {
@@ -43,23 +48,25 @@ const LoginSignup = () => {
         console.log('User signed in successfully:', userCredential.user);
         navigate('/Home');
       } catch (error) {
+        alert('Error logging in: Email or password is incorrect.');
         console.error('Error logging in:', error);
       }
     } else {
       try {
-        const data = { "email": email };
-        const response = await axios.get(`${userURL}/user/check`, { params: data });
-
-        if (response.data.userExists) {
-          console.log('User already exists. Please log in.');
+        const responseForEmail = await axios.get(`${userURL}/user/check/email`, { params: { "email": email } });
+        const responseForUsername = await axios.get(`${userURL}/user/check/username`, { params: { "username": username } });
+        if (responseForEmail.data.emailExists) {
+          alert('Email already exists. Please log in.')
+        } else if (responseForUsername.data.usernameExists) {
+          alert('Username already exists. Please choose another username.');
         } else {
-          await axios.post(`${userURL}/user`, {
-            "email": email,
-            "username": username,
-            "language": language,
-            "level": level,
-            "role": "registered user"
-          });
+            await axios.post(`${userURL}/user`, {
+              "email": email,
+              "username": username,
+              "language": language,
+              "level": level,
+              "role": "registered user"
+            });
           
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
          

@@ -14,7 +14,8 @@ app.use(cors());
 
 app.delete("/user", async (req, res) => {
     try {
-        const response = await axios.delete(`${databaseURL}/user`, req.body);
+        console.log(req.query)
+        const response = await axios.delete(`${databaseURL}/user`, {params: req.query});
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -49,9 +50,18 @@ app.patch("/user", async (req, res) => {
     }
 });
 
-app.get("/user/check", async (req, res) => {
+app.get("/user/check/email", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/user/check`, { params: req.query });
+        const response = await axios.get(`${databaseURL}/user/check/email`, { params: req.query });
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/user/check/username", async (req, res) => {
+    try {
+        const response = await axios.get(`${databaseURL}/user/check/username`, { params: req.query });
         res.send(response.data);
     } catch (error) {
         console.error(error);

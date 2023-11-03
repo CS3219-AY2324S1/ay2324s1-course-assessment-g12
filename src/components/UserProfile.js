@@ -68,11 +68,12 @@ function UserProfile({ userData, user }) {
     try {
 
       const confirmDelete = window.confirm("Are you sure you want to delete your account?");
-
+      console.log(confirmDelete)
       if (confirmDelete) {
         try {
           //delete from db in firebase admin
-          const response = await axios.delete(`${userURL}/user`, { username: userData.username });
+          console.log(userData.username)
+          const response = await axios.delete(`${userURL}/user`, { params: {username: userData.username}});
           console.log(response);
 
           // delete user from firebase client side

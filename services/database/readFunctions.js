@@ -13,7 +13,7 @@ async function getUser(criteria, flag) {
     return querySnapshot.docs[0].data();
 }
 
-async function checkUserExists(email) {
+async function checkUserExistsByEmail(email) {
     const usersRef = db.collection("users");
     const snapshot = await usersRef
         .where("email", "==", email)
@@ -25,16 +25,29 @@ async function checkUserExists(email) {
     }
 }
 
+async function checkUserExistsByUsername(username) {
+    const usersRef = db.collection("users");
+    const snapshot = await usersRef
+        .where("username", "==", username)
+        .get(); 
+    if (snapshot.empty) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 async function getUidFromToken(idToken) {
     try {
         const decodedToken = await getAuth.verifyIdToken(idToken);
-        return decodedToken.uid;
+        return decodedToken;
     } catch (error) {
         console.error("Error verifying ID token:", error);
         throw error; // You can choose to handle the error as needed
     }
   }
 
+  
 async function getQuestion(title) {
     try {
         const questionsRef = db.collection("questions");
@@ -51,9 +64,12 @@ async function getQuestion(title) {
     }
 }
 
-async function getAllQuestions() {
+async function getAllQuestions(limit) {
     try {
-        const questionsRef = db.collection("questions").limit(20);
+        if (limit == "List All") {
+            limit = 100
+        }
+        const questionsRef = db.collection("questions").limit(parseInt(limit));
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;
@@ -71,13 +87,23 @@ async function getAllQuestions() {
 
 async function filterQuestions(categories, difficulty, limit) {
     try {
-        if (categories === undefined || categories.length === 0) {
+        console.log('here')
+        console.log("cat: " + categories)
+        console.log("cat: " + limit)
+
+        if (categories === undefined && difficulty === "All Levels") {
+            const questions = await getAllQuestions(limit);
+            return questions;
+        } else if (categories === undefined || categories.length === 0 || !categories) {
+            console.log('here1')
             const questions = await getQuestionsByDifficulty(difficulty, limit);
             return questions;
-        } else if (difficulty === undefined || difficulty.length === 0) {
+        } else if (difficulty === undefined || difficulty.length === 0 || difficulty === "All Levels") {
+            console.log('here2')
             const questions = await getQuestionsByCategories(categories, limit);
             return questions;
         } else {
+            console.log('here3')
             const questions = await getQuestionsByCategoriesAndDifficulty(categories, difficulty, limit);
             return questions;
         }
@@ -90,7 +116,7 @@ async function getQuestionsByDifficulty(difficulty, limit) {
     try {
         const questionsRef = db.collection("questions");
         var querySnapshot;
-        if (limit === undefined) {
+        if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
                 .where("difficulty", "==", difficulty)
                 .orderBy("visits").get();
@@ -118,7 +144,7 @@ async function getQuestionsByCategories(categories, limit) {
     try {
         const questionsRef = db.collection("questions");
         var querySnapshot;
-        if (limit === undefined) {
+        if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories) 
                 .orderBy("visits").get();
@@ -146,7 +172,7 @@ async function getQuestionsByCategoriesAndDifficulty(categories, difficulty, lim
     try {
         const questionsRef = db.collection("questions");
         var querySnapshot;
-        if (limit === undefined) {
+        if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
                 .where("difficulty", "==", difficulty)
@@ -198,4 +224,4 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExists, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };
