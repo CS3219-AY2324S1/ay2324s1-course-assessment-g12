@@ -5,14 +5,16 @@ import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 const Navbar = () => {
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" style={{ backgroundColor: '#A3A6FF' }}>
       <Toolbar>
         <Typography variant="h6">
           PeerPrep
         </Typography>
-        <Button component={Link} to="/" color="inherit">Home</Button>
+        <Button component={Link} to="/Home" color="inherit">HOME</Button>
+        <Button component={Link} to="/Questions" color="inherit">QUESTIONS</Button>
+        <Button component={Link} to="/UserProfile" color="inherit">PROFILE</Button>
+        <Button component={Link} to="/AddQuestion" color="inherit">ADD QUESTION</Button>
         <Button component={Link} to="/CollaborationPage" color="inherit">Collaboration</Button>
-        <Button component={Link} to="/UserProfile" color="inherit">Profile</Button>
         
       </Toolbar>
     </AppBar>

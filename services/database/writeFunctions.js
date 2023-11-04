@@ -2,37 +2,6 @@ const firebaseAdmin = require('./firebase.js');
 
 const db = firebaseAdmin.firestore();
 
-const auth = firebaseAdmin.auth();
-
-//function to handle log in 
-async function handleSignup(email, password) {
-    try {
-        await auth.createUser({email: email, password: password});
-        return 200;
-      } catch (error) {
-        console.error('Error signing in:', error);
-      }
-
-}
-
-async function handleLogin(email, password) {
-    try {
-       
-        const userRecord = await auth.getUserByEmail(email);
-        console.log(userRecord.password)
-        console.log(password)
-        if (userRecord && userRecord.password === password) {
-          console.log('User logged in successfully.');
-        } else {
-          console.error('Invalid credentials.');
-        }
-      } catch (error) {
-        console.error('Error logging in:', error);
-      } 
-      
-}
-
-// function to remove user from db
 async function removeUser(username) {
     try {
         const res = await db.collection('users').doc(username).delete();
@@ -42,28 +11,17 @@ async function removeUser(username) {
     }
 }
 
-async function addUser(username, email, password, language, level) {
+async function addUser(data) {
     try {
-        const data = {
-            username: username,
-            email: email,
-            password: password,
-            language: language,
-            level: level,
-        };
-        const res = await db.collection('users').doc(username).set(data);
+        const res = await db.collection('users').doc(data.username).set(data);
         return res;
     } catch (error) {
         console.error(error);
     }
 }
 
-async function updateUser(username, language, level) {
+async function updateUser(username, data) {
     try {
-        const data = {
-            language: language,
-            level: level,
-        };
         const res = await db.collection('users').doc(username).update(data);
         return res;
     } catch (error) {
@@ -71,15 +29,25 @@ async function updateUser(username, language, level) {
     }
 }
 
-async function addQuestion(title, category, difficulty, description) {
+async function addQuestion(title, categories, difficulty, content) {
     try {
         const data = {
             title: title,
-            category: category,
+            categories: categories,
             difficulty: difficulty,
-            description: description,
+            content: content
         };
         const res = await db.collection('questions').doc(title).set(data);
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function updateQuestion(title, data) {
+    try {
+        console.log(data)
+        const res = await db.collection('questions').doc(title).update(data);
         return res;
     } catch (error) {
         console.error(error);
@@ -95,4 +63,37 @@ async function deleteQuestion(title) {
     }
 }
 
-module.exports = { handleLogin, handleSignup, removeUser, addUser, updateUser, addQuestion, deleteQuestion };
+async function addQuestionToUser(username, question, partner, completed, date, code) {
+    try {
+        const questionData = {
+            question: question,
+            partner: partner,
+            completed: completed,
+            date: date,
+            code: code
+        }
+        const userQuestionRef = db.collection('users').doc(username).collection('questions').doc(question);
+        var res;
+        if (userQuestionRef.exists) {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).update(questionData);
+        } else {
+            res = await db.collection('users').doc(username).collection('questions').doc(question).set(questionData);
+        }
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function incrementVisits(title) {
+    try {
+        const res = await db.collection('questions').doc(title).update({
+            visits: firebaseAdmin.firestore.FieldValue.increment(1)
+        });
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits };

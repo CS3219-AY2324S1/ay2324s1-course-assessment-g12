@@ -1,6 +1,8 @@
 .App {
   text-align: center;
+  background-color: #282c34;
 }
+
 .App-header {
   width: 100%;
   background-color: #282c34;
@@ -11,4 +13,9 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+@font-face {
+  font-family: 'Russo'; /* Font name */
+  src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
 }

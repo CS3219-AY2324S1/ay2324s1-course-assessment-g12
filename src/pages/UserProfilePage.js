@@ -11,41 +11,43 @@ function UserProfilePage() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [user, setUser] = useState(null);
-  
-  const fetchUserData = async () => {
 
+  const fetchUserData = async (user) => {
     try {
-      const user = auth.currentUser;
-      setUser(user);
-
       if (!user) {
         console.error("No user logged in.");
         return;
       }
 
-      const response = await axios.get(`${userURL}/getUser`, { params: { 'email': user.email } });
+      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email } });
       console.log(response.data);
 
       setUserData(response.data);
     } catch (error) {
       console.error("Error:", error);
     }
-    
   };
 
   useEffect(() => {
-    fetchUserData();  
-  }, []);  
+    // Use the onAuthStateChanged listener to monitor authentication state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+      fetchUserData(user);
+    });
+
+    // Return a cleanup function to unsubscribe from the listener when the component is unmounted
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <div className='App-header'> 
-    <div className="user-profile-page">
-      {userData ? (
-        <UserProfile userData={userData} user={user} /> 
-      ) : (
-        <p>Loading user data...</p>
-      )}
-    </div>
+    <div className='App-header'>
+      <div className="user-profile-page">
+        {userData ? (
+          <UserProfile userData={userData} user={user} />
+        ) : (
+          <p>Loading user data...</p>
+        )}
+      </div>
     </div>
   );
 }
