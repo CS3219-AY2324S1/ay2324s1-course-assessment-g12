@@ -59,6 +59,7 @@ function MatchingButton() {
     setIsLoading(true);
   };
 
+
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const handleSubmission = (data) => {
@@ -81,7 +82,7 @@ function MatchingButton() {
 
     });
 
-    function handleOnMount(editor22, monaco22) {
+    function handleOnMount(editor22, monaco22) { //bind the monaco with database
         // Enter a multiplayer room
         const { room, leave } = client.enterRoom(roomJoined, {
             initialPresence: {},
@@ -90,17 +91,6 @@ function MatchingButton() {
         console.log(room)
         console.log(leave)
         const yProvider = new LiveblocksProvider(room, ydoc);
-        
-        // // Set up the Monaco editor
-        // const parent = document.querySelector('#editor');
-        // const editor = monaco.editor.create(parent, {
-        //     value: '',
-        //     language: 'javascript',
-        // });
-        
-        // console.log(parent)
-        // console.log(editor)
-        // Attach Yjs to Monaco
         const monacoBinding = new MonacoBinding(textType, editor22.getModel(), new Set([editor22]), yProvider.awareness);
     }
 
@@ -113,7 +103,7 @@ function MatchingButton() {
                     <div className='modal-text'>Matching...</div>
                 </div>
             </div>
-            {roomJoined && (
+            {roomJoined && ( //neede for editor to render
                 <div id='editor'>
                     <div style={{ display: 'flex'}}>
                         <Editor 

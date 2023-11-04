@@ -10,9 +10,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import MessagingBox from '../components/MessagingBox';
+import MatchingButton from '../components/MatchingButton';
 
 function CollaborationPage() {
   const [inputValue, setInputValue] = useState('');
+
+  const [isMatch, setIsMatch] = useState(false);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -57,45 +60,39 @@ function CollaborationPage() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <Grid container spacing={1} style={containerStyles}>
-        
-        <Grid item xs={3}>
-          <Box boxShadow={3} style={{ height: '100%', width: '100%' }}>
+    <div>
+      <div style={{display: MatchingButton.roomJoined == "" ? "none": "flex"}}>
+        <MatchingButton/>
+      </div>
+      <div style={{ display: MatchingButton.roomJoined == "" ? 'flex' : "none", height: '100vh' }}>
+        <Grid container spacing={1} style={containerStyles}>
+          
+          <Grid item xs={3}>
+            <Box boxShadow={3} style={{ height: '100%', width: '100%' }}>
+              <Typography variant="h5" component="h2">
+                Questions
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={9} container justify="flex-end">
+            <Box style={editorStyles}>
+              <div>
+            
+              </div>
+            </Box>
+          </Grid>
+          <Grid item xs={3}>
+            <MessagingBox />
+          </Grid>
+          <Grid item xs={9}>
+            <Box boxShadow={3} style={{ height: '30%' }}>
             <Typography variant="h5" component="h2">
-              Questions
-            </Typography>
-          </Box>
+                Code Execution
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={9} container justify="flex-end">
-          <Box style={editorStyles}>
-            <div>
-            <TextField
-              style={textFieldStyles}
-              variant="outlined"
-              fullWidth
-              fullLength
-              rows={20}
-              multiline
-              value={inputValue}
-              onChange={handleInputChange}
-              InputProps={inputProps} // Apply the background color to the input fields
-              // sx={{border: 'none',"& fieldset": { border: 'none' },}} //to disable outline
-            />
-            </div>
-          </Box>
-        </Grid>
-        <Grid item xs={3}>
-          <MessagingBox />
-        </Grid>
-        <Grid item xs={9}>
-          <Box boxShadow={3} style={{ height: '30%' }}>
-          <Typography variant="h5" component="h2">
-              Code Execution
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }
