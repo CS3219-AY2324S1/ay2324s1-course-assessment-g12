@@ -89,6 +89,41 @@ socketServer.on("connection", (socket) => {
         console.log(hardQueue)
     });
 
+    socket.on("compile_code", (data, room) => {
+        var config = {
+            method: 'post',
+            url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            headers: {
+                'content-type': 'application/json',
+                'X-RapidAPI-Key': '3dc08aa7c6msh757331c2706afc7p1a327bjsn1963009b32c9',
+                'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+              },
+            data: {
+                language: 'python3',
+                version: 'latest',
+                code: data,
+                input: null
+            }
+        };
+
+        axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            console.log(response.data.output);
+            const current_room = rooms.get(room);
+            const player_1 = current_room.players[0];
+            const player_2 = current_room.players[1];
+            player_1.to(room).emit("compile_result", response.data.output);
+            player_2.to(room).emit("compile_result", response.data.output);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    });
+
     socket.on("cancel", (difficulty) => {
         console.log(socket + "User canceled on difficulty: " + difficulty);
         
@@ -107,6 +142,18 @@ socketServer.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("Socket disconnected: " + socket.id);
+    });
+
+    socket.on("send-message", (userMessage, socket_id, room) => {
+        console.log(socket_id + " sent message to room " + room);
+        const current_room = rooms.get(room);
+        const player_1 = current_room.players[0];
+        const player_2 = current_room.players[1];
+        const message = socket_id + " : " +userMessage; 
+        console.log(message);
+        player_1.to(room).emit("get-message", message);
+        player_2.to(room).emit("get-message", message);
+    
     });
 });
 

@@ -10,12 +10,31 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import MessagingBox from '../components/MessagingBox';
-import MatchingButton from '../components/MatchingButton';
+import  io  from 'socket.io-client';
+import { createClient } from '@liveblocks/client';
+import MatchingBtn from '../components/MatchingBtn';
+import EditorComp from '../components/EditorComp';
 
 function CollaborationPage() {
+  // The socket
+  const socket = io('http://localhost:3003');
+
+  // Variable to keep track whether match is found or no
+  const [isMatchFound, setMatchFound] = useState(false);
+
+  // Room ID
+  const [roomJoined, setRoomoJoined] = useState("");
+
+  // Output from compiler
+  const [output, setOutput] = useState("");
+
   const [inputValue, setInputValue] = useState('');
 
   const [isMatch, setIsMatch] = useState(false);
+
+  const getRoomJoined = () => {
+    return roomJoined;
+  }
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -26,6 +45,11 @@ function CollaborationPage() {
     console.log('Executing code:', inputValue);
   };
 
+  socket.on("compile_result", output => {
+    console.log(output)
+    setOutput(output)
+  })
+
   const editorStyles = {
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -34,14 +58,6 @@ function CollaborationPage() {
     width: '100%',
     fontFamily: 'Monospace', // Use a monospaced font for code
     backgroundColor: '#282c34', // Set the background color to dark blue
-  };
-
-  const textFieldStyles = {
-    height: '100%', // Take up all available space
-    width: '100%', // Take up all available space
-    outline: false,
-    overflowY: 'auto',
-    disableUnderline: true
   };
 
   const inputProps = {
@@ -61,12 +77,15 @@ function CollaborationPage() {
 
   return (
     <div>
-      <div style={{display: MatchingButton.roomJoined == "" ? "none": "flex"}}>
-        <MatchingButton/>
-      </div>
-      <div style={{ display: MatchingButton.roomJoined == "" ? 'flex' : "none", height: '100vh' }}>
+        <div style={{ display: isMatchFound ? "none" : 'flex', height: '100vh' }}>
+          <MatchingBtn
+            callback={setMatchFound}
+            socket={socket}
+            setRoomJoined={setRoomoJoined}
+          />
+        </div>
+      <div style={{ display: isMatchFound ? "flex" : 'none', height: '100vh' }}>
         <Grid container spacing={1} style={containerStyles}>
-          
           <Grid item xs={3}>
             <Box boxShadow={3} style={{ height: '100%', width: '100%' }}>
               <Typography variant="h5" component="h2">
@@ -76,19 +95,29 @@ function CollaborationPage() {
           </Grid>
           <Grid item xs={9} container justify="flex-end">
             <Box style={editorStyles}>
-              <div>
-            
-              </div>
+              { roomJoined && (
+                <div style={{display:"flex"}}>
+                  <EditorComp
+                    roomJoined={getRoomJoined}
+                    setOutput={setOutput}
+                    socket = {socket}
+                  />
+                </div>
+              )}
             </Box>
           </Grid>
           <Grid item xs={3}>
-            <MessagingBox />
+            <MessagingBox 
+              socket={socket}
+              roomJoined={roomJoined}
+            />
           </Grid>
           <Grid item xs={9}>
-            <Box boxShadow={3} style={{ height: '30%' }}>
-            <Typography variant="h5" component="h2">
-                Code Execution
-              </Typography>
+            <Box boxShadow={3} style={{ height: '100%' }}>
+            <div>
+              <h3>Compiled Result</h3>
+              <div>{output}</div>
+            </div>
             </Box>
           </Grid>
         </Grid>

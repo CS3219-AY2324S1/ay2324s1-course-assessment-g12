@@ -9,7 +9,6 @@ function QuestionPage() {
   return (
     <div className="App">
       <header className="App-header">
-        <MatchingButton />
         <SubmitButton />
         <QuestionList />
       </header>

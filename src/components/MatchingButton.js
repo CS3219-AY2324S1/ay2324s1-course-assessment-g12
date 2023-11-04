@@ -31,34 +31,41 @@ const Difficulty =[
     { value: 'Hard', label: 'Hard' },
   ]
 
-function MatchingButton() {
+function MatchingButton({callback}) {
      // whether or not to show the loading dialog
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-  // data to display
-  const [loadedData, setLoadedData] = useState();
+    // data to display
+    const [loadedData, setLoadedData] = useState();
 
-  // match is found
-  const [isMatchFound, setIsMatchFound] = useState(false);
+    // match is found
+    const [isMatchFound, setIsMatchFound] = useState(false);
 
-  // room ID
-  const [roomJoined, setRoomJoined] = useState("");
+    // room ID
+    const [roomJoined, setRoomJoined] = useState("");
 
-  // Editor
-  const [editor, setEditor] = useState(null);
+    // Editor
+    const [editor, setEditor] = useState(null);
 
-  // Yjs
-  const ydoc = new Y.Doc();
+    //chat log
+    const [chatLog, setChatLog] = useState("");
 
-  // Ytype
-  const textType = ydoc.getText("monaco");
+    //user input message
+    const [userMessage, setUserMessage] = useState("");
 
-  // this function will be called when the button get clicked
-  const buttonHandler = async () => {
-    // show the loading dialog
-    setIsLoading(true);
-  };
+    // Yjs
+    const ydoc = new Y.Doc();
 
+    // Ytype
+    const textType = ydoc.getText("monaco");
+
+    // this function will be called when the button get clicked
+    const buttonHandler = async () => {
+        // show the loading dialog
+        setIsLoading(true);
+    };
+
+    console.log(callback)
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -79,21 +86,38 @@ function MatchingButton() {
         console.log("Match found: " + room);
         setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
-
+        callback(true)
     });
+
+    function handleSendMessage() {
+        setUserMessage(userMessage+"\n")
+        socket.emit("send-message", userMessage, socket.id, roomJoined)
+    }
+
+    socket.on("get-message", msg => {
+        setChatLog(chatLog+msg)
+        console.log(msg)
+    })
+
+    function handleSendMessage() {
+        setUserMessage(userMessage+"\n")
+        socket.emit("send-message", userMessage, socket.id, roomJoined)
+    }
+
+    socket.on("get-message", msg => {
+        setChatLog(chatLog+msg)
+        console.log(msg)
+    })
+
 
     function handleOnMount(editor22, monaco22) { //bind the monaco with database
         // Enter a multiplayer room
         const { room, leave } = client.enterRoom(roomJoined, {
             initialPresence: {},
         });
-
-        console.log(room)
-        console.log(leave)
         const yProvider = new LiveblocksProvider(room, ydoc);
         const monacoBinding = new MonacoBinding(textType, editor22.getModel(), new Set([editor22]), yProvider.awareness);
     }
-
 
     return (
         <div>
@@ -114,6 +138,24 @@ function MatchingButton() {
                     </div>
                 </div>
             )}
+
+            {/* Chat Box */}
+          <div className="chat-box">
+            <div className="chat-window">
+              {chatLog}
+            </div>
+      
+            <div className="chat-input">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                value={userMessage}
+                onChange={(e) => setUserMessage(e.target.value)}
+              />
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
+          </div>
+
             <form onSubmit={handleSubmit(handleSubmission)}>
                 <Grid xl={12} item>
                     <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",
