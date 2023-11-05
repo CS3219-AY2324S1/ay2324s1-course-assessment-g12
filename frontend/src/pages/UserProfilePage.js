@@ -5,7 +5,7 @@ import { auth } from '../firebase-config';
 import axios from 'axios';
 import '../style/UserProfilePage.css';
 
-const userURL = 'http://localhost:3001';
+const userURL = "http://user-service-service.default.svc.cluster.local:3001";
 
 function UserProfilePage() {
   const navigate = useNavigate();

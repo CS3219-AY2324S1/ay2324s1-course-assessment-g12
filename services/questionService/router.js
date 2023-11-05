@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 var app = express();
-const databaseURL = "http://localhost:3005";
+const databaseURL = "http://database-service-service.default.svc.cluster.local:3005";
 const PORT = 3002;
 const jwt = require("jsonwebtoken");
 
@@ -82,6 +82,18 @@ app.post("question/like", async(req, res) => {
         res.send(response.data);
     } catch (error) {
         console.error (error)
+    }
+})
+
+app.get("questions/like", async(req, res) => {
+    try {
+        const email = req.query.email;
+        const userData = await axios.get(`${databaseURL}/user`, {params: {email: email}});
+        const username = userData.data.username;
+        const response = await axios.get(`${databaseURL}/questions/like`, {params: {username: username}});
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
     }
 })
 
