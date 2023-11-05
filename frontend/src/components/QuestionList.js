@@ -13,12 +13,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-<<<<<<< HEAD
-        const response = await axios.get(`${questionURL}/questions/filter`, {params: {'categories': category, 
-                                                                                    'difficulty': level, 
-                                                                                    'limit': list}}); 
-       setQuestions(response.data);
-=======
         console.log('selectedList:', selectedList)
         const response = await axios.get(`${questionURL}/questions/filter`, {
           params: {
@@ -29,7 +23,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
         });
         console.log(response.data)
         setQuestions(response.data);
->>>>>>> 9dd837eeda9fa9c0657d446a5e792f2b38dfa682
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
@@ -40,15 +33,10 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-<<<<<<< HEAD
-    const response = await axios.post(`${questionURL}/question/visit`, {title: question.title}); 
-    document.body.style.overflow = "hidden";
-=======
     const response = await axios.post(`${questionURL}/question/visit`, {
       title: question.title,
     });
     document.body.style.overflow = 'hidden';
->>>>>>> 9dd837eeda9fa9c0657d446a5e792f2b38dfa682
   };
 
   const handleCloseCard = () => {
