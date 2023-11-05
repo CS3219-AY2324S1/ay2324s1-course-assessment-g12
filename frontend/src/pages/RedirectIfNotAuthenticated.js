@@ -18,11 +18,11 @@ function RedirectIfNotAuthenticated() {
           const decodedToken = await axios.get(`${userURL}/user/verify`, { params: { token: idToken } });
         } catch (error) {
           console.error('Error verifying ID token:', error);
-          navigate('/LoginPage');
+          navigate('/Page/LoginPage');
         }
       } else {
         // User is signed out. Redirect to the login page.
-        navigate('/LoginPage');
+        navigate('/Page/LoginPage');
       }
     });
 

@@ -19,11 +19,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Layout> <HomePage /> </Layout>} />
-          <Route path ="/LoginPage" element={<LoginPage />} />
-          <Route path="/Home" element={<Layout><HomePage /> </Layout>} /> 
-          <Route path="/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> 
-          <Route path="/Questions" element={<Layout><QuestionPage /> </Layout>} /> 
-          <Route path="/AddQuestion" element={<Layout><AddQuestionPage /> </Layout>} /> 
+          <Route path ="/Page/LoginPage" element={<LoginPage />} />
+          <Route path="/Page/Home" element={<Layout><HomePage /> </Layout>} /> 
+          <Route path="/Page/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> 
+          <Route path="/Page/Questions" element={<Layout><QuestionPage /> </Layout>} /> 
+          <Route path="/Page/AddQuestion" element={<Layout><AddQuestionPage /> </Layout>} /> 
         </Routes>
       </BrowserRouter>
     </div>

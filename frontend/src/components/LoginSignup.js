@@ -46,7 +46,7 @@ const LoginSignup = () => {
         });
         
         console.log('User signed in successfully:', userCredential.user);
-        navigate('/Home');
+        navigate('/Page/Home');
       } catch (error) {
         alert('Error logging in: Email or password is incorrect.');
         console.error('Error logging in:', error);
@@ -77,7 +77,7 @@ const LoginSignup = () => {
           });
         
           console.log('User signed up successfully.', userCredential.user);
-          navigate('/Home');
+          navigate('/Page/Home');
         }
       } catch (error) {
         console.error('Error signing up:', error);

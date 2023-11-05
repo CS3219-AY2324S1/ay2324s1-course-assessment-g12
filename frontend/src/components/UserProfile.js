@@ -57,7 +57,7 @@ function UserProfile({ userData, user }) {
     localStorage.removeItem('accessToken');
     signOut(auth).then(() => {
       console.log('User signed out successfully');
-      navigate('/LoginPage');
+      navigate('/Page/LoginPage');
     }).catch((error) => {
       console.error('Error signing out:', error);
     });
@@ -85,7 +85,7 @@ function UserProfile({ userData, user }) {
             });
 
 
-          navigate('/LoginPage');
+          navigate('/Page/LoginPage');
 
         } catch (error) {
           console.error(error);
