@@ -133,6 +133,19 @@ app.get('/user/questions', async (req, res) => {
     }
 })
 
+app.get('/user/authenticate', async (req, res) => {
+    try {
+        const userData = await axios.get(`${databaseURL}/user`, { params: req.query });
+        if (userData.data.role === 'admin') {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
