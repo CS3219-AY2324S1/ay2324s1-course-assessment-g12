@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import QuestionCard from './QuestionCard';
 
-const questionURL = 'http://localhost:3002';
+const questionURL = 'http://35.198.205.80';
 
 const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);

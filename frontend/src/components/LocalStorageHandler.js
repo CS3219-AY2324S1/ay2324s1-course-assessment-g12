@@ -1,6 +1,6 @@
 const id_key = "id";
 const axios = import("axios");
-const questionURL = "http://localhost:3002/questions";
+const questionURL = "http://35.198.205.80";
 
 async function getAllQuestions() {
     const response = await axios.get(questionURL);
