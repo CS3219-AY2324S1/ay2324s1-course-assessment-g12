@@ -25,7 +25,7 @@
   },
   "scripts": {
     "launch": "concurrently \"npm run frontend\" \"npm run start-database\" \"npm run start-questionService\" \"npm run start-userService\" \"npm run start-matchingService\"",
-    "start-frontend": "react-scripts start",
+    "start": "react-scripts start",
     "start-database": "nodemon ../services/database/router.js",
     "start-userService": "nodemon ../services/userService/router.js",
     "start-matchingService": "nodemon ../services/matchingService/router.js",

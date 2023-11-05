@@ -7,4 +7,4 @@ RUN npm i axios
 COPY . .
 EXPOSE 3000
 
-CMD ["npm run launch"]
+CMD ["npm", "start"]
