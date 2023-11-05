@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../firebase-config';
 
-const userURL = "http://user-service-service.default.svc.cluster.local:3001";
+const userURL = "http://user-service-service:3001";
 
 function RedirectIfNotAuthenticated() {
   const navigate = useNavigate();

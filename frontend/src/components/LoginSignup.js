@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
-const userURL = "http://user-service-service.default.svc.cluster.local:3001";
+const userURL = "http://user-service-service:3001";
 
 const LoginSignup = () => {
   const navigate = useNavigate();

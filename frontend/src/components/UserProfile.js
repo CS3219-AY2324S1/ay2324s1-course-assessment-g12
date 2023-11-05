@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase-config';
 
-const userURL = "http://user-service-service.default.svc.cluster.local:3001";
+const userURL = "http://user-service-service:3001";
 
 function UserProfile({ userData, user }) {
   const navigate = useNavigate();
