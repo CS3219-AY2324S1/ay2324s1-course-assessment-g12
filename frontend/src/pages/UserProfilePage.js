@@ -5,7 +5,7 @@ import { auth } from '../firebase-config';
 import axios from 'axios';
 import '../style/UserProfilePage.css';
 
-const userURL = "http://user-service-service:3001";
+const userURL = "http://35.198.205.80";
 
 function UserProfilePage() {
   const navigate = useNavigate();
