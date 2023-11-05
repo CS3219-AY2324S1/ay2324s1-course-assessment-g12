@@ -13,7 +13,7 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        console.log('selectedList:', selectedList)
+        
         const response = await axios.get(`${questionURL}/questions/filter`, {
           params: {
             categories: selectedCategory,
@@ -21,7 +21,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
             limit: selectedList,
           },
         });
-        console.log(response.data)
         setQuestions(response.data);
       } catch (error) {
         console.error('Error fetching questions:', error);

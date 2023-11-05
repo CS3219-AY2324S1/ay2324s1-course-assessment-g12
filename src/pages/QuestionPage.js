@@ -10,7 +10,8 @@ function QuestionPage() {
   const [selectedCategory, setSelectedCategory] = useState([]); // Default value
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
   const [selectedList, setSelectedList] = useState('List All'); // Default value
-  
+  const [selectedPopularity, setSelectedPopularity] = useState('List All'); // Default value
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     console.log(category);
@@ -22,6 +23,16 @@ function QuestionPage() {
   };
 
   const handleListChange = (list) => {
+    
+    if (list === 'Top 10 Most Popular') {
+      setSelectedPopularity(10);
+    }
+    else if (list === 'Top 20 Most Popular') {
+      setSelectedPopularity(20);
+    }
+    else {
+      setSelectedPopularity('List All');
+    }
     setSelectedList(list);
     console.log(list);
   };
@@ -34,7 +45,7 @@ function QuestionPage() {
         <div className='menu-item'><LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/></div>
         <div className='menu-item'><ListMenu selectedList={selectedList} onListChange={handleListChange}/></div>
         </div>        
-        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedList}/>
+        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedPopularity}/>
       </div>
       </div>
   );

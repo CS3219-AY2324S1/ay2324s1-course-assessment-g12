@@ -87,13 +87,13 @@ export default function ListMenu({ selectedList, onListChange }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => onListChange('50')} disableRipple>
+        <MenuItem onClick={() => onListChange('List All')} disableRipple>
           List All
         </MenuItem>
-        <MenuItem onClick={() => onListChange('10')} disableRipple>
+        <MenuItem onClick={() => onListChange('Top 10 Most Popular')} disableRipple>
           Top 10 Most Popular
         </MenuItem>
-        <MenuItem onClick={() => onListChange('20')} disableRipple>
+        <MenuItem onClick={() => onListChange('Top 20 Most Popular')} disableRipple>
           Top 20 Most Popular 
         </MenuItem>
       </StyledMenu>
