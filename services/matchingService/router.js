@@ -21,55 +21,127 @@ const socketServer = require('socket.io')(3003, {
     }
 });
 
-function createRoom(user1, user2, difficulty, socket) {
-    console.log("rooasdfadas");
+const questionURL = 'http://localhost:3002';
+const dbURL = 'http://localhost:3005';
+    // Generate a random integer between min (inclusive) and max (exclusive)
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+function createRoom(user1, user2, difficulty, socket, userData1, userData2) {
     const room = {
         id: uuid.v4(),
         difficulty: difficulty,
         players: [user1, user2],
         status: "waiting",
+        submit: [],
+        question: null,
+        code: null,
+        dataUser1: userData1,
+        dataUser2: userData2,
     };
     console.log("room" + room.id);
     rooms.set(room.id, room);
     console.log("room");
     user1.join(room.id);
-    console.log("asdfa");
     user2.join(room.id);
-    socket.to(room.id).emit("matchFound", room.id, user1.id, user2.id);
-    user2.to(room.id).emit("matchFound", room.id, user1.id, user2.id);
     console.log("matched");
-    return room;
+    const fetchQuestions = async () => {
+        try {
+          const response = await axios.get(`${questionURL}/questions/filter`, {
+            params: {
+              categories: [],
+              difficulty: difficulty,
+              limit: 'List All',
+            },
+          });
+          const idx = getRandomInt(0, response.data.length)
+          const question = response.data[idx];
+          room.question = question;
+          socket.to(room.id).emit("matchFound", room.id, user1.id, user2.id, question);
+          user2.to(room.id).emit("matchFound", room.id, user1.id, user2.id, question);
+        } catch (error) {
+          console.error('Error fetching questions:', error);
+        }
+      };
+    fetchQuestions();
 }
 
 socketServer.on("connection", (socket) => {
     console.log("Socket connected: " + socket.id);
 
-    socket.on("joinQueue", (difficulty) => {
+    socket.on("submit_question", (socket_id, room) => {
+        console.log("submitting question");
+        const current_room = rooms.get(room);
+        const player_1 = current_room.players[0];
+        const player_2 = current_room.players[1];
+        const submitQueue = current_room.submit;
+        if (submitQueue.length === 0 ) {
+            submitQueue.push(socket_id);
+            const message = "System: " + socket_id + " has queue for submit, waiting for other user."; 
+            player_1.to(room).emit("get-message", message);
+            player_2.to(room).emit("get-message", message);
+        }else if (socket_id !== submitQueue[0]) {
+            player_1.to(room).emit("leave_room");
+            player_2.to(room).emit("leave_room");
+            const now = new Date();
+            const day = now.getDay(); // returns a number representing the day of the week, starting with 0 for Sunday
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+
+            const submitAttempt = async () => {
+                try {
+                  const object = await axios.get(`${dbURL}/user/question`, {
+                    params: {
+                        username :  player_1,
+                        question : player_1,
+                        partner : player_2,
+                        completed : true,
+                        date : day,
+                        code : current_room.code
+                    },
+                  });
+                } catch (error) {
+                  console.error('Error submitting attempt:', error);
+                }
+              };
+            submitAttempt();
+             
+        }
+    });
+
+    socket.on("joinQueue", (difficulty, userData) => {
         console.log(socket + "User joined on difficulty: " + difficulty);
         var match = null;
+        data = {
+            socket: socket,
+            userData: userData
+        }
         if (difficulty === "Easy") {
             if (easyQueue.length > 0) {
                 match = easyQueue.shift();
             } else {
-                easyQueue.push(socket);
+                easyQueue.push(data);
             }
         } else if (difficulty === "Medium") {
             if (mediumQueue.length > 0) {
                 match = mediumQueue.shift();
             } else {
-                mediumQueue.push(socket);
+                mediumQueue.push(data);
             }
         } else if (difficulty === "Hard") {
             if (hardQueue.length > 0) {
                 match = hardQueue.shift();
             } else {
-                hardQueue.push(socket);
+                hardQueue.push(data);
             }
         }
-        console.log(socket.id + " " + match);
+        //console.log(socket.id + " " + match.socket);
         if(match !== null) {
             console.log("match" + match.id);
-            createRoom(socket, match, difficulty, socket);
+            createRoom(socket, match.socket, difficulty, socket, data.userData, match.userData);
+            console.log("user 1= "+data.userData.username);
+            console.log("user 2= "+ match.userData.username);
         }
     });
 
@@ -108,11 +180,10 @@ socketServer.on("connection", (socket) => {
                 input: null
             }
         };
+        room.code = data;
 
         axios(config)
         .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            console.log(response.data.output);
             const current_room = rooms.get(room);
             const player_1 = current_room.players[0];
             const player_2 = current_room.players[1];
@@ -149,14 +220,19 @@ socketServer.on("connection", (socket) => {
         const current_room = rooms.get(room);
         const player_1 = current_room.players[0];
         const player_2 = current_room.players[1];
-        const message = socket_id + " : " +userMessage; 
+        message = "";
+        console.log(room)
+        console.log(player_2.id)
+        console.log(player_1.id)
+        console.log(socket_id)
+        if (player_1.id === socket_id) {
+            message = current_room.dataUser1.username + ": " + userMessage;
+        } else {
+            message = current_room.dataUser2.username + ": " + userMessage;
+        }
         console.log(message);
         player_1.to(room).emit("get-message", message);
         player_2.to(room).emit("get-message", message);
     
     });
 });
-
-//server.listen(PORT, () => {
-//    console.log("Listening on port " + PORT);
-//});

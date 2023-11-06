@@ -46,14 +46,14 @@ function EditorComp({roomJoined, setOutput, socket}) {
         <div id='editor'>
             <div style={{ display: 'flex'}}>
                 <Editor 
-                height="60vh"
-                width="74.2vw"
+                height="57vh"
+                width="57.6vw"
                 theme='vs-dark'
                 language='python' // Going to be change based on the user
                 onMount={handleOnMount}
                 />
             </div>
-            <button onClick={handleCompile}>Compile</button>
+            <button onClick={handleCompile} style={{ width: '100%', height :'3vh', backgroundColor:'green', color: 'white' }}>Compile</button>
         </div>
     );
 }

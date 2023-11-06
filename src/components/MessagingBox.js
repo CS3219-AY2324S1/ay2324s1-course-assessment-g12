@@ -15,7 +15,7 @@ function MessagingBox({socket, roomJoined}) {
     border: '1px solid #d4d4d4',
     borderRadius: '4px',
     width: '100%',
-    height: '100%',
+    height: '30vh',
     display: 'flex',
     flexDirection: 'column',
   };
@@ -29,7 +29,6 @@ function MessagingBox({socket, roomJoined}) {
 
   const messageInputStyle = {
     padding: '1px',
-    overflowY: 'auto',
 
   };
 
@@ -51,6 +50,7 @@ function MessagingBox({socket, roomJoined}) {
   };
 
   socket.on("get-message", msg => {
+    console.log(msg)
     setMessages(prevMessages => [...prevMessages, msg]);
   })
 

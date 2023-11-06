@@ -13,7 +13,7 @@ const Difficulty = [
   { value: 'Hard', label: 'Hard' },
 ];
 
-function MatchingBtn({ callback, socket, setRoomJoined }) {
+function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30); // Set your initial countdown value here
 
@@ -27,7 +27,7 @@ function MatchingBtn({ callback, socket, setRoomJoined }) {
     buttonHandler();
     console.log(data);
     console.log("submitting");
-    socket.timeout(30000).emit("joinQueue", data.difficulty, (err) => {
+    socket.timeout(30000).emit("joinQueue", data.difficulty, userData, (err) => {
       if (err) {
         setIsLoading(false);
         socket.emit("timeout", data.difficulty);
@@ -58,10 +58,12 @@ function MatchingBtn({ callback, socket, setRoomJoined }) {
     }
   }, [countdown]);
 
-  socket.on("matchFound", (room, user1_id, user2_id) => {
+  socket.on("matchFound", (room, user1_id, user2_id, question) => {
     setRoomJoined(room);
     setIsLoading(false);
+    setQuestion(question);
     callback(true);
+    console.log(question)
   });
 
   return (
