@@ -1,6 +1,8 @@
 const id_key = "id";
 const axios = import("axios");
-const questionURL = "http://35.198.205.80";
+const questionURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3002'
+: "http://35.198.205.80";
 
 async function getAllQuestions() {
     const response = await axios.get(questionURL);

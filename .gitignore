@@ -30,6 +30,7 @@ yarn-error.log*
 
 # environments
 /services/userService/.env
+/frontend/.env
 
 # account keys
 /services/database/serviceAccountKey.json

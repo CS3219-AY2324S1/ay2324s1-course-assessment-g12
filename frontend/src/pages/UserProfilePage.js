@@ -5,7 +5,9 @@ import { auth } from '../firebase-config';
 import axios from 'axios';
 import '../style/UserProfilePage.css';
 
-const userURL = "http://35.198.205.80";
+const userURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3001'
+: "http://35.198.205.80";
 
 function UserProfilePage() {
   const navigate = useNavigate();

@@ -25,7 +25,9 @@ const Difficulty = [
   { value: 'Hard', label: 'Hard' },
 ]
 
-const questionURL = 'http://35.198.205.80';
+const questionURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3002'
+: "http://35.198.205.80";
 const authHeader = {
   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 }

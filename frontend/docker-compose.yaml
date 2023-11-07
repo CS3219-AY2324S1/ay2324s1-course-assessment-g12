@@ -1,0 +1,22 @@
+version: "0.1"
+services:
+  frontend:
+    build: ./
+    ports:
+      - "3000:3000"
+  user:
+    build: ./../services/userService
+    ports:
+      - "3001:3001"
+  question:
+    build: ./../services/questionService
+    ports:
+      - "3002:3002"
+  matching:
+    build: ./../services/matchingService
+    ports:
+      - "3003:3003"
+  database:
+    build: ./../services/database
+    ports:
+      - "3005:3005"

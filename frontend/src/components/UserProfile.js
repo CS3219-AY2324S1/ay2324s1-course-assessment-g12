@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase-config';
 
-const userURL = "http://35.198.205.80";
+const userURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3001'
+: "http://35.198.205.80";
 
 function UserProfile({ userData, user }) {
   const navigate = useNavigate();
