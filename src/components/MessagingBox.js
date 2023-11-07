@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 
-function MessagingBox({socket, roomJoined}) {
+function MessagingBox({socket, roomJoined, userData}) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [socketIO, setSocket] = useState(null);
+  // The socket
+  useEffect(() => {
+    const sock = socket;
+
+    socket.on("get-message", msg => {
+      setMessages(prevMessages => [...prevMessages, msg]);
+    });
+    setSocket(sock); // Store the socket object in state
+  }, []);
 
   const containerStyle = {
     display: 'flex',
@@ -44,23 +54,22 @@ function MessagingBox({socket, roomJoined}) {
 
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
-      socket.emit("send-message", newMessage, socket.id, roomJoined)
+      socketIO.emit("send-message", newMessage, userData, roomJoined)
       setNewMessage('');
     }
   };
-
-  socket.on("get-message", msg => {
-    console.log(msg)
-    setMessages(prevMessages => [...prevMessages, msg]);
-  })
 
   return (
     <div style={containerStyle}>
       <Box boxShadow={3} style={messageContainerStyle}>
         <div style={messageAreaStyle}>
-          {messages.map((message, index) => (
-            <div key={index}>{message}</div>
-          ))}
+          {messages.map((message, index) => {
+            if (index % 2 !== 0) { // Check if index is odd
+              return <div key={index}>{message}</div>;
+            } else {
+              return null; // Return null for even indexes (won't render)
+            }
+          })}
         </div>
         <TextField
           style={messageInputStyle}
