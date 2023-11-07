@@ -24,11 +24,23 @@ const userURL = 'http://localhost:3001';
 
 function CollaborationPage() {
   const navigate = useNavigate();
+
+  const [socket, setSocket] = useState(null);
   // The socket
-  console.log('Connecting to socket')
-  const socket = io('http://localhost:3003');
-  console.log('Connected to socket')
-  console.log(socket.id)
+  useEffect(() => {
+    // Establish the socket connection only on the first render
+    const sock = io("http://localhost:3003");
+    sock.on("compile_result", output => {
+      console.log(output)
+      setOutput(output)
+    });
+
+    sock.on("leave_room", () => {
+      navigate('/Home');
+    });
+    setSocket(sock); // Store the socket object in state
+  }, []);
+
 
   // Variable to keep track whether match is found or no
   const [isMatchFound, setMatchFound] = useState(false);
@@ -88,10 +100,7 @@ function CollaborationPage() {
     console.log('Executing code:', inputValue);
   };
 
-  socket.on("compile_result", output => {
-    console.log(output)
-    setOutput(output)
-  })
+  
 
   const editorStyles = {
     flexDirection: 'column',
@@ -136,16 +145,14 @@ function CollaborationPage() {
   };
 
   const handleSubmission = () => {
-    socket.emit("submit_question", socket.id, roomJoined);
+    socket.emit("submit_question", userData, roomJoined);
   };
 
-  socket.on("leave_room", () => {
-    navigate('/Home');
-  });
+
 
   return (
     <div>
-      {userData && (
+      {userData && socket && (
       <div style={{ display: isMatchFound ? "none" : 'flex', height: '100vh' }}>
         <MatchingBtn
           callback={setMatchFound}
@@ -156,6 +163,7 @@ function CollaborationPage() {
         />
       </div>
       )}
+      {socket && userData && (
       <div style={{ display: isMatchFound ? "flex" : 'none', height: '93.5vh' }}>
         <Grid container spacing={1} style={containerStyles}>
           <Grid item xs={5}>
@@ -198,10 +206,12 @@ function CollaborationPage() {
             </Box>
           </Grid>
           <Grid item xs={4}>
+            { roomJoined && (
             <MessagingBox 
               socket={socket}
               roomJoined={roomJoined}
-            />
+              userData={userData}
+            />)}
           </Grid>
           <Grid item xs={8}>
             <Box boxShadow={3} style={{ height: '26vh' }}>
@@ -213,7 +223,7 @@ function CollaborationPage() {
             <button onClick={handleSubmission} style={{ width: '100%', height :'4vh', backgroundColor:'red', color: 'white' }}>SUBMIT</button>
           </Grid>
         </Grid>
-      </div>
+      </div>)}
     </div>
   );
 }

@@ -58,7 +58,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
     }
   }, [countdown]);
 
-  socket.on("matchFound", (room, user1_id, user2_id, question) => {
+  socket.on("matchFound", (room, question) => {
     setRoomJoined(room);
     setIsLoading(false);
     setQuestion(question);
