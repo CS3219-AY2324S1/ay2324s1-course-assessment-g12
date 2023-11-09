@@ -119,11 +119,11 @@ async function getQuestionsByDifficulty(difficulty, limit) {
         if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits").get();
+                .orderBy("visits", 'desc').get();
         } else {
             querySnapshot = await questionsRef
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits").limit(parseInt(limit)).get();
+                .orderBy("visits", 'desc').limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -147,11 +147,11 @@ async function getQuestionsByCategories(categories, limit) {
         if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories) 
-                .orderBy("visits").get();
+                .orderBy("visits", 'desc').get();
         } else {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
-                .orderBy("visits").limit(parseInt(limit)).get();
+                .orderBy("visits", 'desc').limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -176,12 +176,12 @@ async function getQuestionsByCategoriesAndDifficulty(categories, difficulty, lim
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits").get();
+                .orderBy("visits", 'desc').get();
         } else {
             querySnapshot = await questionsRef
                 .where("categories", "array-contains-any", categories)
                 .where("difficulty", "==", difficulty)
-                .orderBy("visits").limit(parseInt(limit)).get();
+                .orderBy("visits", 'desc').limit(parseInt(limit)).get();
         }
 
         if (querySnapshot.empty) {
@@ -227,7 +227,8 @@ async function getQuestionsFromUser(username) {
 async function getLikedQuestions(username) {
     try {
         const questions = [];
-        const questionsRef = db.collection("users").doc(username).collection("likedQuestions");
+        console.log(username)
+        const questionsRef = db.collection("users").doc(username).collection("likes");
         const querySnapshot = await questionsRef.get();
 
         if (querySnapshot.empty) {
@@ -235,6 +236,7 @@ async function getLikedQuestions(username) {
         }
 
         const questionPromises = querySnapshot.docs.map(async (likedQuestion) => {
+            console.log(likedQuestion.data())
             const questionsDesc = await db.collection("questions").doc(likedQuestion.data().question).get();
             return Object.assign({}, likedQuestion.data(), questionsDesc.data());
         });

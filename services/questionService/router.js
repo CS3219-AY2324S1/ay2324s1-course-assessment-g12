@@ -75,7 +75,7 @@ app.post("/question/visit", async (req, res) => {
     }
 });
 
-app.post("question/like", async(req, res) => {
+app.post("/question/like", async(req, res) => {
     try {
         const email = req.body.email;
         const userData = await axios.get(`${databaseURL}/user`, {params: {email: email}});
@@ -87,7 +87,7 @@ app.post("question/like", async(req, res) => {
     }
 })
 
-app.get("questions/like", async(req, res) => {
+app.get("/questions/like", async(req, res) => {
     try {
         const email = req.query.email;
         const userData = await axios.get(`${databaseURL}/user`, {params: {email: email}});
@@ -97,6 +97,10 @@ app.get("questions/like", async(req, res) => {
     } catch (error) {
         console.error(error);
     }
+})
+
+app.get("/", async(req, res) => {
+    console.log("Hello from question service!")
 })
 
 function authenticateToken(req, res, next) {

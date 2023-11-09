@@ -97,7 +97,10 @@ async function incrementVisits(title) {
 }
 
 async function addLike(username, title) {
-    const res = db.collection('users').doc(username).collection('likes').doc(title).update();
+    questionData = {
+        question: title
+    }
+    const res = db.collection('users').doc(username).collection('likes').doc(title).set(questionData);
     return res;
 }
 

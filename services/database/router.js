@@ -225,12 +225,13 @@ app.get("/questions/filter", async (req, res) => {
     }
 })
 
-app.post("question/like", async(req, res) => {
+app.post("/question/like", async(req, res) => {
     try {
+        console.log(req.body)
         const title = req.body.title;
         const username = req.body.username;
         await write.incrementVisits(title);
-        const response = await write.addLike(title, username);
+        const response = await write.addLike(username, title);
         
         res.status(200).json(response);
     } catch (error) {
@@ -238,7 +239,7 @@ app.post("question/like", async(req, res) => {
     }
 })
 
-app.get("questions/like", async(req, res) => {
+app.get("/questions/like", async(req, res) => {
     try {
         const username = req.query.username;
         const response = await read.getLikedQuestions(username);

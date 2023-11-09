@@ -12,6 +12,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import HomePage from './pages/HomePage';
 import Layout from './pages/Layout';
 import AddQuestionPage from './pages/AddQuestionPage';
+import "dotenv/config"
 
 function App() {
   return (
