@@ -100,30 +100,34 @@ const LikedQuestionList = () => {
           </tr>
         </thead>
       </table>
-      <div className="liked-questions-table">
-        <table className="user-table-container">
-          <tbody>
-            {likedQuestions.map((question, index) => (
-              <tr className="question-row" key={index}>
-                <td style={{ textAlign: 'left' }} onClick={() => handleRowClick(question)}>
-                  {question.title}
-                </td>
-                <td style={{ textAlign: 'left' }}>
-                  <span>{question.visits}</span>
-                  <IconButton onClick={() => handleLike(question)}>
-                    {likedQuestions.length > 0 &&
-                    likedQuestions.some((likedQuestion) => likedQuestion.title === question.title) ? (
-                      <FavoriteIcon color="secondary" />
-                    ) : (
-                      <FavoriteBorderIcon color="secondary" />
-                    )}
-                  </IconButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {likedQuestions.length > 0 ? ( 
+        <div className="liked-questions-table">
+          <table className="user-table-container">
+            <tbody>
+              {likedQuestions.map((question, index) => (
+                <tr className="question-row" key={index}>
+                  <td style={{ textAlign: 'left' }} onClick={() => handleRowClick(question)}>
+                    {question.title}
+                  </td>
+                  <td style={{ textAlign: 'left' }}>
+                    <span>{question.visits}</span>
+                    <IconButton onClick={() => handleLike(question)}>
+                      {likedQuestions.length > 0 &&
+                      likedQuestions.some((likedQuestion) => likedQuestion.title === question.title) ? (
+                        <FavoriteIcon color="secondary" />
+                      ) : (
+                        <FavoriteBorderIcon color="secondary" />
+                      )}
+                    </IconButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p>No liked questions available.</p>
+      )}
       {selectedQuestion && (
         <div className="modal-background">
           <QuestionCard question={selectedQuestion} onClose={handleCloseCard} />

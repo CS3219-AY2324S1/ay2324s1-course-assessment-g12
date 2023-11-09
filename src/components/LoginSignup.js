@@ -65,7 +65,7 @@ const LoginSignup = () => {
               "username": username,
               "language": language,
               "level": level,
-              "role": "registered user"
+              "role": "admin"
             });
           
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);

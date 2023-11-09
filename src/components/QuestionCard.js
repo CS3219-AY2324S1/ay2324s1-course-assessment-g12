@@ -80,11 +80,11 @@ const QuestionCard = ({ question, onClose }) => {
         </p>
         <div className="card-actions">
           {isEditing ? (
-            <button onClick={handleSaveClick} className="save-button">
+            <button onClick={handleSaveClick} className="save-button-card">
               SAVE
             </button>
           ) : (
-            <button onClick={handleEditClick} className="edit-button">
+            <button onClick={handleEditClick} className="edit-button-card">
               EDIT
             </button>
           )}
