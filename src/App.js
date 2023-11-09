@@ -12,6 +12,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import HomePage from './pages/HomePage';
 import Layout from './pages/Layout';
 import AddQuestionPage from './pages/AddQuestionPage';
+import AdminQuestionPage from './pages/AdminQuestionPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> 
           <Route path="/Questions" element={<Layout><QuestionPage /> </Layout>} /> 
           <Route path="/AddQuestion" element={<Layout><AddQuestionPage /> </Layout>} /> 
+          <Route path="/AdminQuestions" element={<Layout><AdminQuestionPage /> </Layout>} />
         </Routes>
       </BrowserRouter>
     </div>
