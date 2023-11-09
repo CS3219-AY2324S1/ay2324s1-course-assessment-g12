@@ -68,7 +68,7 @@ async function getAllQuestions(limit) {
         if (limit == "List All") {
             limit = 100;
         }
-        const questionsRef = db.collection("questions").limit(parseInt(limit));
+        const questionsRef = db.collection("questions")
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;

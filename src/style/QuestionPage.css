@@ -119,8 +119,8 @@
 }
   
 
-.save-button,
-.edit-button {
+.save-button-card,
+.edit-button-card {
   background-color: #BFBFBF; /* Green */
   border: none;
   color: white;
@@ -135,7 +135,7 @@
   transition: background-color 0.3s;
 }
 
-.save-button:hover,
-.edit-button:hover {
-  background-color: #BFBFBF; /* Darker green on hover */
+.save-button-card:hover,
+.edit-button-card:hover {
+  background-color: #BFBFBF; 
 }
