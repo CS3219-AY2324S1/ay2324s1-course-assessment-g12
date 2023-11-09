@@ -45,8 +45,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
           },
         });
         setQuestions(response.data);
-        console.log("Questions:")
-        console.log(response.data); 
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
@@ -73,9 +71,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-    const response = await axios.post(`${questionURL}/question/visit`, {
-      title: question.title,
-    });
     document.body.style.overflow = 'hidden';
   };
 
@@ -86,23 +81,13 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const handleLike = async (question) => {
     try {
-      // Check if the question is already liked
-      //[].some((likedQuestion) => likedQuestion.id === question.id);
-      console.log(question)
-
-      //console.log(likedQuestions)
-
-      //const isLiked = likedQuestions.includes(question);
+     
       const isLiked = likedQuestions.length > 0 && likedQuestions.some(likedQuestion => likedQuestion.title === question.title)
-      console.log(isLiked); 
+    
       if (isLiked) {
-        console.log("its already liked")
-        // If already liked, remove it from the liked questions
         const updatedLikedQuestions = likedQuestions.filter((q) => q.title !== question.title);
         setLikedQuestions(updatedLikedQuestions);
       } else {
-        console.log("its not yet liked")
-        // If not liked, add it to the liked questions
         setLikedQuestions([...likedQuestions, question]);
       }
 

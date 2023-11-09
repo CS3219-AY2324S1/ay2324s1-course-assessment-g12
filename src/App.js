@@ -10,7 +10,9 @@ import LoginPage from './pages/LoginPage'
 import QuestionPage from './pages/QuestionPage';
 import UserProfilePage from './pages/UserProfilePage';
 import HomePage from './pages/HomePage';
+import AdminLayout from './pages/AdminLayout'; 
 import Layout from './pages/Layout';
+import LoginLayout from './pages/LoginLayout';
 import AddQuestionPage from './pages/AddQuestionPage';
 import AdminQuestionPage from './pages/AdminQuestionPage';
 
@@ -20,12 +22,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Layout> <HomePage /> </Layout>} />
-          <Route path ="/LoginPage" element={<LoginPage />} />
+          <Route path ="/LoginPage" element={<LoginLayout><LoginPage /></LoginLayout>} />
           <Route path="/Home" element={<Layout><HomePage /> </Layout>} /> 
           <Route path="/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> 
           <Route path="/Questions" element={<Layout><QuestionPage /> </Layout>} /> 
-          <Route path="/AddQuestion" element={<Layout><AddQuestionPage /> </Layout>} /> 
-          <Route path="/AdminQuestions" element={<Layout><AdminQuestionPage /> </Layout>} />
+          <Route path="/AddQuestion" element={<AdminLayout><AddQuestionPage /> </AdminLayout>} /> 
+          <Route path="/AdminQuestions" element={<AdminLayout><AdminQuestionPage /> </AdminLayout>} />
         </Routes>
       </BrowserRouter>
     </div>

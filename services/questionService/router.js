@@ -13,11 +13,8 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.post("/question", authenticateToken, async (req, res) => {
-    if (req.role != "admin")
-        res.status(403).json({
-            error: "You do not have the required permissions to add questions.",
-        });
+app.post("/question", async (req, res) => {
+    console.log("hello")
     const response = await axios.post(`${databaseURL}/question`, req.body);
     res.send(response.data);
 });
