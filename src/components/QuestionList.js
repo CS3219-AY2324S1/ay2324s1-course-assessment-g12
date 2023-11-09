@@ -10,6 +10,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const questionURL = 'http://localhost:3002';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
   const [likedQuestions, setLikedQuestions] = useState([]); 
@@ -96,7 +98,9 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
         email: auth.currentUser.email,
         title: question.title,
         liked: !isLiked,
-      });
+      }, {headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }});
   
       // Check if the request was successful (you may want to add more error handling)
       if (response.status === 200) {

@@ -13,6 +13,8 @@ import "../style/SubmitButton.css";
 import axios from 'axios';
 const socket = io('http://localhost:3003');
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 
 const Difficulty =[
     { value: 'Easy', label: 'Easy' },

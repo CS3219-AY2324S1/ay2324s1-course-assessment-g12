@@ -11,6 +11,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const questionURL = 'http://localhost:3002';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
   const [likedQuestions, setLikedQuestions] = useState([]); 
@@ -85,7 +87,6 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
   const handleLike = async (question) => {
     try {
-     
       const isLiked = likedQuestions.length > 0 && likedQuestions.some(likedQuestion => likedQuestion.title === question.title)
     
       if (isLiked) {
@@ -100,7 +101,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
         email: auth.currentUser.email,
         title: question.title,
         liked: !isLiked,
-      });
+      }, {headers: await localStorage.getItem('accessToken')});
   
       // Check if the request was successful (you may want to add more error handling)
       if (response.status === 200) {

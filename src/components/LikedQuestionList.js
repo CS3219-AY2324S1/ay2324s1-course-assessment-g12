@@ -8,6 +8,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const questionURL = 'http://localhost:3002';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 const LikedQuestionList = () => {
   const [likedQuestions, setLikedQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -67,6 +69,7 @@ const LikedQuestionList = () => {
       }
 
       // Send a request to your server to update the likes
+      console.log('despacito')
       const response = await axios.post(`${questionURL}/question/like`, {
         email: auth.currentUser.email,
         title: question.title,

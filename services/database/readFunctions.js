@@ -1,6 +1,6 @@
 const firebaseAdmin = require("./firebase.js");
 const db = firebaseAdmin.firestore();
-const getAuth = firebaseAdmin.auth(); 
+const getAuth = firebaseAdmin.auth();
 
 async function getUser(criteria, flag) {
     const usersRef = db.collection("users");
@@ -28,7 +28,7 @@ async function checkUserExistsByUsername(username) {
     const usersRef = db.collection("users");
     const snapshot = await usersRef
         .where("username", "==", username)
-        .get(); 
+        .get();
     if (snapshot.empty) {
         return false;
     } else {
@@ -44,9 +44,9 @@ async function getUidFromToken(idToken) {
         console.error("Error verifying ID token:", error);
         throw error; // You can choose to handle the error as needed
     }
-  }
+}
 
-  
+
 async function getQuestion(title) {
     try {
         const questionsRef = db.collection("questions");
@@ -68,7 +68,7 @@ async function getAllQuestions(limit) {
         if (limit == "List All") {
             limit = 100;
         }
-        const questionsRef = db.collection("questions")
+        const questionsRef = db.collection("questions").limit(parseInt(limit));
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;
@@ -139,7 +139,7 @@ async function getQuestionsByCategories(categories, limit) {
         var querySnapshot;
         if (limit === undefined || limit === "List All") {
             querySnapshot = await questionsRef
-                .where("categories", "array-contains-any", categories) 
+                .where("categories", "array-contains-any", categories)
                 .orderBy("visits").get();
         } else {
             querySnapshot = await questionsRef
@@ -219,12 +219,12 @@ async function getQuestionsFromUser(username) {
 
 async function getLikedQuestions(username) {
     try {
-        console.log("hereee"); 
-        console.log(username); 
+        console.log("hereee");
+        console.log(username);
         const questions = [];
         const questionsRef = db.collection("users").doc(username).collection("likes");
 
-        console.log("does it go here???"); 
+        console.log("does it go here???");
         const querySnapshot = await questionsRef.get();
 
         if (querySnapshot.empty) {
@@ -249,4 +249,4 @@ async function getLikedQuestions(username) {
     }
 }
 
-module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions, getAuth};
