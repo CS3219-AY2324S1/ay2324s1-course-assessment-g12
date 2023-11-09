@@ -112,4 +112,9 @@
     border-radius: 5px; 
   }
 
+/*pagination styles*/
+
+.pagination {
+  margin-top: 1vh;
+}
   

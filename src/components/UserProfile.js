@@ -140,7 +140,7 @@ function UserProfile({ userData, user }) {
             editedLanguage
           )}
         </p>
-        <p className='user-info-item'>{userData.role}</p>
+        <p className='user-info-item'>Role: {userData.role}</p>
         <div className='signout-delete-container'>
           <Button variant="contained" color="secondary" onClick={signOutAccount}>
             Sign Out
