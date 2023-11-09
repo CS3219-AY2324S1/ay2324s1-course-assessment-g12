@@ -151,7 +151,7 @@ app.get('/user/authenticate', async (req, res) => {
 })
 
 app.get("/", (req, res) => {
-    console.log("hello blyat")
+    console.log("Hello from user service!")
 })
 
 app.listen(PORT, () => {

@@ -112,8 +112,22 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">All Topics</InputLabel>
+      <FormControl
+        sx={{
+          m: 0,
+          width: 300,
+          // Add custom styling here
+          backgroundColor: '#166AC5', // Set the background color to purple
+          color: 'white', // Set the text color to white
+          borderRadius: '5px', // Add rounded corners
+        }}
+      >
+        <InputLabel id="demo-multiple-checkbox-label" 
+        sx={{ 
+          color: 'white', 
+          //transform: 'translate(14px, 10px) scale(1)' // Move label to top
+          }}
+          >ALL TOPICS</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -123,6 +137,9 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
           input={<OutlinedInput label="Category" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
+          sx={{
+            height: '38px', // Set the height to 40px (adjust as needed)
+          }}
         >
           {categories.map((category) => (
             <MenuItem key={category} value={category}>

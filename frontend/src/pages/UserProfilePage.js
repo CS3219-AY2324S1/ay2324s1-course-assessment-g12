@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UserProfile from '../components/UserProfile';
+import LikedQuestionList from '../components/LikedQuestionList';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase-config';
 import axios from 'axios';
@@ -43,12 +44,17 @@ function UserProfilePage() {
 
   return (
     <div className='App-header'>
+      <div className="user-profile-header">
       <div className="user-profile-page">
         {userData ? (
           <UserProfile userData={userData} user={user} />
         ) : (
           <p>Loading user data...</p>
         )}
+      </div>
+      <div className="liked-questions-div">
+        <LikedQuestionList />
+      </div>
       </div>
     </div>
   );

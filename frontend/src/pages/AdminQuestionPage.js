@@ -1,11 +1,11 @@
-import QuestionList from '../components/QuestionList';
+import AdminQuestionList from '../components/AdminQuestionList';
 import CategoryMenu from '../components/CategoryMenu';
 import LevelMenu from '../components/LevelMenu';
 import ListMenu from '../components/ListMenu';
 import { useState } from 'react';
 import '../style/QuestionPage.css';
 
-function QuestionPage() {
+function AdminQuestionPage() {
 
   const [selectedCategory, setSelectedCategory] = useState([]); // Default value
   const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
@@ -45,10 +45,10 @@ function QuestionPage() {
         <div className='menu-item'><LevelMenu selectedLevel={selectedLevel} onLevelChange={handleLevelChange}/></div>
         <div className='menu-item'><ListMenu selectedList={selectedList} onListChange={handleListChange}/></div>
         </div>        
-        <QuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedPopularity}/>
+        <AdminQuestionList selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedPopularity}/>
       </div>
       </div>
   );
 }
 
-export default QuestionPage;
+export default AdminQuestionPage;
