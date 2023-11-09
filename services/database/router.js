@@ -161,6 +161,7 @@ app.get("/question", async (req, res) => {
 app.patch("/question", async (req, res) => {
     try {
         const title = req.body.title;
+        console.log(title)
         const data = req.body.data;
         await write.updateQuestion(title, data);
         res.status(200).send("Question updated");
@@ -211,6 +212,10 @@ app.get("/questions/filter", async (req, res) => {
             response = await read.getAllQuestions();
         } else {
             response = await read.filterQuestions(categories, difficulty, limit);
+            console.log(response)
+            await response.sort(function(a, b) {
+                return b.visits - a.visits;
+            })
         }
         res.status(200).json(response);
     } catch (error) {
