@@ -72,8 +72,8 @@ function CollaborationPage() {
       }
 
       const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email } });
-      console.log(response.data);
-
+      //console.log(response.data);
+      
       setUserData(response.data);
     } catch (error) {
       console.error("Error:", error);
@@ -99,8 +99,6 @@ function CollaborationPage() {
     // Add your code execution logic here
     console.log('Executing code:', inputValue);
   };
-
-  
 
   const editorStyles = {
     flexDirection: 'column',

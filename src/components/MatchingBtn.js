@@ -27,12 +27,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
     buttonHandler();
     console.log(data);
     console.log("submitting");
-    socket.timeout(30000).emit("joinQueue", data.difficulty, userData, (err) => {
-      if (err) {
-        setIsLoading(false);
-        socket.emit("timeout", data.difficulty);
-      }
-    });
+    socket.emit("joinQueue", data.difficulty, userData);
   };
 
   useEffect(() => {
