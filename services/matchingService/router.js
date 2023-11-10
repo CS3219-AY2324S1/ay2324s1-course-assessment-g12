@@ -181,6 +181,9 @@ async function listenRabbitMQ() {
             code: null,
             dataUser1: userData1,
             dataUser2: userData2,
+            isFinished: false,
+            user1Socket: socketUser1.id,
+            user2Socket: socketUser2.id
         };
         console.log("room" + room.id);
         rooms.set(room.id, room);
@@ -215,6 +218,7 @@ async function listenRabbitMQ() {
             console.log("submitting question");
             const current_room = rooms.get(room);
             const submitQueue = current_room.submit;
+            current_room.isFinished = true;
             if (submitQueue.length === 0 ) {
                 submitQueue.push(senderUserData.username);
                 const message = "System: " + senderUserData.username + " has queue for submit, waiting for other user."; 
@@ -232,9 +236,9 @@ async function listenRabbitMQ() {
                     try {
                     const object = await axios.post(`${dbURL}/user/question`, {
                         params: {
-                            username :  current_room.dataUser1.username,
+                            username :  current_room.dataUser1,
                             question : current_room.question.title,
-                            partner : current_room.dataUser2.username,
+                            partner : current_room.dataUser2,
                             completed : true,
                             date : dateToday,
                             code : current_room.code
@@ -242,9 +246,9 @@ async function listenRabbitMQ() {
                     });
                     const object2 = await axios.post(`${dbURL}/user/question`, {
                         params: {
-                            username :  current_room.dataUser2.username,
+                            username :  current_room.dataUser2,
                             question : current_room.question.title,
-                            partner : current_room.dataUser1.username,
+                            partner : current_room.dataUser1,
                             completed : true,
                             date : dateToday,
                             code : current_room.code
@@ -345,6 +349,64 @@ async function listenRabbitMQ() {
 
         socket.on("disconnect", () => {
             console.log("Socket disconnected: " + socket.id);
+            const socketID = socket.id;
+            
+            const session = new Map(
+                [...rooms]
+                .filter(([roomID, room]) => room.user1Socket === socketID || room.user2Socket === socketID )
+            );
+              
+            console.info([...session]); 
+
+            let current_room = session.values().next().value;
+            console.log(current_room);
+            
+            console.log("qworuyiu");
+            console.log(session.size); 
+            
+            if (session.size > 0) {
+                session.forEach(room => {
+                    socketServer.to(room.id).emit("leave_room");
+                });
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                const day = String(now.getDate()).padStart(2, '0');
+
+                const dateToday = `${year}-${month}-${day}`;
+
+                const submitAttempt = async () => {
+                    try {
+                        
+                    console.log("submitting asfg")
+                    const object = await axios.post(`${dbURL}/user/question`, {
+                        params: {
+                            username :  current_room.dataUser1,
+                            question : current_room.question.title,
+                            partner : current_room.dataUser2,
+                            completed : current_room.isFinished,
+                            date : dateToday,
+                            code : current_room.code
+                        },
+                    });
+                    const object2 = await axios.post(`${dbURL}/user/question`, {
+                        params: {
+                            username :  current_room.dataUser2,
+                            question : current_room.question.title,
+                            partner : current_room.dataUser1,
+                            completed : current_room.isFinished,
+                            date : dateToday,
+                            code : current_room.code
+                        },
+                    });
+                    } catch (error) {
+                    console.error('Error submitting attempt:', error);
+                    }
+                };
+                console.log("try submitting attempt")
+                submitAttempt();
+                console.log("submitting attempt")
+            }
         });
 
         socket.on("send-message", (userMessage, senderUserData, room) => {

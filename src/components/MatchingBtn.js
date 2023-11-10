@@ -50,7 +50,9 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
   useEffect(() => {
     if (countdown === 0) {
       setIsLoading(false);
+      alert("No match found");
     }
+
   }, [countdown]);
 
   socket.on("matchFound", (room, question) => {
