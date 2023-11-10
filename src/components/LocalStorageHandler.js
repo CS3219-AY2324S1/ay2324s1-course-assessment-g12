@@ -53,4 +53,25 @@ function postQuestion(data) {
   return "Question added";
 }
 
-export  {postQuestion, deleteQuestions, getAllQuestions, getQuestion};
+function updateQuestion(data) {
+  //title should be unique
+  const currentQuestion = localStorage.getItem(data.title)
+  if (currentQuestion === null) {
+    //return "Question with the same title already exists";
+    alert("Question with the same title doesn't exists");
+    return;
+  }
+  console.log(data);  
+  
+  const questionId = currentQuestion.id
+
+  data.id = questionId
+  console.log(data);
+  const jsonData = JSON.stringify(data);
+
+  localStorage.setItem(data.title, jsonData);
+  window.location.reload();
+  return "Question updated";
+}
+
+export  {postQuestion, deleteQuestions, getAllQuestions, getQuestion, updateQuestion};

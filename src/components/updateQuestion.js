@@ -9,8 +9,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
-import {postQuestion} from "./LocalStorageHandler.js"
-import UpdateQuest from './updateQuestion.js';
+import {postQuestion,updateQuestion} from "./LocalStorageHandler.js"
 
 const Categories = [
   { value: 'Algorithm', label: 'Algorithm' },
@@ -25,14 +24,14 @@ const Difficulty =[
   { value: 'Hard', label: 'Hard' },
 ]
 
-function SubmitButton() {
+function UpdateQuest() {
   
   const { register, handleSubmit, formState: { errors } } = useForm();
   
   return (
     <div className="wrapper_submit">
-        <h1> Submit your questions here:</h1>
-        <form onSubmit={handleSubmit(postQuestion)}>
+        <h1> Update your questions here:</h1>
+        <form onSubmit={handleSubmit(updateQuestion)}>
         <Grid container spacing={1}>
               <Grid xs={12} item>
                 <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" }}} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })}/>
@@ -68,15 +67,15 @@ function SubmitButton() {
                       ))} </TextField>
               </Grid>
               <Grid xs={12} item>
-                <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
+                <Button type="submit" variant="contained" color="primary" fullWidth> Update</Button>
               </Grid>
               
         </Grid >
         </form>
-        <UpdateQuest/>
+        
     </div>
     
   );
 }
 
-export default SubmitButton;
+export default UpdateQuest;
