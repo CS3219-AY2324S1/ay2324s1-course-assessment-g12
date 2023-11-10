@@ -12,7 +12,11 @@ const Difficulty = [
   { value: 'Medium', label: 'Medium' },
   { value: 'Hard', label: 'Hard' },
 ];
-
+const language = [
+  { value: 'Python', label: 'Python' },
+  { value: 'C++', label: 'C++' },
+  { value: 'Java', label: 'Java' },
+];
 function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30); // Set your initial countdown value here
@@ -97,6 +101,33 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
                 {...register("difficulty", { required: true })}
               >
                 {Difficulty.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid xl={12} item>
+              <TextField
+                sx={{
+                  border: '2px solid white',
+                  bgcolor: "#FFFF",
+                  '& .MuiInputBase-input': {
+                    color: 'black',
+                    textAlign: 'left',
+                  },
+                }}
+                select
+                defaultValue=""
+                label="Language"
+                name="Language"
+                placeholder="Java"
+                variant="filled"
+                fullWidth
+                required
+                {...register("Language", { required: true })}
+              >
+                {language.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

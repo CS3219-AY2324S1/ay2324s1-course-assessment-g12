@@ -366,7 +366,7 @@ async function listenRabbitMQ() {
             
             if (session.size > 0) {
                 session.forEach(room => {
-                    socketServer.to(room.id).emit("leave_room");
+                    socketServer.to(room.id).emit("partner_left");
                 });
                 const now = new Date();
                 const year = now.getFullYear();

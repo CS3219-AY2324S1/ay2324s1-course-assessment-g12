@@ -35,6 +35,12 @@ function CollaborationPage() {
       setOutput(output)
     });
 
+    sock.on("partner_left", () => {
+      console.log("partner left")
+      alert("Your partner has left the room, yoiu'll be redirected to the home page")
+      navigate('/Home')
+    });
+
     sock.on("leave_room", () => {
       navigate('/Home');
     });
