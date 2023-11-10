@@ -89,16 +89,6 @@ app.get("/user/check/username", async (req, res) => {
     }
 });
 
-app.get("/user/verify", async (req, res) => {
-    try {
-        const token = req.query.token;
-        const uid = await read.getUidFromToken(token);
-        res.status(200).send({ uid: uid });
-    } catch (error) {
-        console.error(error);
-    }
-});
-
 app.post('/user/question', async (req, res) => {
     try {
         const username = req.body.username;

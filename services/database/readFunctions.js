@@ -35,17 +35,6 @@ async function checkUserExistsByUsername(username) {
         return true;
     }
 }
-
-async function getUidFromToken(idToken) {
-    try {
-        const decodedToken = await getAuth.verifyIdToken(idToken);
-        return decodedToken;
-    } catch (error) {
-        console.error("Error verifying ID token:", error);
-        throw error; // You can choose to handle the error as needed
-    }
-  }
-
   
 async function getQuestion(title) {
     try {
@@ -249,4 +238,4 @@ async function getLikedQuestions(username) {
     }
 }
 
-module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };

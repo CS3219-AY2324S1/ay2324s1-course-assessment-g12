@@ -39,14 +39,15 @@ const LoginSignup = () => {
     if (isLoginView) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        /** 
         await auth.currentUser.getIdToken(true).then((idToken) => {
           localStorage.setItem('accessToken', idToken);
         }).catch((error) => {
           console.log(error);
-        });
+        }); */
         
         console.log('User signed in successfully:', userCredential.user);
-        navigate('/Home');
+        navigate('/Questions');
       } catch (error) {
         alert('Error logging in: Email or password is incorrect.');
         console.error('Error logging in:', error);
@@ -64,20 +65,19 @@ const LoginSignup = () => {
               "email": email,
               "username": username,
               "language": language,
-              "level": level,
-              "role": "admin"
+              "level": level
             });
           
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-         
+         /** 
           await auth.currentUser.getIdToken(true).then((idToken) => {
             localStorage.setItem('accessToken', idToken);
           }).catch((error) => {
             console.log(error);
-          });
+          });*/
         
           console.log('User signed up successfully.', userCredential.user);
-          navigate('/Home');
+          navigate('/Questions');
         }
       } catch (error) {
         console.error('Error signing up:', error);
