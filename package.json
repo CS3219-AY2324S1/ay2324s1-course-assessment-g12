@@ -24,22 +24,19 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "launch": "concurrently \"npm run frontend\" \"npm run start-database\" \"npm run start-questionService\" \"npm run start-userService\" \"npm run start-matchingService\"",
+    "launch": "concurrently \"npm run frontend\" \"npm run start-database\" \"npm run start-questionService\" \"npm run start-userService\" ",
     "start-frontend": "react-scripts start",
     "start-database": "nodemon services/database/router.js",
     "start-userService": "nodemon services/userService/router.js",
-    "start-matchingService": "nodemon services/matchingService/router.js",
     "start-questionService": "nodemon services/questionService/router.js",
     "frontend": "react-scripts start",
     "userService": "concurrently \"npm run start-userService\" \"npm run start-database\"",
     "questionService": "concurrently \"npm run start-questionService\" \"npm run start-database\"",
-    "matchingService": "concurrently \"npm run start-questionService\" \"npm run start-matchingService\" \"npm run start-database\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-user1": "set PORT=3000 && react-scripts start",
-    "start-user2": "set PORT=3006 && react-scripts start",
-    "test-matching": "concurrently \"npm run start-user1\" \"npm run start-user2\" \"npm run matchingService\""
+    "start-user2": "set PORT=3006 && react-scripts start"
   },
   "eslintConfig": {
     "extends": [

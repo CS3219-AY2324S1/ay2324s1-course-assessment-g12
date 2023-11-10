@@ -1,13 +1,9 @@
 import React from 'react';
 import { useForm, reset } from 'react-hook-form';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
 import CategoryMenuAdd from './CategoryMenuAdd';
 import "../style/SubmitButton.css";
 import axios from 'axios';
@@ -37,7 +33,58 @@ function SubmitButton() {
   const handleSubmission = async (data) => {
     const { title, content, categories, difficulty } = data;
     console.log(title, content, categories, difficulty);
+  
+    // Check if the "categories" field is empty
+    if (!categories || categories.length === 0) {
+      alert('Please fill out the Category field.');
+      return;
+    }
+  
+          /**
+           * try {
+            // Check for duplicate title
+            const duplicateCheckResponse = await axios.get(`${questionURL}/question`, {
+            params: { title },
+            headers: authHeader,
+          });
 
+          if (duplicateCheckResponse.status === 404) {
+            // No question found, proceed with adding the question
+            const response = await axios.post(`${questionURL}/question`, {
+              title,
+              categories,
+              difficulty,
+              content,
+            }, { headers: authHeader });
+
+          // Handle the success response here
+          console.log('ADD Request Successful:', response.data);
+
+          reset({
+            title: "",
+            content: "",
+            categories: [],
+            difficulty: ""
+          });
+        } else if (duplicateCheckResponse.data.length > 0) {
+          // Question with the same title already exists
+          alert('Question with the same title already exists. Please choose a different title.');
+        } else {
+          // Handle other cases or errors
+          console.error('Unexpected response:', duplicateCheckResponse);
+        }
+      } catch (error) {
+        // Handle errors here
+        console.error('Error checking duplicate title:', error);
+
+        if (error.response && error.response.status === 403) {
+          // Handle 403 Forbidden error (permissions issue)
+          alert('You do not have the required permissions to add questions.');
+        }
+      }
+          */
+          
+            /** just replace the rest of the function to test the commented code above */
     try {
       const response = await axios.post(`${questionURL}/question`, {
         title,
@@ -45,10 +92,10 @@ function SubmitButton() {
         difficulty,
         content,
       }, { headers: authHeader });
-
+  
       // Handle the success response here
       console.log('ADD Request Successful:', response.data);
-
+  
       reset({
         title: "",
         content: "",
@@ -58,13 +105,14 @@ function SubmitButton() {
     } catch (error) {
       // Handle errors here
       console.error('ADD Request Error:', error);
-
+  
       if (error.response && error.response.status === 403) {
         // Handle 403 Forbidden error (permissions issue)
         alert('You do not have the required permissions to add questions.');
       }
     }
   }
+  
 
   return (
     <div className="wrapper_submit">

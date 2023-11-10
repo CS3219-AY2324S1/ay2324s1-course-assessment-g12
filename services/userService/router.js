@@ -68,15 +68,6 @@ app.get("/user/check/username", async (req, res) => {
     }
 });
 
-app.get("/user/verify", async(req, res) => {
-    try {
-        const response = await axios.get(`${databaseURL}/user/verify`, { params: req.query });
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-}); 
-
 app.post("/token", async (req, res) => {
     try {
 
