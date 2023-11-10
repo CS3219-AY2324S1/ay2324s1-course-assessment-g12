@@ -66,6 +66,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
         params: {
           'email': email
         },
+        headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
       console.log("Liked questions: ")

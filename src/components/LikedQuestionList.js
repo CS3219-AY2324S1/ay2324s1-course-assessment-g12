@@ -37,7 +37,7 @@ const LikedQuestionList = () => {
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           email: email,
-        },
+        }, headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
       console.log('Liked questions: ');

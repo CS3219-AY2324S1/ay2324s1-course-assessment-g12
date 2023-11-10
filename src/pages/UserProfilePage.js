@@ -23,7 +23,7 @@ function UserProfilePage() {
         return;
       }
       
-      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email } });
+      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email }, headers: {'Cache-Control': 'no-cache'} });
       console.log(response.data);
 
       setUserData(response.data);

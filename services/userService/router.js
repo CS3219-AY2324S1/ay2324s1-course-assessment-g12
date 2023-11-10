@@ -1,5 +1,4 @@
 require('dotenv').config({ path: __dirname + '/.env' });
-const admin = require('firebase-admin')
 const express = require('express');
 const axios = require("axios");
 const cors = require("cors");
@@ -36,6 +35,7 @@ app.post("/user", async (req, res) => {
 
 app.get("/user", async (req, res) => {
     try {
+        console.log("get user")
         const response = await axios.get(`${databaseURL}/user`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {

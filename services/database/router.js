@@ -55,13 +55,10 @@ app.post("/user", async (req, res) => {
 
 app.get("/user", async (req, res) => {
     try {
-        console.log("bpdy: " + req.body)
-        console.log("query: " + req.query)
         const username = req.query.username;
         const email = req.query.email;
         var response = null;
-        
-        console.log("a pound of weed and a bag of gold")
+
         if (username !== undefined) {
             response = await read.getUser(username, "username");
         } else {
