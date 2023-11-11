@@ -23,9 +23,6 @@ const Difficulty = [
 ]
 
 const questionURL = 'http://localhost:3002';
-const authHeader = {
-  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-}
 
 function SubmitButton() {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
@@ -40,22 +37,21 @@ function SubmitButton() {
       return;
     }
   
-          /**
-           * try {
+           try {
             // Check for duplicate title
             const duplicateCheckResponse = await axios.get(`${questionURL}/question`, {
             params: { title },
-            headers: authHeader,
           });
 
           if (duplicateCheckResponse.status === 404) {
+            console.log("help")
             // No question found, proceed with adding the question
             const response = await axios.post(`${questionURL}/question`, {
               title,
               categories,
               difficulty,
               content,
-            }, { headers: authHeader });
+            });
 
           // Handle the success response here
           console.log('ADD Request Successful:', response.data);
@@ -66,7 +62,7 @@ function SubmitButton() {
             categories: [],
             difficulty: ""
           });
-        } else if (duplicateCheckResponse.data.length > 0) {
+        } else if (duplicateCheckResponse.status === 200) {
           // Question with the same title already exists
           alert('Question with the same title already exists. Please choose a different title.');
         } else {
@@ -82,35 +78,33 @@ function SubmitButton() {
           alert('You do not have the required permissions to add questions.');
         }
       }
-          */
-          
             /** just replace the rest of the function to test the commented code above */
-    try {
-      const response = await axios.post(`${questionURL}/question`, {
-        title,
-        categories,
-        difficulty,
-        content,
-      }, { headers: authHeader });
+    // // try {
+    // //   const response = await axios.post(`${questionURL}/question`, {
+    // //     title,
+    // //     categories,
+    // //     difficulty,
+    // //     content,
+    // // });
   
-      // Handle the success response here
-      console.log('ADD Request Successful:', response.data);
+    // //   // Handle the success response here
+    // //   console.log('ADD Request Successful:', response.data);
   
-      reset({
-        title: "",
-        content: "",
-        categories: [],
-        difficulty: ""
-      });
-    } catch (error) {
-      // Handle errors here
-      console.error('ADD Request Error:', error);
+    // //   reset({
+    // //     title: "",
+    // //     content: "",
+    // //     categories: [],
+    // //     difficulty: ""
+    // //   });
+    // // } catch (error) {
+    // //   // Handle errors here
+    // //   console.error('ADD Request Error:', error);
   
-      if (error.response && error.response.status === 403) {
-        // Handle 403 Forbidden error (permissions issue)
-        alert('You do not have the required permissions to add questions.');
-      }
-    }
+    //   if (error.response && error.response.status === 403) {
+    //     // Handle 403 Forbidden error (permissions issue)
+    //     alert('You do not have the required permissions to add questions.');
+    //   }
+    // }
   }
   
 

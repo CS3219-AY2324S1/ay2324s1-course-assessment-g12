@@ -13,7 +13,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/question", async (req, res) => {
-    console.log("hello")
     const response = await axios.post(`${databaseURL}/question`, req.body);
     res.send(response.data);
 });
@@ -22,7 +21,7 @@ app.get("/question", async (req, res) => {
     const response = await axios.get(`${databaseURL}/question`, {
         params: req.query,
     });
-    res.send(response.data);
+    res.send(response.data)
 });
 
 app.patch("/question", async (req, res) => {

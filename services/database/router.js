@@ -113,14 +113,17 @@ app.post("/question", async (req, res) => {
 
 app.get("/question", async (req, res) => {
     try {
+        console.log("does it even get here");
         const title = req.query.title;
         response = await read.getQuestion(title);
 
         if (response === null) {
             res.status(404).send("Question not found");
+        } else {
+            res.status(200).send(response);
         }
-        res.status(200).send(response);
     } catch (error) {
+        console.log("brandon error");
         res.status(500).send(error);
     }
 });
@@ -128,7 +131,7 @@ app.get("/question", async (req, res) => {
 app.patch("/question", async (req, res) => {
     try {
         const title = req.body.title;
-        console.log(title)
+        console.log(title);
         const data = req.body.data;
         await write.updateQuestion(title, data);
         res.status(200).send("Question updated");
@@ -165,22 +168,30 @@ app.get("/questions/filter", async (req, res) => {
         const difficulty = req.query.difficulty;
         const limit = req.query.limit;
         var response = null;
-        if (categories === undefined && difficulty === undefined && limit === undefined) {
+        if (
+            categories === undefined &&
+            difficulty === undefined &&
+            limit === undefined
+        ) {
             response = await read.getAllQuestions();
         } else {
-            response = await read.filterQuestions(categories, difficulty, limit);
-            console.log(response)
-            await response.sort(function(a, b) {
+            response = await read.filterQuestions(
+                categories,
+                difficulty,
+                limit
+            );
+            console.log(response);
+            await response.sort(function (a, b) {
                 return b.visits - a.visits;
-            })
+            });
         }
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
     }
-})
+});
 
-app.post("/question/like", async(req, res) => {
+app.post("/question/like", async (req, res) => {
     try {
         const title = req.body.title;
         const username = req.body.username;
@@ -189,23 +200,23 @@ app.post("/question/like", async(req, res) => {
         await write.incrementVisits(title, liked);
 
         const response = await write.addLike(username, title, liked);
-        
+
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
     }
-})
+});
 
-app.get("/questions/like", async(req, res) => {
+app.get("/questions/like", async (req, res) => {
     try {
         const username = req.query.username;
-        console.log("hehehehe")
+        console.log("hehehehe");
         const response = await read.getLikedQuestions(username);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);
     }
-})
+});
 
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
