@@ -32,12 +32,6 @@ app.patch("/question", async (req, res) => {
 });
 
 app.delete("/question", async (req, res) => {
-    /** 
-    if (req.role != "admin")
-        res.status(403).json({
-            error: "You do not have the required permissions to delete questions.",
-        });
-        */
     const response = await axios.delete(`${databaseURL}/question`, {
         params: req.query, headers: req.headers
     });
@@ -105,21 +99,6 @@ app.get("/questions/like", async (req, res) => {
         console.error(error);
     }
 })
-
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-    if (token == null) return res.sendStatus(401);
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
-        if (err) return res.sendStatus(403);
-        req.user = payload.username;
-        req.role = payload.role;
-        next();
-    });
-}
-
-
 
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
