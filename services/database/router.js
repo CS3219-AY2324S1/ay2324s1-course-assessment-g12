@@ -89,31 +89,6 @@ app.get("/user/check/username", async (req, res) => {
     }
 });
 
-app.post('/user/question', async (req, res) => {
-    try {
-        const username = req.body.username;
-        const question = req.body.question;
-        const partner = req.body.partner;
-        const completed = req.body.completed;
-        const date = req.body.date;
-        const code = req.body.code;
-        const response = await write.addQuestionToUser(username, question, partner, completed, date, code);
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }   
-})
-
-app.get('/user/questions', async (req, res) => {
-    try {
-        const username = req.query.username;
-        const response = await read.getQuestionsFromUser(username);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }   
-})
-
 // ------------------ Question Functions ------------------
 
 app.post("/question", async (req, res) => {
@@ -122,11 +97,13 @@ app.post("/question", async (req, res) => {
         const categories = req.body.categories;
         const difficulty = req.body.difficulty;
         const content = req.body.content;
+        const visits = 0;
         const response = await write.addQuestion(
             title,
             categories,
             difficulty,
-            content
+            content,
+            visits
         );
         res.status(200).send(response);
     } catch (error) {
@@ -181,16 +158,6 @@ app.delete("/question", async (req, res) => {
         res.status(500).send(error);
     }
 });
-
-app.post("/question/visit", async (req, res) => {
-    try {
-        const title = req.body.title;
-        const response = await write.incrementVisits(title);
-        res.status(200).send(response);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-})
 
 app.get("/questions/filter", async (req, res) => {
     try {
