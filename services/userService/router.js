@@ -1,10 +1,9 @@
-require('dotenv').config({path: __dirname + '/.env'});
 const express = require('express');
 const axios = require("axios");
 const cors = require("cors");
+
 const PORT = 3001;
 const databaseURL = "http://localhost:3005"
-const jwt = require('jsonwebtoken');
 
 var app = express();
 app.use(express.json());
@@ -15,7 +14,7 @@ app.use(cors());
 app.delete("/user", async (req, res) => {
     try {
         console.log(req.query)
-        const response = await axios.delete(`${databaseURL}/user`, {params: req.query});
+        const response = await axios.delete(`${databaseURL}/user`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -25,7 +24,7 @@ app.delete("/user", async (req, res) => {
 app.post("/user", async (req, res) => {
     try {
         const data = req.body;
-        const response = await axios.post(`${databaseURL}/user`, data);
+        const response = await axios.post(`${databaseURL}/user`, data, {headers: req.headers});
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -34,7 +33,8 @@ app.post("/user", async (req, res) => {
 
 app.get("/user", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/user`, { params: req.query });
+        console.log("get user")
+        const response = await axios.get(`${databaseURL}/user`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -43,7 +43,7 @@ app.get("/user", async (req, res) => {
 
 app.patch("/user", async (req, res) => {
     try {
-        const response = await axios.patch(`${databaseURL}/user`, req.body);
+        const response = await axios.patch(`${databaseURL}/user`, req.body, {headers: req.headers});
         res.send(response.data);
     } catch (error) {
         console.error(error);
@@ -52,7 +52,7 @@ app.patch("/user", async (req, res) => {
 
 app.get("/user/check/email", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/user/check/email`, { params: req.query });
+        const response = await axios.get(`${databaseURL}/user/check/email`, { params: req.query, headers: req.headers});
         res.send(response.data);
     } catch (error) {
         console.error(error);
@@ -61,81 +61,25 @@ app.get("/user/check/email", async (req, res) => {
 
 app.get("/user/check/username", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/user/check/username`, { params: req.query });
+        const response = await axios.get(`${databaseURL}/user/check/username`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {
         console.error(error);
     }
 });
 
-app.get("/user/verify", async(req, res) => {
+app.get("/user/verify", async (req, res) => {
     try {
-        const response = await axios.get(`${databaseURL}/user/verify`, { params: req.query });
+        const response = await axios.get(`${databaseURL}/user/verify`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {
         console.error(error);
     }
-}); 
-
-app.post("/token", async (req, res) => {
-    try {
-
-        const userData = await axios.get(`${databaseURL}/user`, { params: req.body });
-        const refreshToken = userData.refreshToken;
-        if (refreshToken === null) return res.sendStatus(401);
-        const payload = {
-            username: userData.username,
-            email: userData.email,
-            role: userData.role
-        }
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-        res.json({ accessToken: accessToken });
-    } catch (error) {
-        console.error(error);
-    }
-})
-
-app.post("/signup", async (req, res) => {
-    try {
-        const username = req.body.username;
-        const email = req.body.email;
-        const role = req.body.role;
-
-        const payload = {
-            username: username,
-            email: email,
-            role: role
-        }
-
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
-        res.json({accessToken: accessToken, refreshToken: refreshToken})
-    } catch (error) {
-        console.error(error);
-    }
-})
-
-app.post('/user/question', async (req, res) => {
-    try {
-        const response = await axios.post(`${databaseURL}/user/question`, req.body);
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }   
-})
-
-app.get('/user/questions', async (req, res) => {
-    try {
-        const response = await axios.get(`${databaseURL}/user/questions`, { params: req.query });
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-})
+});
 
 app.get('/user/authenticate', async (req, res) => {
     try {
-        const userData = await axios.get(`${databaseURL}/user`, { params: req.query });
+        const userData = await axios.get(`${databaseURL}/user`, { params: req.query, headers: req.headers });
         if (userData.data.role === 'admin') {
             res.send(true);
         } else {

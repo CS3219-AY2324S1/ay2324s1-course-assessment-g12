@@ -12,6 +12,25 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.use(async (req, res, next) => {
+    console.log("auth header "+req.header('Authorization'))
+    const idToken = req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!idToken) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    read.getAuth.verifyIdToken(idToken)
+        .then((decodedToken) => {
+            req.user = decodedToken;
+            next();
+        })
+        .catch((error) => {
+            console.error('Error verifying Firebase token:', error);
+            return res.status(401).json({ error: 'Unauthorized' });
+        });
+});
+
 // ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
@@ -39,9 +58,11 @@ app.get("/user", async (req, res) => {
         const username = req.query.username;
         const email = req.query.email;
         var response = null;
+
         if (username !== undefined) {
             response = await read.getUser(username, "username");
         } else {
+            console.log("can you hear me sos")
             response = await read.getUser(email, "email");
         }
         res.send(response);
@@ -98,31 +119,6 @@ app.get("/user/verify", async (req, res) => {
         console.error(error);
     }
 });
-
-app.post('/user/question', async (req, res) => {
-    try {
-        const username = req.body.username;
-        const question = req.body.question;
-        const partner = req.body.partner;
-        const completed = req.body.completed;
-        const date = req.body.date;
-        const code = req.body.code;
-        const response = await write.addQuestionToUser(username, question, partner, completed, date, code);
-        res.send(response.data);
-    } catch (error) {
-        console.error(error);
-    }   
-})
-
-app.get('/user/questions', async (req, res) => {
-    try {
-        const username = req.query.username;
-        const response = await read.getQuestionsFromUser(username);
-        res.send(response);
-    } catch (error) {
-        console.error(error);
-    }   
-})
 
 // ------------------ Question Functions ------------------
 

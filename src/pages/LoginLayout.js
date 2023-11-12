@@ -7,6 +7,9 @@ import { auth } from '../firebase-config';
 
 const userUrl = 'http://localhost:3001';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
 const LoginLayout = ({ children }) => {
 
   return (
