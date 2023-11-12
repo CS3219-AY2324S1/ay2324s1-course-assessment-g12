@@ -15,6 +15,9 @@ const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
 const userURL = 'http://localhost:3001';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
 const LoginSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -65,7 +68,7 @@ const LoginSignup = () => {
               "username": username,
               "language": language,
               "level": level,
-              "role": "admin"
+              "role": "registered user"
             });
           
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);

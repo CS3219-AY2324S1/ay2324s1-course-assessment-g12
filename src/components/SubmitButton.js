@@ -12,6 +12,8 @@ import CategoryMenuAdd from './CategoryMenuAdd';
 import "../style/SubmitButton.css";
 import axios from 'axios';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 
 const Categories = [
   { value: 'Algorithm', label: 'Algorithm' },

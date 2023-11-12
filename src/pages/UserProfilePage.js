@@ -8,6 +8,9 @@ import '../style/UserProfilePage.css';
 
 const userURL = 'http://localhost:3001';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
 function UserProfilePage() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
@@ -19,8 +22,8 @@ function UserProfilePage() {
         console.error("No user logged in.");
         return;
       }
-
-      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email } });
+      
+      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email }, headers: {'Cache-Control': 'no-cache'} });
       console.log(response.data);
 
       setUserData(response.data);
