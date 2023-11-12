@@ -13,11 +13,11 @@ const Difficulty = [
   { value: 'Hard', label: 'Hard' },
 ];
 const language = [
-  { value: 'Python', label: 'Python' },
-  { value: 'C++', label: 'C++' },
-  { value: 'Java', label: 'Java' },
+  { value: 'python3', label: 'Python' },
+  { value: 'cpp', label: 'C++' },
+  { value: 'java', label: 'Java' },
 ];
-function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData }) {
+function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData, languageData , setIsmatched}) {
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30); // Set your initial countdown value here
 
@@ -31,7 +31,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
     buttonHandler();
     console.log(data);
     console.log("submitting");
-    socket.emit("joinQueue", data.difficulty, userData);
+    socket.emit("joinQueue", data.difficulty, userData, data.language);
   };
 
   useEffect(() => {
@@ -59,12 +59,14 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
 
   }, [countdown]);
 
-  socket.on("matchFound", (room, question) => {
-    setRoomJoined(room);
+  socket.on("matchFound", (room, question, language) => {
     setIsLoading(false);
     setQuestion(question);
+    languageData(language)
     callback(true);
-    console.log(question)
+    setIsmatched(true);
+    setRoomJoined(room);
+    //console.log(question)
   });
 
   return (
@@ -87,7 +89,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
                   bgcolor: "#FFFF",
                   '& .MuiInputBase-input': {
                     color: 'black',
-                    textAlign: 'left',
+                    textAlign: 'center',
                   },
                 }}
                 select
@@ -114,7 +116,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
                   bgcolor: "#FFFF",
                   '& .MuiInputBase-input': {
                     color: 'black',
-                    textAlign: 'left',
+                    textAlign: 'center',
                   },
                 }}
                 select
@@ -125,7 +127,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData })
                 variant="filled"
                 fullWidth
                 required
-                {...register("Language", { required: true })}
+                {...register("language", { required: true })}
               >
                 {language.map((option) => (
                   <MenuItem key={option.value} value={option.value}>

@@ -14,7 +14,7 @@ const client = createClient({
     publicApiKey: "pk_dev_-iamGGIAHL-AOLUgx1XFpZ3yyHJXxO5cdT4mZ4ZBvSKb2-JF8vKSmdaj7UVE-M_a",
 });
 
-function EditorComp({roomJoined, setOutput, socket}) {
+function EditorComp({roomJoined, setOutput, socket, language}) {
     // Yjs
     const ydoc = new Y.Doc();
 
@@ -39,7 +39,7 @@ function EditorComp({roomJoined, setOutput, socket}) {
     const handleCompile = () => {
         var data = editor.getValue();
         console.log(roomJoined())
-        socket.emit("compile_code", data, roomJoined())
+        socket.emit("compile_code", data, roomJoined(), language)
       };
 
     return (
@@ -47,9 +47,9 @@ function EditorComp({roomJoined, setOutput, socket}) {
             <div style={{ display: 'flex'}}>
                 <Editor 
                 height="57vh"
-                width="57.6vw"
+                width="58.1vw"
                 theme='vs-dark'
-                language='python' // Going to be change based on the user
+                language= {language == 'python3' ? "python" : language} // I really dk if this will work
                 onMount={handleOnMount}
                 />
             </div>

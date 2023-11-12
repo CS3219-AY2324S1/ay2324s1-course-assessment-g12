@@ -5,6 +5,7 @@ import { auth } from '../firebase-config';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import "../style/UserProfilePage.css";
 
 const questionURL = 'http://localhost:3002';
 

@@ -1,44 +1,24 @@
-.user-profile-header {
-  margin-top: 5vh;
-  width: 75.5vw;
-  display: flex; 
-  flex-direction: row;
-  justify-content: space-between;
+.Question-header {
+  width: 100%;
+  background-color: #282134;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(5px + 2vmin);
+  color: white;
+
+}
+.Scrollable-table-div{
+  width: 100%;
+  min-width: 150vh;
+  height: 50vh;
+  border-collapse: collapse;
+  overflow-y: auto;
 }
 
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    height: 100vh;
-  }
-
-  .liked-questions-table {
-    max-height: 40vh; /* Adjust the desired maximum height */
-    overflow-y: auto; /* Enable vertical scrolling when the content overflows */
-    overflow-x:hidden;
-    width: 46.6vw;
-  }
-  
-  .user-table-container {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  /* Rest of your CSS remains the same */
-  
-
-  /** for the user profile box **/ 
-  .user-profile-page {
-    margin-right: 5vh; 
-  }
-
-  /** for the like questions display **/
-  .user-menu-item-div{
+.menu-item-div{
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -48,43 +28,38 @@
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
 }
 
-.user-menu-item{
+.menu-item{
     margin-right:15px;
 }
-.user-table-container {
+.table-container {
     width: 100%;
-    min-width: 100vh;
-    max-height: 120vh;
+    min-width: 150vh;
     border-collapse: collapse;
   }
 
-  .user-table-container tr {
-    height: 10px; 
-  }
-  
   /* Style for alternating row colors */
-  .user-table-container tbody tr:nth-child(even) {
+  .table-container tbody tr:nth-child(even) {
     background-color: #3B3B44;
   }
   
-  .user-table-container tbody tr:nth-child(odd) {
+  .table-container tbody tr:nth-child(odd) {
     background-color: #555563;
   }
   
-  .user-table-container th {
+  .table-container th {
     text-align: left;
     padding: 8px;
   }
   
-  .user-table-container td {
+  .table-container td {
     text-align: left;
     padding: 8px;
   }
 
-  .user-table-container .question-row:hover {
+  .table-container .question-row:hover {
     transition: background-color 0.3s ease;
   }
-  .user-table-container .question-row:hover {
+  .table-container .question-row:hover {
     background-color: #8D8D95;
   }
 
@@ -142,3 +117,31 @@
 .tag-div{
     border-radius: 5px; 
   }
+
+/*pagination styles*/
+
+.pagination {
+  margin-top: 1vh;
+}
+  
+
+.save-button-card,
+.edit-button-card {
+  background-color: #BFBFBF; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.save-button-card:hover,
+.edit-button-card:hover {
+  background-color: #BFBFBF; 
+}

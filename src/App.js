@@ -15,15 +15,17 @@ import Layout from './pages/Layout';
 import LoginLayout from './pages/LoginLayout';
 import AddQuestionPage from './pages/AddQuestionPage';
 import AdminQuestionPage from './pages/AdminQuestionPage';
+import CollaborationPage from './pages/CollaborationPage';
+import LayoutHome from './pages/LayoutHome';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route index element={<Layout> <HomePage /> </Layout>} />
+          <Route index element={<LayoutHome/>} />
           <Route path ="/LoginPage" element={<LoginLayout><LoginPage /></LoginLayout>} />
-          <Route path="/Home" element={<Layout><HomePage /> </Layout>} /> 
+          <Route path="/Home" element={<LayoutHome/>} /> 
           <Route path="/UserProfile" element={<Layout><UserProfilePage /> </Layout>} /> 
           <Route path="/Questions" element={<Layout><QuestionPage /> </Layout>} /> 
           <Route path="/AddQuestion" element={<AdminLayout><AddQuestionPage /> </AdminLayout>} /> 

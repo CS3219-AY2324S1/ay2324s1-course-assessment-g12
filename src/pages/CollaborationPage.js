@@ -22,7 +22,7 @@ import { auth } from '../firebase-config';
 
 const userURL = 'http://localhost:3001';
 
-function CollaborationPage() {
+function CollaborationPage({setIsMatched}) {
   const navigate = useNavigate();
 
   const [socket, setSocket] = useState(null);
@@ -37,12 +37,12 @@ function CollaborationPage() {
 
     sock.on("partner_left", () => {
       console.log("partner left")
-      alert("Your partner has left the room, yoiu'll be redirected to the home page")
-      navigate('/Home')
+      navigate('/UserProfile');
+      alert("Your partner has left the room, you will be redirected to the profile page")
     });
 
     sock.on("leave_room", () => {
-      navigate('/Home');
+      navigate('/UserProfile');
     });
     setSocket(sock); // Store the socket object in state
   }, []);
@@ -62,6 +62,8 @@ function CollaborationPage() {
   const [isMatch, setIsMatch] = useState(false);
 
   const [question, setQuestion] = useState(null);
+
+  const [language, setLanguage] = useState("");
 
   const getRoomJoined = () => {
     return roomJoined;
@@ -128,7 +130,7 @@ function CollaborationPage() {
 
   const containerStyles = {
     backgroundColor: 'lightgray', // Change the background color of the container
-    height: '95vh', // Adjust the height as needed
+    height: '100.8vh', // Adjust the height as needed
   };
 
   const createMarkup = (htmlString) => {
@@ -138,11 +140,11 @@ function CollaborationPage() {
   const getDifficultyClass = (difficulty) => {
     switch (difficulty.toLowerCase()) {
       case 'easy':
-        return 'difficulty-easy';
+        return 'difficulty-easy-collab';
       case 'medium':
-        return 'difficulty-medium';
+        return 'difficulty-medium-collab';
       case 'hard':
-        return 'difficulty-hard';
+        return 'difficulty-hard-collab';
       default:
         return '';
     }
@@ -164,6 +166,8 @@ function CollaborationPage() {
           setRoomJoined={setRoomoJoined}
           setQuestion={setQuestion}
           userData={userData}
+          languageData={setLanguage}
+          setIsmatched={setIsMatched}
         />
       </div>
       )}
@@ -204,6 +208,7 @@ function CollaborationPage() {
                     roomJoined={getRoomJoined}
                     setOutput={setOutput}
                     socket = {socket}
+                    language={language}
                   />
                 </div>
               )}
@@ -224,7 +229,7 @@ function CollaborationPage() {
               <div>{output}</div>
             </div>
             </Box>
-            <button onClick={handleSubmission} style={{ width: '100%', height :'4vh', backgroundColor:'red', color: 'white' }}>SUBMIT</button>
+            <button onClick={handleSubmission} style={{ width: '100%', height :'4vh', backgroundColor:'red', color: 'white' }}>END SESSION</button>
           </Grid>
         </Grid>
       </div>)}

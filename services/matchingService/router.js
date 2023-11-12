@@ -52,31 +52,79 @@ async function listenRabbitMQ() {
     await channel.assertExchange("difficultyExchange", "direct");
 
     // Establish queue for "Medium" difficulty
-    const qMedium = await channel.assertQueue("Medium", {
+    const qMediumPython = await channel.assertQueue("Mediumpython3", {
         durable: true,
         messageTtl: 30000,
         deadLetterExchange: 'myDLX',
     });
-    await channel.bindQueue(qMedium.queue, "difficultyExchange", "Medium");
+    await channel.bindQueue(qMediumPython.queue, "difficultyExchange", "Mediumpython3");
+
+    // Establish queue for "Medium" difficulty
+    const qMediumJava = await channel.assertQueue("Mediumjava", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qMediumJava.queue, "difficultyExchange", "Mediumjava");
+
+    // Establish queue for "Medium" difficulty
+    const qMediumCpp = await channel.assertQueue("Mediumcpp", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qMediumCpp.queue, "difficultyExchange", "Mediumcpp");
 
     // Establish queue for "Hard" difficulty
-    const qHard = await channel.assertQueue("Hard", {
+    const qHardPython = await channel.assertQueue("Hardpython3", {
         durable: true,
         messageTtl: 30000,
         deadLetterExchange: 'myDLX',
     });
-    await channel.bindQueue(qHard.queue, "difficultyExchange", "Hard");
+    await channel.bindQueue(qHardPython.queue, "difficultyExchange", "Hardpython3");
+
+    // Establish queue for "Hard" difficulty
+    const qHardJava = await channel.assertQueue("Hardjava", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qHardJava.queue, "difficultyExchange", "Hardjava");
+
+    // Establish queue for "Hard" difficulty
+    const qHardCpp = await channel.assertQueue("Hardcpp", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qHardCpp.queue, "difficultyExchange", "Hardcpp");
 
     // Establish queue for "Easy" difficulty
-    const qEasy = await channel.assertQueue("Easy", {
+    const qEasyPython = await channel.assertQueue("Easypython3", {
         durable: true,
         messageTtl: 30000,
         deadLetterExchange: 'myDLX',
     });
-    await channel.bindQueue(qEasy.queue, "difficultyExchange", "Easy");
+    await channel.bindQueue(qEasyPython.queue, "difficultyExchange", "Easypython3");
 
-    function handleEasy(data) {
-        channel.get(qEasy.queue, { noAck: false })
+    // Establish queue for "Easy" difficulty
+    const qEasyJava = await channel.assertQueue("Easyjava", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qEasyJava.queue, "difficultyExchange", "Easyjava");
+
+    // Establish queue for "Easy" difficulty
+    const qEasyCpp = await channel.assertQueue("Easycpp", {
+        durable: true,
+        messageTtl: 30000,
+        deadLetterExchange: 'myDLX',
+    });
+    await channel.bindQueue(qEasyCpp.queue, "difficultyExchange", "Easycpp");
+
+    function handleEasyPython(data) {
+        channel.get(qEasyPython.queue, { noAck: false })
             .then(msg => {
             if (msg) {
                 const dataRet = JSON.parse(msg.content.toString());
@@ -88,7 +136,7 @@ async function listenRabbitMQ() {
                 const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
-                createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket)
+                createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "python3")
                 // Acknowledge the message once processed
                 channel.ack(msg);
             }else{  
@@ -107,8 +155,8 @@ async function listenRabbitMQ() {
             });
     }
 
-    function handleMedium(data) {
-        channel.get(qMedium.queue, { noAck: false })
+    function handleEasyJava(data) {
+        channel.get(qEasyJava.queue, { noAck: false })
             .then(msg => {
             if (msg) {
                 const dataRet = JSON.parse(msg.content.toString());
@@ -120,7 +168,7 @@ async function listenRabbitMQ() {
                 const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
-                createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket)
+                createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "java")
                 // Acknowledge the message once processed
                 channel.ack(msg);
             }else{  
@@ -139,8 +187,8 @@ async function listenRabbitMQ() {
             });
     }
 
-    function handleHard(data) {
-        channel.get(qHard.queue, { noAck: false })
+    function handleEasyCpp(data) {
+        channel.get(qEasyCpp.queue, { noAck: false })
             .then(msg => {
             if (msg) {
                 const dataRet = JSON.parse(msg.content.toString());
@@ -152,7 +200,7 @@ async function listenRabbitMQ() {
                 const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
-                createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket)
+                createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "cpp")
                 // Acknowledge the message once processed
                 channel.ack(msg);
             }else{  
@@ -171,7 +219,199 @@ async function listenRabbitMQ() {
             });
     }
 
-    function createRoom(difficulty, userData1, userData2, socketUser1, socketUser2) {
+    function handleMediumPython(data) {
+        channel.get(qMediumPython.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "python3")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function handleMediumJava(data) {
+        channel.get(qMediumJava.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "java")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function handleMediumCpp(data) {
+        channel.get(qMediumCpp.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "cpp")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function handleHardPython(data) {
+        channel.get(qHardPython.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "python3")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function handleHardJava(data) {
+        channel.get(qHardJava.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "java")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function handleHardCpp(data) {
+        channel.get(qHardCpp.queue, { noAck: false })
+            .then(msg => {
+            if (msg) {
+                const dataRet = JSON.parse(msg.content.toString());
+                console.log(dataRet);
+                // Process data or log the content of the unacked message here
+                const user1Name = data.msg.username;
+                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user2Name = dataRet.message.username;
+                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+
+                // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
+                createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "cpp")
+                // Acknowledge the message once processed
+                channel.ack(msg);
+            }else{  
+                const putQueue = async () => {
+                    try {
+                    const response = await axios.post(`${queueURL}/joinQueue`, data);
+                    } catch (error) {
+                    console.error('Error join queue:', error);
+                    }
+                };
+                putQueue();
+            }
+            })
+            .catch(err => {
+                console.error('Error getting unacked messages:', err);
+            });
+    }
+
+    function createRoom(difficulty, userData1, userData2, socketUser1, socketUser2, language) {
         const room = {
             id: uuid.v4(),
             difficulty: difficulty,
@@ -183,7 +423,8 @@ async function listenRabbitMQ() {
             dataUser2: userData2,
             isFinished: false,
             user1Socket: socketUser1.id,
-            user2Socket: socketUser2.id
+            user2Socket: socketUser2.id,
+            language: language
         };
         console.log("room" + room.id);
         rooms.set(room.id, room);
@@ -202,8 +443,12 @@ async function listenRabbitMQ() {
             });
             const idx = getRandomInt(0, response.data.length)
             const question = response.data[idx];
-            room.question = question;
-            socketServer.to(room.id).emit("matchFound", room.id, question);
+            if (question.content.length == 0) {
+                fetchQuestions();
+            }else {
+                room.question = question;
+                socketServer.to(room.id).emit("matchFound", room.id, question, language);
+            }
             } catch (error) {
             console.error('Error fetching questions:', error);
             }
@@ -263,23 +508,42 @@ async function listenRabbitMQ() {
             }
         });
 
-        socket.on("joinQueue", (difficulty, userData) => {
+        socket.on("joinQueue", (difficulty, userData, language) => {
             console.log(socket + "User joined on difficulty: " + difficulty);
             const message = {
                 username: userData.username,
                 socketID: socket.id
             }
             const data = {
-                "logType": difficulty,
+                "logType": difficulty+language,
                 "msg": message,
                 "exchangeName": "difficultyExchange"
             }
+            console.log(data.logType)
             if (difficulty === "Easy") {
-                handleEasy(data);
+                if (language === "python3") {
+                    handleEasyPython(data);
+                } else if (language === "cpp") {
+                    handleEasyCpp(data);
+                } else {
+                    handleEasyJava(data);
+                }
             } else if (difficulty === "Medium") {
-                handleMedium(data);
+                if (language === "python3") {
+                    handleMediumPython(data);
+                } else if (language === "cpp") {
+                    handleMediumCpp(data);
+                } else {
+                    handleMediumJava(data);
+                }
             } else if (difficulty === "Hard") {
-                handleHard(data);
+                if (language === "python3") {
+                    handleHardPython(data);
+                } else if (language === "cpp") {
+                    handleHardCpp(data);
+                } else {
+                    handleHardJava(data);
+                }
             }
         });
 
@@ -300,7 +564,7 @@ async function listenRabbitMQ() {
             console.log(hardQueue)
         });
 
-        socket.on("compile_code", (data, room) => {
+        socket.on("compile_code", (data, room, language) => {
             var config = {
                 method: 'post',
                 url: 'https://online-code-compiler.p.rapidapi.com/v1/',
@@ -313,7 +577,7 @@ async function listenRabbitMQ() {
                     'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
                 },
                 data: {
-                    language: 'python3',
+                    language: language,
                     version: 'latest',
                     code: data,
                     input: null
