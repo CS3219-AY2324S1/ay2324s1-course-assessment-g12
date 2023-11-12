@@ -53,6 +53,9 @@ services\rabbitMQ
 ## `docker-compose up`
 Execute the command to build, (re)create, start, and attach to a container for the rabbitMQ service.
 
+## Go to http://localhost:15672 to check whether the service is started.
+Enter guest::guest as the default username and password. You should be able to see the rabbitMQ UI management.
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
