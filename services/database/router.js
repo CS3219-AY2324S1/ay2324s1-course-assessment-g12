@@ -12,6 +12,25 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.use(async (req, res, next) => {
+    console.log("auth header "+req.header('Authorization'))
+    const idToken = req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!idToken) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    read.getAuth.verifyIdToken(idToken)
+        .then((decodedToken) => {
+            req.user = decodedToken;
+            next();
+        })
+        .catch((error) => {
+            console.error('Error verifying Firebase token:', error);
+            return res.status(401).json({ error: 'Unauthorized' });
+        });
+});
+
 // ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
@@ -39,9 +58,11 @@ app.get("/user", async (req, res) => {
         const username = req.query.username;
         const email = req.query.email;
         var response = null;
+
         if (username !== undefined) {
             response = await read.getUser(username, "username");
         } else {
+            console.log("can you hear me sos")
             response = await read.getUser(email, "email");
         }
         res.send(response);

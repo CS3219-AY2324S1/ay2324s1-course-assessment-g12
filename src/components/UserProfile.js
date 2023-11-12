@@ -11,6 +11,8 @@ import { auth } from '../firebase-config';
 
 const userURL = 'http://localhost:3001';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 function UserProfile({ userData, user }) {
   const navigate = useNavigate();
   const [editedLevel, setEditedLevel] = useState('');
