@@ -9,6 +9,16 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use(async (req, res, next) => {
+    try {
+        const isAuthenticated = await axios.get(`${databaseURL}/user/authenticate`, { params: req.query, headers: req.headers });
+        if (isAuthenticated.data) next();
+    } catch (error) {
+        console.error(error)
+        res.status(error.response.status).json({ error: error.response.data.error })
+    }
+});
+
 // ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
