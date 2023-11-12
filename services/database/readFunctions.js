@@ -9,7 +9,6 @@ async function getUser(criteria, flag) {
     if (querySnapshot.empty) {
         return null;
     }
-    console.log(querySnapshot.docs[0].data());
     return querySnapshot.docs[0].data();
 }
 
@@ -67,9 +66,9 @@ async function getQuestion(title) {
 async function getAllQuestions(limit) {
     try {
         if (limit == "List All") {
-            limit = 100
+            limit = 100;
         }
-        const questionsRef = db.collection("questions").limit(parseInt(limit));
+        const questionsRef = db.collection("questions")
         const querySnapshot = await questionsRef.get();
         if (querySnapshot.empty) {
             return null;
@@ -87,23 +86,17 @@ async function getAllQuestions(limit) {
 
 async function filterQuestions(categories, difficulty, limit) {
     try {
-        console.log('here')
-        console.log("cat: " + categories)
-        console.log("cat: " + limit)
 
         if (categories === undefined && difficulty === "All Levels") {
             const questions = await getAllQuestions(limit);
             return questions;
         } else if (categories === undefined || categories.length === 0 || !categories) {
-            console.log('here1')
             const questions = await getQuestionsByDifficulty(difficulty, limit);
             return questions;
         } else if (difficulty === undefined || difficulty.length === 0 || difficulty === "All Levels") {
-            console.log('here2')
             const questions = await getQuestionsByCategories(categories, limit);
             return questions;
         } else {
-            console.log('here3')
             const questions = await getQuestionsByCategoriesAndDifficulty(categories, difficulty, limit);
             return questions;
         }
@@ -224,4 +217,36 @@ async function getQuestionsFromUser(username) {
     }
 }
 
-module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser };
+async function getLikedQuestions(username) {
+    try {
+        console.log("hereee"); 
+        console.log(username); 
+        const questions = [];
+        const questionsRef = db.collection("users").doc(username).collection("likes");
+
+        console.log("does it go here???"); 
+        const querySnapshot = await questionsRef.get();
+
+        if (querySnapshot.empty) {
+            return null;
+        }
+
+        const questionPromises = querySnapshot.docs.map(async (likedQuestion) => {
+            const questionsDesc = await db.collection("questions").doc(likedQuestion.data().question).get();
+            return Object.assign({}, likedQuestion.data(), questionsDesc.data());
+        });
+
+        console.log("what about here?")
+        const questionData = await Promise.all(questionPromises);
+        questionData.forEach((question) => {
+            questions.push(question);
+        });
+
+        console.log("hehehehe????")
+        if (querySnapshot.size === questions.length) return questions;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };

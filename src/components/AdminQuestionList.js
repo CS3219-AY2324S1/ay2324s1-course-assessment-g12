@@ -5,18 +5,22 @@ import {auth} from '../firebase-config';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const questionURL = 'http://localhost:3002';
 
-const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
+const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
   const [likedQuestions, setLikedQuestions] = useState([]); 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const questionsPerPage = 30; // Define the number of questions to display per page
-  
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState("");
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -116,6 +120,44 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   };
   
 
+  const handleDelete = async (question) => {
+    try {
+
+        const shouldDelete = window.confirm("Are you sure you want to delete this question?");
+
+        if (!shouldDelete) {
+            return; // User canceled the deletion
+        }
+
+      // Send a request to your server to delete the question
+      const response = await axios.delete(`${questionURL}/question`, {
+        params: {
+          title: question.title,
+        },
+      });
+  
+      // Check if the request was successful (you may want to add more error handling)
+      if (response.status === 200) {
+        // Remove the deleted question from the local state
+        const updatedQuestions = questions.filter((q) => q.title !== question.title);
+        setQuestions(updatedQuestions);
+        console.log("Successfully deleted question")
+      } else {
+        // Handle the case where the server request was not successful
+        console.error('Failed to delete question');
+      }
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error('Error deleting question:', error);
+    }
+  };
+  
+  const handleEdit = (question) => {
+    setSelectedQuestion(question);
+    setIsEditing(true);
+    setEditedContent(question.content);
+  };
+
   // Calculate the range of questions to display based on current page and questionsPerPage
   const indexOfLastQuestion = currentPage * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
@@ -147,6 +189,9 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
                     ) : (
                     <FavoriteBorderIcon color="secondary" />
                     )}
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(question)}>
+                    <DeleteOutlineIcon color="error" />
                   </IconButton>
                 </td>
               </tr>
@@ -184,4 +229,4 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   );
 };
 
-export default QuestionList;
+export default AdminQuestionList;

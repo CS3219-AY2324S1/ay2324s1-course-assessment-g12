@@ -92,7 +92,7 @@ const categories = [
   'strongly connected component'
 ]
 
-export default function CategoryMenu({selectedCategory, onCategoryChange}) {
+export default function CategoryMenuAdd({selectedCategory, onCategoryChange}) {
   const [categoryName, setCategoryName] = React.useState([]);
 
   const handleMenuItemClick = (category) => {
@@ -114,20 +114,19 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
     <div>
       <FormControl
         sx={{
-          m: 0,
-          width: 300,
+          width: '100%',
           // Add custom styling here
-          backgroundColor: '#166AC5', // Set the background color to purple
-          color: 'white', // Set the text color to white
-          borderRadius: '5px', // Add rounded corners
+          backgroundColor: 'white', // Set the background color to purple
+          color: 'black',
+             // Add rounded corners
         }}
       >
         <InputLabel id="demo-multiple-checkbox-label" 
         sx={{ 
-          color: 'white', 
+          color: 'black', 
           //transform: 'translate(14px, 10px) scale(1)' // Move label to top
           }}
-          >ALL TOPICS</InputLabel>
+          >TAGS</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -137,9 +136,6 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
           input={<OutlinedInput label="Category" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
-          sx={{
-            height: '38px', // Set the height to 40px (adjust as needed)
-          }}
         >
           {categories.map((category) => (
             <MenuItem key={category} value={category}>

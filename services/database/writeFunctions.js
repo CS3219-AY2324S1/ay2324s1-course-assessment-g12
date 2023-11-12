@@ -46,7 +46,6 @@ async function addQuestion(title, categories, difficulty, content) {
 
 async function updateQuestion(title, data) {
     try {
-        console.log(data)
         const res = await db.collection('questions').doc(title).update(data);
         return res;
     } catch (error) {
@@ -85,10 +84,11 @@ async function addQuestionToUser(username, question, partner, completed, date, c
     }
 }
 
-async function incrementVisits(title) {
+async function incrementVisits(title, liked) {
+    liked? increment = 1 : increment = -1;
     try {
         const res = await db.collection('questions').doc(title).update({
-            visits: firebaseAdmin.firestore.FieldValue.increment(1)
+            visits: firebaseAdmin.firestore.FieldValue.increment(increment)
         });
         return res;
     } catch (error) {
@@ -96,4 +96,20 @@ async function incrementVisits(title) {
     }
 }
 
-module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits };
+async function addLike(username, title, liked) {
+
+    if (liked) {
+        questionData = {
+            question: title
+        }
+        const res = db.collection('users').doc(username).collection('likes').doc(title).set(questionData);
+        return res;
+
+    } else {
+        const res = db.collection('users').doc(username).collection('likes').doc(title).delete();
+        return res;
+    }
+    
+}
+
+module.exports = { removeUser, addUser, updateUser, addQuestion, updateQuestion, deleteQuestion, addQuestionToUser, incrementVisits, addLike };

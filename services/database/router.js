@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 app.delete("/user", async (req, res) => {
     try {
         const username = req.query.username;
-        console.log(username);
         await write.removeUser(username);
         res.send("User removed");
     } catch (error) {
@@ -55,7 +54,6 @@ app.patch("/user", async (req, res) => {
     try {
         const username = req.body.username;
         const data = req.body.data;
-        console.log(data);
         const response = await write.updateUser(username, data);
         res.send(response);
     } catch (error) {
@@ -67,7 +65,6 @@ app.get("/user/check/email", async (req, res) => {
     try {
         const email = req.query.email;
         const exists = await read.checkUserExistsByEmail(email);
-        console.log(exists);
         if (exists) {
             res.status(200).send({ emailExists: true });
         } else {
@@ -82,7 +79,6 @@ app.get("/user/check/username", async (req, res) => {
     try {
         const username = req.query.username;
         const exists = await read.checkUserExistsByUsername(username);
-        console.log(exists);
         if (exists) {
             res.status(200).send({ usernameExists: true });
         } else {
@@ -97,7 +93,6 @@ app.get("/user/verify", async (req, res) => {
     try {
         const token = req.query.token;
         const uid = await read.getUidFromToken(token);
-        console.log(uid); 
         res.status(200).send({ uid: uid });
     } catch (error) {
         console.error(error);
@@ -166,6 +161,7 @@ app.get("/question", async (req, res) => {
 app.patch("/question", async (req, res) => {
     try {
         const title = req.body.title;
+        console.log(title)
         const data = req.body.data;
         await write.updateQuestion(title, data);
         res.status(200).send("Question updated");
@@ -212,13 +208,42 @@ app.get("/questions/filter", async (req, res) => {
         const difficulty = req.query.difficulty;
         const limit = req.query.limit;
         var response = null;
-        console.log(categories)
-        console.log(limit)
         if (categories === undefined && difficulty === undefined && limit === undefined) {
             response = await read.getAllQuestions();
         } else {
             response = await read.filterQuestions(categories, difficulty, limit);
+            console.log(response)
+            await response.sort(function(a, b) {
+                return b.visits - a.visits;
+            })
         }
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.post("/question/like", async(req, res) => {
+    try {
+        const title = req.body.title;
+        const username = req.body.username;
+        const liked = req.body.liked;
+
+        await write.incrementVisits(title, liked);
+
+        const response = await write.addLike(username, title, liked);
+        
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.get("/questions/like", async(req, res) => {
+    try {
+        const username = req.query.username;
+        console.log("hehehehe")
+        const response = await read.getLikedQuestions(username);
         res.status(200).json(response);
     } catch (error) {
         console.error(error);

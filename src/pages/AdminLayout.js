@@ -40,6 +40,7 @@ const Layout = ({ children }) => {
   return (
     <div>
       <RedirectIfNotAuthenticated />
+      <RedirectIfNotAdmin/>
       {isAdmin ? <NavbarAdmin /> : <Navbar />}
       <div className="content">{children}</div>
     </div>
