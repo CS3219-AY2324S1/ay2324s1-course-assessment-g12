@@ -36,7 +36,6 @@ async function getQuestion(title) {
     const questionsRef = db.collection("questions");
     const querySnapshot = await questionsRef.where("title", "==", title).get();
     if (querySnapshot.empty) {
-        console.log("please save me");
         return null;
     } else {
         return querySnapshot.docs[0].data();

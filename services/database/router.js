@@ -113,7 +113,6 @@ app.post("/question", async (req, res) => {
 
 app.get("/question", async (req, res) => {
     try {
-        console.log("does it even get here");
         const title = req.query.title;
         response = await read.getQuestion(title);
 

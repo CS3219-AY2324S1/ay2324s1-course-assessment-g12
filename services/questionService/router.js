@@ -18,10 +18,16 @@ app.post("/question", async (req, res) => {
 });
 
 app.get("/question", async (req, res) => {
-    const response = await axios.get(`${databaseURL}/question`, {
-        params: req.query,
-    });
-    res.send(response.data)
+    try {
+        const response = await axios.get(`${databaseURL}/question`, {
+            params: req.query,
+        });
+        res.send(response.data)   
+    } catch (error) {
+        if (error.response.status == 404) {
+            res.status(404).send("Question not found");
+        }
+    }
 });
 
 app.patch("/question", async (req, res) => {
