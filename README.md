@@ -85,3 +85,24 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+# Running the Assignment 5
+## Pre-requisites:
+1. Make sure that you have all the necessary import/dependencies in your project.
+2. Make sure that your are at the directory ay2324s1-course-assessment-g12.
+
+## Steps
+1. Make sure that you have started the RabbitMQ Server with all the necessary configs.
+2. Run `npm run test-matching` in the terminal. You will be redirected to your browser where 2 tabs will open.
+3. Sign up or Log in on 2 different account as you can't access the services unless you have one. You can also use the user:
+4. You should be in the Home page with Looking like the following picture. Else, please press Home and the navigation bar on top.
+5. Enter the parameters that you want to be matched on. You need to pick 2 things, 1 for difficulty and 1 for programming language.
+6. Once you have picked the necessary choices, press match and you will see a loading animation with a timer countdown from 30 s.
+7. At the other tab, do the same thing as you did in the first tab. Make sure, that you have chosen  the same parameter within 30 s, else you will need to redo the whole step.
+8. Once matched, both tabs will be redirected to the collaboration page and we're done
+
+## Unsuccessfull matching
+1. We set a timer of 30s for matching, if within that time frame there's no match, the animation icon will be disappear. 
+
+
