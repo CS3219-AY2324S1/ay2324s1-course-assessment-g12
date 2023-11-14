@@ -6,6 +6,11 @@
   justify-content: space-between;
 }
 
+.user-profile-footer {
+  margin-top: 5vh;
+  width: 75.5vw; /* Use the same width as user-profile-header */
+  min-width: 75.5vw; /* Ensure a minimum width to prevent it from getting smaller */
+}
 
   * {
     margin: 0;

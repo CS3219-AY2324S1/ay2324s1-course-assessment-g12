@@ -8,6 +8,8 @@ import '../style/UserProfile.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase-config';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const userURL = 'http://localhost:3001';
 
@@ -99,8 +101,6 @@ function UserProfile({ userData, user }) {
 
   return (
     <div className="user-profile-container">
-
-      <div className="profile-picture-placeholder"></div>
       <div className="user-info">
         <p className='user-info-item'>@{userData.username}</p>
         <p className='user-info-item'>{userData.email}</p>
@@ -142,12 +142,20 @@ function UserProfile({ userData, user }) {
         </p>
         <p className='user-info-item'>Role: {userData.role}</p>
         <div className='signout-delete-container'>
-          <Button variant="contained" color="secondary" onClick={signOutAccount}>
-            Sign Out
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
-            Delete Account
-          </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<ExitToAppIcon />}
+          onClick={signOutAccount}
+          >
+        </Button>
+        <Button
+         variant="contained"
+    color="secondary"
+    startIcon={<DeleteIcon />}
+    onClick={handleDeleteAccount}
+  >
+  </Button>
         </div>
       </div>
       <EditIcon

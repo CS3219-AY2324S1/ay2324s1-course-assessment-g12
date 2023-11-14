@@ -1,6 +1,13 @@
 .Collab_page {
     font-family: sans-serif;
     text-align: center;
+    
+   }
+
+   .collaboration-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
    }
    
    .grid-container {

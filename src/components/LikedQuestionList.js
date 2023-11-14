@@ -97,7 +97,7 @@ const LikedQuestionList = () => {
       <table className="user-table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
       </table>

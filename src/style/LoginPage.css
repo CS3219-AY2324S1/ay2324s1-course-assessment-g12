@@ -7,6 +7,12 @@
     background-color: #6D71C3;
   }
   
+  .divider {
+    width: 50%; /* Adjust the width of the divider as needed */
+    margin: 10px auto; /* Adjust margin as needed to control spacing */
+    border: 2px solid  #C3B95D; /* Border color and style */
+  }
+
   .login-title {
     font-family: 'Russo', Arial, Helvetica, sans-serif;
     flex: 1;
@@ -17,7 +23,10 @@
     background-color: #6D71C3;
     color: #fff;
     font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add your preferred shadow values */
   }
+
+  
   
   .login-form {
     flex: 1;

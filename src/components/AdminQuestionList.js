@@ -168,9 +168,9 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
       <table className="table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Title</th>
-            <th style={{ textAlign: 'left' }}>Difficulty</th>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Title</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Difficulty</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
         <tbody>
@@ -217,7 +217,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           <ArrowBackIosIcon/>
         </button>
-        <span>Page {currentPage}</span>
+        <span style={{fontFamily: 'Russo' }}>Page {currentPage}</span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={indexOfLastQuestion >= questions.length}
