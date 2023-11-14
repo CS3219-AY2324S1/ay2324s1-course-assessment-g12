@@ -71,7 +71,7 @@ function MatchingBtn({ callback, socket, setRoomJoined, setQuestion, userData, l
 
   return (
     <div class="parent-container">
-      <div style={{ display: isLoading ? 'flex' : 'none' }} className='modal'>
+      <div style={{ display: isLoading ? 'flex' : 'none', zIndex:"1000" }} className='modal'>
         <div className='modal-content'>
           <div className='loader'></div>
           <div className='modal-text'>
