@@ -4,6 +4,7 @@ import LikedQuestionList from '../components/LikedQuestionList';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase-config';
 import axios from 'axios';
+import QuestionHistory from '../components/QuestionHistory';
 import '../style/UserProfilePage.css';
 
 const userURL = 'http://localhost:3001';
@@ -12,6 +13,11 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
 
 
 function UserProfilePage() {
+  const [selectedCategory, setSelectedCategory] = useState([]); // Default value
+  const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
+  const [selectedList, setSelectedList] = useState('List All'); // Default value
+  const [selectedPopularity, setSelectedPopularity] = useState('List All'); // Default value
+
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [user, setUser] = useState(null);
@@ -56,6 +62,14 @@ function UserProfilePage() {
       <div className="liked-questions-div">
         <LikedQuestionList />
       </div>
+      </div>
+      <div className="user-profile-footer">
+        {userData ? (
+        <QuestionHistory selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedPopularity} userData={userData}/>)
+        : (
+          <p>Loading user data...</p>
+        )
+      }
       </div>
     </div>
   );

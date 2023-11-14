@@ -1,10 +1,16 @@
 .user-profile-header {
   margin-top: 5vh;
+  width: 75.5vw;
   display: flex; 
   flex-direction: row;
   justify-content: space-between;
 }
 
+.user-profile-footer {
+  margin-top: 5vh;
+  width: 75.5vw; /* Use the same width as user-profile-header */
+  min-width: 75.5vw; /* Ensure a minimum width to prevent it from getting smaller */
+}
 
   * {
     margin: 0;
@@ -20,6 +26,7 @@
     max-height: 40vh; /* Adjust the desired maximum height */
     overflow-y: auto; /* Enable vertical scrolling when the content overflows */
     overflow-x:hidden;
+    width: 46.6vw;
   }
   
   .user-table-container {

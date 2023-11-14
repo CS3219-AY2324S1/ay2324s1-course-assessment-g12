@@ -122,12 +122,12 @@ app.get("/user/verify", async (req, res) => {
 
 app.post('/user/question', async (req, res) => {
     try {
-        const username = req.body.username;
-        const question = req.body.question;
-        const partner = req.body.partner;
-        const completed = req.body.completed;
-        const date = req.body.date;
-        const code = req.body.code;
+        const username = req.body.params.username;
+        const question = req.body.params.question;
+        const partner = req.body.params.partner;
+        const completed = req.body.params.completed;
+        const date = req.body.params.date;
+        const code = req.body.params.code;
         const response = await write.addQuestionToUser(username, question, partner, completed, date, code);
         res.send(response.data);
     } catch (error) {

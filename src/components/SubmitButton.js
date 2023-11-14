@@ -70,19 +70,19 @@ function SubmitButton() {
 
   return (
     <div className="wrapper_submit">
-      <h1> Submit your questions here:</h1>
+      <h1 className='add-question-header'> Add a new Question:</h1>
       <form onSubmit={handleSubmit(handleSubmission)}>
         <Grid container spacing={1}>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
           </Grid>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Description" name="Message" multiline
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Description" name="Message" multiline
               placeholder="Enter Question Content (in html)" variant="filled" fullWidth {...register("content", { required: true })} />
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{
-              border: '2px solid white', bgcolor: "#FFFF",
+              border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#FFFF",
               '& .MuiInputBase-input': {
                 color: 'black', // Change this to your desired text color
                 textAlign: 'left',

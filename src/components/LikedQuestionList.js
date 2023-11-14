@@ -5,6 +5,7 @@ import { auth } from '../firebase-config';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import "../style/UserProfilePage.css";
 
 const questionURL = 'http://localhost:3002';
 
@@ -99,7 +100,7 @@ const LikedQuestionList = () => {
       <table className="user-table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
       </table>
