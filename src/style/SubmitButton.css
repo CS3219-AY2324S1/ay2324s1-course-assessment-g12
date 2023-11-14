@@ -1,8 +1,19 @@
 .wrapper_submit {
     padding: 5px 20px;
+    min-height: 75vh;
+    justify-content: space-evenly;
 }
 .wrapper_submit fieldset {
     margin: 20px 0;
+}
+
+.wrapper_submit h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color:darkslateblue;
+    margin-bottom: 5vh;
+    text-align: left;
+    font-size: 7vh;
+    font-family: 'Russo';
 }
 
 .add-question-header {

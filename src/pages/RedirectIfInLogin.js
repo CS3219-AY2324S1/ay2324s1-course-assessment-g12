@@ -12,13 +12,11 @@ function RedirectIfInLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('HELLo')
     // Use onAuthStateChanged to listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         navigate('/Home'); 
       } else {
-        console.log('hello')
         // User is signed out. Redirect to the login page.
         navigate('/LoginPage');
       }

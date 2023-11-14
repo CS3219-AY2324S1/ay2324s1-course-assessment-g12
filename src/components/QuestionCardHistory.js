@@ -32,7 +32,6 @@ const QuestionCardHistory = ({ question, onClose}) => {
 
   const handleSaveClick = async () => {
     // Save the edited content
-    console.log(editedContent);
     try {
       const response = await axios.patch(`${questionUrl}/question`, {
         title: question.title,

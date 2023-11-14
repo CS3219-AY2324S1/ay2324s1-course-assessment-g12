@@ -8,9 +8,9 @@ function AddQuestionPage() {
   
   return (
     <div className="add-question-container">
-      <header className="add-question-header">
+      <div className="add-question-header">
         <SubmitButton />
-      </header>
+      </div>
     </div>
   );
 }

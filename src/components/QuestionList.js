@@ -60,7 +60,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const fetchLikedQuestions = async (email) => {
     try {
-      console.log(email)
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           'email': email

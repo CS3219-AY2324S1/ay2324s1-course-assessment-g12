@@ -219,12 +219,9 @@ async function getQuestionsFromUser(username) {
 
 async function getLikedQuestions(username) {
     try {
-        console.log("hereee");
-        console.log(username);
         const questions = [];
         const questionsRef = db.collection("users").doc(username).collection("likes");
 
-        console.log("does it go here???");
         const querySnapshot = await questionsRef.get();
 
         if (querySnapshot.empty) {
@@ -236,13 +233,11 @@ async function getLikedQuestions(username) {
             return Object.assign({}, likedQuestion.data(), questionsDesc.data());
         });
 
-        console.log("what about here?")
         const questionData = await Promise.all(questionPromises);
         questionData.forEach((question) => {
             questions.push(question);
         });
 
-        console.log("hehehehe????")
         if (querySnapshot.size === questions.length) return questions;
     } catch (error) {
         console.error(error);

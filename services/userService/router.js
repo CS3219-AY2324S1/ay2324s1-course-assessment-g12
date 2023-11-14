@@ -15,7 +15,6 @@ app.use(cors());
 
 app.delete("/user", async (req, res) => {
     try {
-        console.log(req.query)
         const response = await axios.delete(`${databaseURL}/user`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {

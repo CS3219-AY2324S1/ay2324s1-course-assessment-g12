@@ -14,7 +14,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/question", async (req, res) => {
-    console.log("hello")
     const response = await axios.post(`${databaseURL}/question`, req.body, { headers: req.headers });
     res.send(response.data);
 });
@@ -80,10 +79,8 @@ app.post("/question/like", async (req, res) => {
             params: { email: email },
             headers: {Authorization: `Bearer ${accessToken}`},
         });
-        console.log("user data: "+userData)
 
         const username = userData.data.username;
-        console.log("here with me")
         const response = await axios.post(`${databaseURL}/question/like`,
             { username: username, title: req.body.title, liked: req.body.liked }, {headers: {Authorization: `Bearer ${accessToken}`}});
         res.send(response.data);
@@ -94,7 +91,6 @@ app.post("/question/like", async (req, res) => {
 
 app.get("/questions/like", async (req, res) => {
     try {
-        console.log("here")
         console.log(req.query.email)
         const email = req.query.email;
         const userData = await axios.get(`${databaseURL}/user`, { params: { email: email }, headers: req.headers });

@@ -1,7 +1,7 @@
 .Question-header {
   width: 100%;
   background-color: #282134;
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,10 +10,11 @@
   color: white;
 
 }
+
 .Scrollable-table-div{
   width: 100%;
   min-width: 150vh;
-  height: 50vh;
+  height: 20vh;
   border-collapse: collapse;
   overflow-y: auto;
 }
@@ -31,35 +32,36 @@
 .menu-item{
     margin-right:15px;
 }
-.table-container {
+.Scrollable-table-div table {
     width: 100%;
     min-width: 150vh;
     border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
 
   /* Style for alternating row colors */
-  .table-container tbody tr:nth-child(even) {
+  .history-table-container tbody tr:nth-child(even) {
     background-color: #3B3B44;
   }
   
-  .table-container tbody tr:nth-child(odd) {
+  .history-table-container tbody tr:nth-child(odd) {
     background-color: #555563;
   }
   
-  .table-container th {
+  .history-table-container th {
     text-align: left;
     padding: 8px;
   }
   
-  .table-container td {
+  .history-table-container td {
     text-align: left;
     padding: 8px;
   }
 
-  .table-container .question-row:hover {
+  .history-table-container .question-row:hover {
     transition: background-color 0.3s ease;
   }
-  .table-container .question-row:hover {
+  .history-table-container .question-row:hover {
     background-color: #8D8D95;
   }
 
