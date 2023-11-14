@@ -1,6 +1,6 @@
 const firebaseAdmin = require("./firebase.js");
 const db = firebaseAdmin.firestore();
-const getAuth = firebaseAdmin.auth(); 
+const getAuth = firebaseAdmin.auth();
 
 async function getUser(criteria, flag) {
     const usersRef = db.collection("users");
@@ -28,7 +28,7 @@ async function checkUserExistsByUsername(username) {
     const usersRef = db.collection("users");
     const snapshot = await usersRef
         .where("username", "==", username)
-        .get(); 
+        .get();
     if (snapshot.empty) {
         return false;
     } else {
@@ -44,9 +44,9 @@ async function getUidFromToken(idToken) {
         console.error("Error verifying ID token:", error);
         throw error; // You can choose to handle the error as needed
     }
-  }
+}
 
-  
+
 async function getQuestion(title) {
     try {
         const questionsRef = db.collection("questions");
@@ -244,4 +244,4 @@ async function getLikedQuestions(username) {
     }
 }
 
-module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions };
+module.exports = { getUser, checkUserExistsByEmail, checkUserExistsByUsername, getUidFromToken, getQuestion, getAllQuestions, filterQuestions, getQuestionsFromUser, getLikedQuestions, getAuth};

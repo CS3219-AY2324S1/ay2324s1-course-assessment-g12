@@ -8,8 +8,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
+import CategoryMenuAdd from './CategoryMenuAdd';
 import "../style/SubmitButton.css";
 import axios from 'axios';
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 
 const Categories = [
@@ -33,8 +36,7 @@ const authHeader = {
 }
 
 function SubmitButton() {
-
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
   const handleSubmission = async (data) => {
     const { title, content, categories, difficulty } = data;
@@ -42,64 +44,47 @@ function SubmitButton() {
 
     try {
       const response = await axios.post(`${questionURL}/question`, {
-        "title": title,
-        "categories": categories,
-        "difficulty": difficulty,
-        "content": content,
-      }, { headers: authHeader }).then(response => {
-        // Handle the success response here
-        console.log('ADD Request Successful:', response.data);
-      })
-      .catch(error => {
-        // Handle errors here
-        console.error('ADD Request Error:', error);
+        title,
+        categories,
+        difficulty,
+        content,
+      }, { headers: authHeader });
 
-        if (error.response && error.response.status === 403) {
-          // Handle 403 Forbidden error (permissions issue)
-          alert('You do not have the required permissions to add questions.');
-        }
-      });
+      // Handle the success response here
+      console.log('ADD Request Successful:', response.data);
+
       reset({
         title: "",
         content: "",
-        categories: "",
+        categories: [],
         difficulty: ""
       });
     } catch (error) {
-      console.error("Error:", error);
+      // Handle errors here
+      console.error('ADD Request Error:', error);
+
+      if (error.response && error.response.status === 403) {
+        // Handle 403 Forbidden error (permissions issue)
+        alert('You do not have the required permissions to add questions.');
+      }
     }
   }
 
   return (
     <div className="wrapper_submit">
-      <h1> Submit your questions here:</h1>
+      <h1 className='add-question-header'> Add a new Question:</h1>
       <form onSubmit={handleSubmit(handleSubmission)}>
         <Grid container spacing={1}>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
           </Grid>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', bgcolor: "#ffff", input: { color: "black" } }} label="Decription" name="Message" multiline
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Description" name="Message" multiline
               placeholder="Enter Question Content (in html)" variant="filled" fullWidth {...register("content", { required: true })} />
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{
-              border: '2px solid white', bgcolor: "#FFFF",
-              '& .MuiInputBase-input': {
-                color: 'black', // Change this to your desired text color
-                textAlign: 'left',
-              },
-            }}
-              select defaultValue="" label="Categories" name="Categories" placeholder="Algorithm" variant="filled" fullWidth required {...register("categories", { required: true })}>
-              {Categories.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))} </TextField>
-          </Grid>
-          <Grid xs={12} item>
-            <TextField sx={{
-              border: '2px solid white', bgcolor: "#FFFF",
+              border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#FFFF",
               '& .MuiInputBase-input': {
                 color: 'black', // Change this to your desired text color
                 textAlign: 'left',
@@ -110,19 +95,30 @@ function SubmitButton() {
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
-              ))} </TextField>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid xs={12} item>
+            <CategoryMenuAdd
+              selectedCategory={[]}
+              onCategoryChange={(newCategories) => {
+                // Set the new value to the "categories" form field
+                setValue("categories", newCategories);
+              }}
+            />
           </Grid>
           <Grid xs={12} item>
             <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
           </Grid>
-          {/* <Grid xs={12} item>
-                <Button type="reset" variant="contained" color="primary" fullWidth> Reset form</Button>
-              </Grid> */}
-        </Grid >
-      </form >
+        </Grid>
+      </form>
     </div>
-
   );
 }
 
 export default SubmitButton;
+
+
+
+
+

@@ -21,3 +21,8 @@ body {
   font-family: 'Russo'; /* Font name */
   src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Julius'; /* Font name */
+  src: url('./assets/fonts/JuliusSansOne-Regular.ttf') format('truetype');
+}

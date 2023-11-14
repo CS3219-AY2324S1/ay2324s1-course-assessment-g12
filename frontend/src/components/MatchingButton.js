@@ -11,8 +11,21 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import "../style/SubmitButton.css";
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import "../style/LoadingBox.css"
+import * as Y from "yjs";
+import Editor from "@monaco-editor/react";
+import { MonacoBinding } from 'y-monaco';
+import * as monaco from 'monaco-editor';
+import { createClient } from '@liveblocks/client';
+import LiveblocksProvider from "@liveblocks/yjs";
 const socket = io('http://localhost:3003');
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+const client = createClient({
+    publicApiKey: "pk_dev_-iamGGIAHL-AOLUgx1XFpZ3yyHJXxO5cdT4mZ4ZBvSKb2-JF8vKSmdaj7UVE-M_a",
+});
 
 const Difficulty =[
     { value: 'Easy', label: 'Easy' },
@@ -20,26 +33,131 @@ const Difficulty =[
     { value: 'Hard', label: 'Hard' },
   ]
 
-function MatchingButton() {
+function MatchingButton({callback}) {
+     // whether or not to show the loading dialog
+    const [isLoading, setIsLoading] = useState(false);
+
+    // data to display
+    const [loadedData, setLoadedData] = useState();
+
+    // match is found
+    const [isMatchFound, setIsMatchFound] = useState(false);
+
+    // room ID
+    const [roomJoined, setRoomJoined] = useState("");
+
+    // Editor
+    const [editor, setEditor] = useState(null);
+
+    //chat log
+    const [chatLog, setChatLog] = useState("");
+
+    //user input message
+    const [userMessage, setUserMessage] = useState("");
+
+    // Yjs
+    const ydoc = new Y.Doc();
+
+    // Ytype
+    const textType = ydoc.getText("monaco");
+
+    // this function will be called when the button get clicked
+    const buttonHandler = async () => {
+        // show the loading dialog
+        setIsLoading(true);
+    };
+
+    console.log(callback)
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const handleSubmission = (data) => {
+        buttonHandler();
         console.log(data)
         console.log("submitting");
-        socket.emit("joinQueue", data.difficulty);
-        document.getElementById("matching").innerHTML = "Matching...";
+        socket.timeout(7000).emit("joinQueue", data.difficulty, (err) => {
+            if(err) {
+                setIsLoading(false);
+                socket.emit("timeout", data.difficulty);
+            }
+        });
         console.log("supo");
     }
-    
     socket.on("matchFound", (room, user1_id, user2_id) => {
+        setRoomJoined(room);
         console.log("Match found: " + room);
+        setIsLoading(false)
         document.getElementById("matching").innerHTML = "Match found!: Room: " + room + " User1: " + user1_id + " User2: " + user2_id;
+        callback(true)
     });
 
+    function handleSendMessage() {
+        setUserMessage(userMessage+"\n")
+        socket.emit("send-message", userMessage, socket.id, roomJoined)
+    }
+
+    socket.on("get-message", msg => {
+        setChatLog(chatLog+msg)
+        console.log(msg)
+    })
+
+    function handleSendMessage() {
+        setUserMessage(userMessage+"\n")
+        socket.emit("send-message", userMessage, socket.id, roomJoined)
+    }
+
+    socket.on("get-message", msg => {
+        setChatLog(chatLog+msg)
+        console.log(msg)
+    })
+
+
+    function handleOnMount(editor22, monaco22) { //bind the monaco with database
+        // Enter a multiplayer room
+        const { room, leave } = client.enterRoom(roomJoined, {
+            initialPresence: {},
+        });
+        const yProvider = new LiveblocksProvider(room, ydoc);
+        const monacoBinding = new MonacoBinding(textType, editor22.getModel(), new Set([editor22]), yProvider.awareness);
+    }
 
     return (
         <div>
+            <div style={{ display: isLoading ? 'flex' : 'none' }} className='modal'>
+                <div className='modal-content'>
+                    <div className='loader'></div>
+                    <div className='modal-text'>Matching...</div>
+                </div>
+            </div>
+            {roomJoined && ( //neede for editor to render
+                <div id='editor'>
+                    <div style={{ display: 'flex'}}>
+                        <Editor 
+                        height='50vh'
+                        width='50vw'
+                        theme='vs-dark'
+                        onMount={handleOnMount}></Editor>
+                    </div>
+                </div>
+            )}
+
+            {/* Chat Box */}
+          <div className="chat-box">
+            <div className="chat-window">
+              {chatLog}
+            </div>
+      
+            <div className="chat-input">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                value={userMessage}
+                onChange={(e) => setUserMessage(e.target.value)}
+              />
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
+          </div>
+
             <form onSubmit={handleSubmit(handleSubmission)}>
                 <Grid xl={12} item>
                     <TextField sx={{ border: '2px solid white', bgcolor: "#FFFF",

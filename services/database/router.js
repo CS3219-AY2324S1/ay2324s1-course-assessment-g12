@@ -12,6 +12,25 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.use(async (req, res, next) => {
+    console.log("auth header "+req.header('Authorization'))
+    const idToken = req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!idToken) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    read.getAuth.verifyIdToken(idToken)
+        .then((decodedToken) => {
+            req.user = decodedToken;
+            next();
+        })
+        .catch((error) => {
+            console.error('Error verifying Firebase token:', error);
+            return res.status(401).json({ error: 'Unauthorized' });
+        });
+});
+
 // ------------------ User Functions ------------------
 
 app.delete("/user", async (req, res) => {
@@ -39,9 +58,11 @@ app.get("/user", async (req, res) => {
         const username = req.query.username;
         const email = req.query.email;
         var response = null;
+
         if (username !== undefined) {
             response = await read.getUser(username, "username");
         } else {
+            console.log("can you hear me sos")
             response = await read.getUser(email, "email");
         }
         res.send(response);
@@ -101,12 +122,12 @@ app.get("/user/verify", async (req, res) => {
 
 app.post('/user/question', async (req, res) => {
     try {
-        const username = req.body.username;
-        const question = req.body.question;
-        const partner = req.body.partner;
-        const completed = req.body.completed;
-        const date = req.body.date;
-        const code = req.body.code;
+        const username = req.body.params.username;
+        const question = req.body.params.question;
+        const partner = req.body.params.partner;
+        const completed = req.body.params.completed;
+        const date = req.body.params.date;
+        const code = req.body.params.code;
         const response = await write.addQuestionToUser(username, question, partner, completed, date, code);
         res.send(response.data);
     } catch (error) {
@@ -161,6 +182,7 @@ app.get("/question", async (req, res) => {
 app.patch("/question", async (req, res) => {
     try {
         const title = req.body.title;
+        console.log(title)
         const data = req.body.data;
         await write.updateQuestion(title, data);
         res.status(200).send("Question updated");
@@ -211,6 +233,10 @@ app.get("/questions/filter", async (req, res) => {
             response = await read.getAllQuestions();
         } else {
             response = await read.filterQuestions(categories, difficulty, limit);
+            console.log(response)
+            await response.sort(function(a, b) {
+                return b.visits - a.visits;
+            })
         }
         res.status(200).json(response);
     } catch (error) {

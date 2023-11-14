@@ -8,10 +8,14 @@ import '../style/UserProfile.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase-config';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const userURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3001'
 : "http://35.198.205.80";
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 function UserProfile({ userData, user }) {
   const navigate = useNavigate();
@@ -101,8 +105,6 @@ function UserProfile({ userData, user }) {
 
   return (
     <div className="user-profile-container">
-
-      <div className="profile-picture-placeholder"></div>
       <div className="user-info">
         <p className='user-info-item'>@{userData.username}</p>
         <p className='user-info-item'>{userData.email}</p>
@@ -144,12 +146,20 @@ function UserProfile({ userData, user }) {
         </p>
         <p className='user-info-item'>Role: {userData.role}</p>
         <div className='signout-delete-container'>
-          <Button variant="contained" color="secondary" onClick={signOutAccount}>
-            Sign Out
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleDeleteAccount}>
-            Delete Account
-          </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<ExitToAppIcon />}
+          onClick={signOutAccount}
+          >
+        </Button>
+        <Button
+         variant="contained"
+    color="secondary"
+    startIcon={<DeleteIcon />}
+    onClick={handleDeleteAccount}
+  >
+  </Button>
         </div>
       </div>
       <EditIcon

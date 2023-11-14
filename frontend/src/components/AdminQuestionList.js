@@ -6,8 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const questionURL = 'http://localhost:3002';
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
@@ -15,6 +19,9 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const questionsPerPage = 30; // Define the number of questions to display per page
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -59,6 +66,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
         params: {
           'email': email
         },
+        headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
       console.log("Liked questions: ")
@@ -70,9 +78,6 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-    const response = await axios.post(`${questionURL}/question/visit`, {
-      title: question.title,
-    });
     document.body.style.overflow = 'hidden';
   };
 
@@ -83,17 +88,13 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
   const handleLike = async (question) => {
     try {
-      // Check if the question is already liked
-      const isLiked = likedQuestions.includes(question.title);
-      //  const isLiked = likedQuestions.some(likedQuestion => likedQuestion.id === question.id);
-      console.log(isLiked); 
+      const isLiked = likedQuestions.length > 0 && likedQuestions.some(likedQuestion => likedQuestion.title === question.title)
+    
       if (isLiked) {
-        // If already liked, remove it from the liked questions
-        const updatedLikedQuestions = likedQuestions.filter((q) => q !== question.title);
+        const updatedLikedQuestions = likedQuestions.filter((q) => q.title !== question.title);
         setLikedQuestions(updatedLikedQuestions);
       } else {
-        // If not liked, add it to the liked questions
-        setLikedQuestions([...likedQuestions, question.title]);
+        setLikedQuestions([...likedQuestions, question]);
       }
 
       // Send a request to your server to update the likes
@@ -101,7 +102,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
         email: auth.currentUser.email,
         title: question.title,
         liked: !isLiked,
-      });
+      }, {headers: await localStorage.getItem('accessToken')});
   
       // Check if the request was successful (you may want to add more error handling)
       if (response.status === 200) {
@@ -153,7 +154,11 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
     }
   };
   
-
+  const handleEdit = (question) => {
+    setSelectedQuestion(question);
+    setIsEditing(true);
+    setEditedContent(question.content);
+  };
 
   // Calculate the range of questions to display based on current page and questionsPerPage
   const indexOfLastQuestion = currentPage * questionsPerPage;
@@ -165,9 +170,9 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
       <table className="table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Title</th>
-            <th style={{ textAlign: 'left' }}>Difficulty</th>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Title</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Difficulty</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
         <tbody>
@@ -181,7 +186,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
                 <td style={{ textAlign: 'left' }}>
                   <span>{question.visits}</span>
                   <IconButton onClick={() => handleLike(question)}>
-                  {likedQuestions.includes(question.title) ? (
+                  {likedQuestions.length > 0 && likedQuestions.some(likedQuestion => likedQuestion.title === question.title) ? (
                     <FavoriteIcon color="secondary" />
                     ) : (
                     <FavoriteBorderIcon color="secondary" />
@@ -212,14 +217,14 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
       {/* Pagination controls */}
       <div className="pagination">
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
+          <ArrowBackIosIcon/>
         </button>
-        <span>Page {currentPage}</span>
+        <span style={{fontFamily: 'Russo' }}>Page {currentPage}</span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={indexOfLastQuestion >= questions.length}
         >
-          Next
+          <ArrowForwardIosIcon />
         </button>
       </div>
     </div>

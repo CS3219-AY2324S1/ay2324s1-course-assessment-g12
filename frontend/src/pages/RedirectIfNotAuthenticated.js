@@ -18,7 +18,10 @@ function RedirectIfNotAuthenticated() {
         try {
           console.log(process.env.REACT_APP_ENV)
           const idToken = await user.getIdToken(true); // Wait for the promise to resolve
-          const decodedToken = await axios.get(`${userURL}/user/verify`, { params: { token: idToken } });
+          localStorage.setItem('accessToken', idToken);
+          const decodedToken = await axios.get(`${userURL}/user/verify`, { params: { token: idToken }, headers: {
+            'Authorization': `Bearer ${idToken}`
+          } });
         } catch (error) {
           console.error('Error verifying ID token:', error);
           navigate('/Page/LoginPage');

@@ -17,6 +17,9 @@ const userURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3001'
 : "http://35.198.205.80";
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
 const LoginSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -90,8 +93,8 @@ const LoginSignup = () => {
   return (
     <Container maxWidth="sm">
       <div style={{ marginTop: '2em', textAlign: 'center' }}>
-        <Typography variant="h4" component="h2">
-          {isLoginView ? 'Login' : 'Sign Up'}
+        <Typography variant="h4" component="h2"  sx={{ fontFamily: 'Russo', color: '#67352A'}}>
+          {isLoginView ? 'Login' : 'Create an Account'}
         </Typography>
         <form style={{ display: 'flex', flexDirection: 'column', marginTop: '1em' }} onSubmit={handleSubmit}>
           <TextField
@@ -147,7 +150,7 @@ const LoginSignup = () => {
               </Select>
             </>
           )}
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" sx={{ backgroundColor: '#7F74FF', color: 'white' }} type="submit">
             {isLoginView ? 'Login' : 'Sign Up'}
           </Button>
         </form>

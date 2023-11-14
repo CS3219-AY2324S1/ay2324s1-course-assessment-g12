@@ -5,8 +5,11 @@ import { auth } from '../firebase-config';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import "../style/UserProfilePage.css";
 
 const questionURL = 'http://localhost:3002';
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 const LikedQuestionList = () => {
   const [likedQuestions, setLikedQuestions] = useState([]);
@@ -35,7 +38,7 @@ const LikedQuestionList = () => {
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           email: email,
-        },
+        }, headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
       console.log('Liked questions: ');
@@ -67,6 +70,7 @@ const LikedQuestionList = () => {
       }
 
       // Send a request to your server to update the likes
+      console.log('despacito')
       const response = await axios.post(`${questionURL}/question/like`, {
         email: auth.currentUser.email,
         title: question.title,
@@ -96,34 +100,38 @@ const LikedQuestionList = () => {
       <table className="user-table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
       </table>
-      <div className="liked-questions-table">
-        <table className="user-table-container">
-          <tbody>
-            {likedQuestions.map((question, index) => (
-              <tr className="question-row" key={index}>
-                <td style={{ textAlign: 'left' }} onClick={() => handleRowClick(question)}>
-                  {question.title}
-                </td>
-                <td style={{ textAlign: 'left' }}>
-                  <span>{question.visits}</span>
-                  <IconButton onClick={() => handleLike(question)}>
-                    {likedQuestions.length > 0 &&
-                    likedQuestions.some((likedQuestion) => likedQuestion.title === question.title) ? (
-                      <FavoriteIcon color="secondary" />
-                    ) : (
-                      <FavoriteBorderIcon color="secondary" />
-                    )}
-                  </IconButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {likedQuestions.length > 0 ? ( 
+        <div className="liked-questions-table">
+          <table className="user-table-container">
+            <tbody>
+              {likedQuestions.map((question, index) => (
+                <tr className="question-row" key={index}>
+                  <td style={{ textAlign: 'left' }} onClick={() => handleRowClick(question)}>
+                    {question.title}
+                  </td>
+                  <td style={{ textAlign: 'left' }}>
+                    <span>{question.visits}</span>
+                    <IconButton onClick={() => handleLike(question)}>
+                      {likedQuestions.length > 0 &&
+                      likedQuestions.some((likedQuestion) => likedQuestion.title === question.title) ? (
+                        <FavoriteIcon color="secondary" />
+                      ) : (
+                        <FavoriteBorderIcon color="secondary" />
+                      )}
+                    </IconButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p>No liked questions available.</p>
+      )}
       {selectedQuestion && (
         <div className="modal-background">
           <QuestionCard question={selectedQuestion} onClose={handleCloseCard} />

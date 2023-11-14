@@ -4,7 +4,7 @@ function HomePage() {
     return (
       <div className="App">
         <header className="App-header">
-          <MatchingButton />
+          Home Page
         </header>
       </div>
     );

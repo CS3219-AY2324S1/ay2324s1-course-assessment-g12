@@ -8,9 +8,10 @@
   background-color: #555563;
   max-width: 600px;
   width: 100%;
+  max-height: 40vh;
   min-height: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
+  font-family: 'Russo', Arial, Helvetica, sans-serif;
 }
 
 .profile-picture-placeholder {
@@ -36,7 +37,6 @@
 }
 .signout-delete-container {
   display: flex;
-  justify-content: space-between;
 }
 
 .signout-delete-container button {

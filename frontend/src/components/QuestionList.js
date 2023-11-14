@@ -12,8 +12,11 @@ const questionURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3002'
 : "http://35.198.205.80";
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [likedQuestions, setLikedQuestions] = useState([]); 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
@@ -47,13 +50,13 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
           },
         });
         setQuestions(response.data);
-        console.log("Questions:")
-        console.log(response.data); 
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching questions:', error);
+        setLoading(false);
       }
     };
-
+    setLoading(true);
     fetchQuestions();
   }, [selectedCategory, selectedLevel, selectedList]);
 
@@ -63,7 +66,7 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           'email': email
-        },
+        }, headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
       console.log("Liked questions: ")
@@ -75,9 +78,6 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const handleRowClick = async (question) => {
     setSelectedQuestion(question);
-    const response = await axios.post(`${questionURL}/question/visit`, {
-      title: question.title,
-    });
     document.body.style.overflow = 'hidden';
   };
 
@@ -88,23 +88,13 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   const handleLike = async (question) => {
     try {
-      // Check if the question is already liked
-      //[].some((likedQuestion) => likedQuestion.id === question.id);
-      console.log(question)
-
-      //console.log(likedQuestions)
-
-      //const isLiked = likedQuestions.includes(question);
+     
       const isLiked = likedQuestions.length > 0 && likedQuestions.some(likedQuestion => likedQuestion.title === question.title)
-      console.log(isLiked); 
+    
       if (isLiked) {
-        console.log("its already liked")
-        // If already liked, remove it from the liked questions
         const updatedLikedQuestions = likedQuestions.filter((q) => q.title !== question.title);
         setLikedQuestions(updatedLikedQuestions);
       } else {
-        console.log("its not yet liked")
-        // If not liked, add it to the liked questions
         setLikedQuestions([...likedQuestions, question]);
       }
 
@@ -113,7 +103,9 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
         email: auth.currentUser.email,
         title: question.title,
         liked: !isLiked,
-      });
+      }, {headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }});
   
       // Check if the request was successful (you may want to add more error handling)
       if (response.status === 200) {
@@ -140,12 +132,13 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
 
   return (
     <div>
+      {loading && <p>LOADING QUESTIONS...</p>}
       <table className="table-container">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left' }}>Title</th>
-            <th style={{ textAlign: 'left' }}>Difficulty</th>
-            <th style={{ textAlign: 'left' }}>Likes</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Title</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Difficulty</th>
+            <th style={{ textAlign: 'left', fontFamily: 'Russo' }}>Likes</th>
           </tr>
         </thead>
         <tbody>
@@ -189,7 +182,7 @@ const QuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           <ArrowBackIosIcon/>
         </button>
-        <span>Page {currentPage}</span>
+        <span style={{fontFamily: 'Russo' }}>Page {currentPage}</span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={indexOfLastQuestion >= questions.length}

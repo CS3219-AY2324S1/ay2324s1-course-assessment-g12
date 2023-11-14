@@ -4,13 +4,22 @@ import LikedQuestionList from '../components/LikedQuestionList';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase-config';
 import axios from 'axios';
+import QuestionHistory from '../components/QuestionHistory';
 import '../style/UserProfilePage.css';
 
 const userURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3001'
 : "http://35.198.205.80";
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
 function UserProfilePage() {
+  const [selectedCategory, setSelectedCategory] = useState([]); // Default value
+  const [selectedLevel, setSelectedLevel] = useState('All Levels'); // Default value
+  const [selectedList, setSelectedList] = useState('List All'); // Default value
+  const [selectedPopularity, setSelectedPopularity] = useState('List All'); // Default value
+
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [user, setUser] = useState(null);
@@ -21,8 +30,8 @@ function UserProfilePage() {
         console.error("No user logged in.");
         return;
       }
-
-      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email } });
+      
+      const response = await axios.get(`${userURL}/user`, { params: { 'email': user.email }, headers: {'Cache-Control': 'no-cache'} });
       console.log(response.data);
 
       setUserData(response.data);
@@ -55,6 +64,14 @@ function UserProfilePage() {
       <div className="liked-questions-div">
         <LikedQuestionList />
       </div>
+      </div>
+      <div className="user-profile-footer">
+        {userData ? (
+        <QuestionHistory selectedCategory={selectedCategory} selectedLevel={selectedLevel} selectedList={selectedPopularity} userData={userData}/>)
+        : (
+          <p>Loading user data...</p>
+        )
+      }
       </div>
     </div>
   );

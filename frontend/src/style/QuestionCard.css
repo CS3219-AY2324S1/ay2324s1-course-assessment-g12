@@ -22,6 +22,18 @@
     color: red;
   }
 
+  .difficulty-easy-collab {
+    color: green;
+  }
+
+  .difficulty-medium-collab {
+    color: orange;
+  }
+
+  .difficulty-hard-collab {
+    color: red;
+  }
+
 .content-div {
     margin-top: 10px; 
 }
