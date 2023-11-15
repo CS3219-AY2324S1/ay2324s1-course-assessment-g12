@@ -14,8 +14,8 @@ const easyQueue = [];
 const mediumQueue = [];
 const hardQueue = [];
 
-const serverHttp = http.createServer();
-// const server = http.createServer(app);
+// const serverHttp = http.createServer();
+const serverHttp = http.createServer(app);
 var socketServer = require('socket.io')(serverHttp, {
     cors: {
         origin: "*",
@@ -161,6 +161,7 @@ async function listenRabbitMQ() {
             }else{  
                 const putQueue = async () => {
                     try {
+                        console.log("in put queue")
                     const response = await axios.post(`${queueURL}/joinQueue`, data);
                     } catch (error) {
                     console.error('Error join queue:', error);
