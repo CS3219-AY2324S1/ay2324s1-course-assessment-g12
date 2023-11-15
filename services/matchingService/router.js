@@ -503,9 +503,9 @@ async function listenRabbitMQ() {
             if (submitQueue.length === 0 ) {
                 submitQueue.push(senderUserData.username);
                 const message = "System: " + senderUserData.username + " has queue for submit, waiting for other user."; 
-                socketServer.to(room).emit("get-message", message);
+                socketServer.of("/match").to(room).emit("get-message", message);
             }else if (senderUserData.username !== submitQueue[0]) {
-                socketServer.to(room).emit("leave_room");
+                socketServer.of("/match").to(room).emit("leave_room");
                 const now = new Date();
                 const year = now.getFullYear();
                 const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
@@ -624,7 +624,7 @@ async function listenRabbitMQ() {
 
             axios(config)
             .then(function (response) {
-                socketServer.to(room).emit("compile_result", response.data.output);
+                socketServer.of("/match").to(room).emit("compile_result", response.data.output);
             })
             .catch(function (error) {
                 console.log(error);
@@ -666,7 +666,7 @@ async function listenRabbitMQ() {
             
             if (session.size > 0) {
                 session.forEach(room => {
-                    socketServer.to(room.id).emit("partner_left");
+                    socketServer.of("/match").to(room.id).emit("partner_left");
                 });
                 const now = new Date();
                 const year = now.getFullYear();
@@ -711,7 +711,7 @@ async function listenRabbitMQ() {
 
         socket.on("send-message", (userMessage, senderUserData, room) => {
             message = senderUserData.username + ": " + userMessage;
-            socketServer.to(room).emit("get-message", message);
+            socketServer.of("/match").to(room).emit("get-message", message);
             console.log("message sent: " + message)
         });
     });
