@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import MessagingBox from '../components/MessagingBox';
-import  io  from 'socket.io-client';
+import { io } from 'socket.io-client';
 import MatchingBtn from '../components/MatchingBtn';
 import EditorComp from '../components/EditorComp';
 import '../style/QuestionCard.css'; 

@@ -3,6 +3,7 @@ var app = express();
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3003;
+const socket = require('socket.io');
 const http = require('http');
 const uuid = require('uuid');
 const amqp = require("amqplib")
@@ -13,14 +14,16 @@ const easyQueue = [];
 const mediumQueue = [];
 const hardQueue = [];
 
+const serverHttp = http.createServer();
 // const server = http.createServer(app);
-const socketServer = require('socket.io')(3003, {
+var socketServer = require('socket.io')(serverHttp, {
     cors: {
-        origin: ["http://35.198.205.80/"],
+        origin: "*",
     }
-});
+}); 
+serverHttp.listen(3003);
 
-socketServer = socketServer.of("/match")
+const socketServer2 = socketServer.of('/match');
 
 const queueURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3009'
@@ -145,9 +148,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "python3")
@@ -177,9 +182,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "java")
@@ -209,9 +216,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Easy", user1Name, user2Name, user1Socket, user2Socket, "cpp")
@@ -241,9 +250,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "python3")
@@ -273,9 +284,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "java")
@@ -305,9 +318,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Medium", user1Name, user2Name, user1Socket, user2Socket, "cpp")
@@ -337,9 +352,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "python3")
@@ -369,9 +386,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "java")
@@ -401,9 +420,11 @@ async function listenRabbitMQ() {
                 console.log(dataRet);
                 // Process data or log the content of the unacked message here
                 const user1Name = data.msg.username;
-                const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                //const user1Socket = socketServer.sockets.sockets.get(data.msg.socketID);
+                const user1Socket = data.msg.socketID;
                 const user2Name = dataRet.message.username;
-                const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                //const user2Socket = socketServer.sockets.sockets.get(dataRet.message.socketID);
+                const user2Socket = dataRet.message.socketID;
 
                 // createRoom(difficulty, data user 1, data user 2, socket user 1, socket user 2)
                 createRoom("Hard", user1Name, user2Name, user1Socket, user2Socket, "cpp")
@@ -436,15 +457,15 @@ async function listenRabbitMQ() {
             dataUser1: userData1,
             dataUser2: userData2,
             isFinished: false,
-            user1Socket: socketUser1.id,
-            user2Socket: socketUser2.id,
+            user1Socket: socketUser1,
+            user2Socket: socketUser2,
             language: language
         };
         console.log("room" + room.id);
         rooms.set(room.id, room);
         console.log("room");
-        socketUser1.join(room.id);
-        socketUser2.join(room.id);
+        socketServer.of("/match").in(socketUser1).socketsJoin(room.id);
+        socketServer.of("/match").in(socketUser2).socketsJoin(room.id);
         console.log("matched");
         const fetchQuestions = async () => {
             try {
@@ -461,7 +482,7 @@ async function listenRabbitMQ() {
                 fetchQuestions();
             }else {
                 room.question = question;
-                socketServer.to(room.id).emit("matchFound", room.id, question, language);
+                socketServer.of("/match").to(room.id).emit("matchFound", room.id, question, language);
             }
             } catch (error) {
             console.error('Error fetching questions:', error);
@@ -470,7 +491,7 @@ async function listenRabbitMQ() {
         fetchQuestions();
     }
 
-    socketServer.on("connection", (socket) => {
+    socketServer2.on("connection", (socket) => {
         console.log("Socket connected: " + socket.id);
 
         socket.on("submit_question", (senderUserData, room) => {
