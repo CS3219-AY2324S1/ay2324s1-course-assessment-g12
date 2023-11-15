@@ -29,7 +29,7 @@ function CollaborationPage({setIsMatched}) {
   // The socket
   useEffect(() => {
     // Establish the socket connection only on the first render
-    const sock = io("http://35.198.205.80:3003");
+    const sock = io("http://35.198.205.80/match");
     sock.on("compile_result", output => {
       console.log(output)
       setOutput(output)

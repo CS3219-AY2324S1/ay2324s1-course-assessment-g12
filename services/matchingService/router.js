@@ -45,7 +45,7 @@ const dbURL = process.env.REACT_APP_ENV === 'local'
 
 // Listen to the rabbitMQ
 async function listenRabbitMQ() {
-    const connection = await amqp.connect("amqp://rabbitmq-service-service");
+    const connection = await amqp.connect("amqp://rabbitmq-service.default.svc.cluster.local:5672");
     const channel = await connection.createChannel();
 
     // Declare Dead-Letter Exchange (DLX)
