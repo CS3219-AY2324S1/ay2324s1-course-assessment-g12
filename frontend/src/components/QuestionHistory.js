@@ -9,9 +9,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import '../style/QuestionHistory.css';
 import QuestionCardHistory from './QuestionCardHistory';
-import { databaseApi } from '../apis.js';
+import { userApi } from '../apis.js';
 
-const databaseURL = databaseApi;
+const   userURL = userApi;
 
 const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userData }) => {
   const [questions, setQuestions] = useState([]);
@@ -40,7 +40,7 @@ const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userDa
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get(`${databaseURL}/user/questions`, {
+        const response = await axios.get(`${userURL}/user/questions`, {
           params: {
             username: userData.username,
           },

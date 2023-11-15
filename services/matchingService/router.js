@@ -452,7 +452,7 @@ async function listenRabbitMQ() {
                 categories: [],
                 difficulty: difficulty,
                 limit: 'List All',
-                }, headers: req.header
+                } 
             });
             const idx = getRandomInt(0, response.data.length)
             const question = response.data[idx];

@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -13,14 +14,14 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(cors());
 
-app.use(async (req, res, next) => {
-    try {
-        const isAuthenticated = await axios.get(`${databaseURL}/user/authenticate`, { params: req.query, headers: req.headers });
-        if (isAuthenticated.data) next();
-    } catch (error) {
-        res.status(error.response.status).json({ error: error.response.data.error })
-    }
-});
+// app.use(async (req, res, next) => {
+//     try {
+//         const isAuthenticated = await axios.get(`${databaseURL}/user/authenticate`, { params: req.query, headers: req.headers });
+//         if (isAuthenticated.data) next();
+//     } catch (error) {
+//         res.status(error.response.status).json({ error: error.response.data.error })
+//     }
+// });
 
 app.get("/", (req, res) => {
     res.send("Hello World");

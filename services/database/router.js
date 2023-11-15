@@ -122,6 +122,7 @@ app.get("/user/verify", async (req, res) => {
 app.post('/user/question', async (req, res) => {
     try {
         const username = req.body.params.username;
+        console.log("posting question to user: " + username)
         const question = req.body.params.question;
         const partner = req.body.params.partner;
         const completed = req.body.params.completed;

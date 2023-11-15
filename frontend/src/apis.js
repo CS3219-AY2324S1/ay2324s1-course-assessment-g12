@@ -23,7 +23,7 @@ const matchingApi =
 
 const databaseApi =
     process.env.REACT_APP_ENV === "docker"
-        ? "http://localhost:3005"
+        ? "http://database:3005"
         : process.env.REACT_APP_ENV === "local"
         ? "http://localhost:3005"
         : "http://database-service-service.default.svc.cluster.local:3005";
