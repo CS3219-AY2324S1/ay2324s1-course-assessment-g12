@@ -11,9 +11,7 @@ import '../style/QuestionHistory.css';
 import QuestionCardHistory from './QuestionCardHistory';
 import { databaseApi } from '../apis.js';
 
-const questionURL = databaseApi;
-
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+const databaseURL = databaseApi;
 
 const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userData }) => {
   const [questions, setQuestions] = useState([]);
@@ -42,7 +40,7 @@ const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userDa
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get(`${questionURL}/user/questions`, {
+        const response = await axios.get(`${databaseURL}/user/questions`, {
           params: {
             username: userData.username,
           },
@@ -80,7 +78,7 @@ const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userDa
         <div style={{ flex: 0.1, fontFamily:'Russo', textAlign:"center"}}>Done</div>
     </div>
       <div className='Scrollable-table-div'>
-        <table className="history-table-container">
+        <table className="table-container">
           <tbody>
             {currentQuestions.length > 0 ? (
               currentQuestions.map((question, index) => (

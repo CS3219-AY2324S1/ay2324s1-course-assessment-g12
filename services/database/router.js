@@ -12,17 +12,18 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.use(async (req, res, next) => {
+app.get("/user/authenticate", async (req, res, next) => {
+    console.log("auth header "+req.header('Authorization'))
     const idToken = req.header('Authorization')?.replace('Bearer ', '');
 
-    if (!idToken) {
-        return res.status(401).json({ error: 'Unauthorized' });
+    if (idToken === undefined) {
+        return res.status(401).json({ error: 'Unauthorized - Missing Token' });
     }
 
     read.getAuth.verifyIdToken(idToken)
         .then((decodedToken) => {
             req.user = decodedToken;
-            next();
+            return res.send(true);
         })
         .catch((error) => {
             console.error('Error verifying Firebase token:', error);
