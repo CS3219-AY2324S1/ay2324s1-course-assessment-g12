@@ -3,7 +3,6 @@ var app = express();
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3003;
-const socket = require('socket.io');
 const http = require('http');
 const uuid = require('uuid');
 const amqp = require("amqplib")
@@ -20,6 +19,8 @@ const socketServer = require('socket.io')(3003, {
         origin: ["http://35.198.205.80/"],
     }
 });
+
+socketServer = socketServer.of("/match")
 
 const queueURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3009'

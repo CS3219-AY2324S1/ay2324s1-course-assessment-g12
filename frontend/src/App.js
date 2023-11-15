@@ -17,6 +17,9 @@ import AddQuestionPage from './pages/AddQuestionPage';
 import AdminQuestionPage from './pages/AdminQuestionPage';
 import CollaborationPage from './pages/CollaborationPage';
 import LayoutHome from './pages/LayoutHome';
+import dotenv from 'dotenv';
+
+
 
 function App() {
   return (
