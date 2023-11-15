@@ -29,7 +29,7 @@ const queueURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3009'
 : process.env.REACT_APP_ENV === 'docker'
 ? 'http://producer:3009'
-: "http://35.198.205.80:3009";
+: "http://queue-service-service.default.svc.cluster.local:3009";
 
 const questionURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3002'
