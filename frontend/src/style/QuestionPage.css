@@ -25,10 +25,12 @@
 .menu-item{
     margin-right:15px;
 }
+
 .table-container {
     width: 100%;
     min-width: 150vh;
     border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
   
   /* Style for alternating row colors */

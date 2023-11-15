@@ -16,6 +16,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
 
 const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) => {
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const [likedQuestions, setLikedQuestions] = useState([]); 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
@@ -52,8 +53,10 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
           },
         });
         setQuestions(response.data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching questions:', error);
+        setLoading(false);
       }
     };
 
@@ -62,7 +65,6 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
   const fetchLikedQuestions = async (email) => {
     try {
-      console.log(email)
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           'email': email
@@ -168,6 +170,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
   return (
     <div>
+      {loading && <p>LOADING QUESTIONS...</p>}
       <table className="table-container">
         <thead>
           <tr>

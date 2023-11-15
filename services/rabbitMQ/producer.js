@@ -24,7 +24,6 @@ class Producer {
         await this.channel.publish(exhangeName, routingKey, 
             Buffer.from(JSON.stringify(logDetail))
         )
-        //console.log("the message ${msg} is sent to exchange ${exchangeName}");
     }
 }
 

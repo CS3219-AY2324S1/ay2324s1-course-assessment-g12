@@ -13,6 +13,8 @@ import { databaseApi } from '../apis.js';
 
 const questionURL = databaseApi;
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
 const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userData }) => {
   const [questions, setQuestions] = useState([]);
   // const [likedQuestions, setLikedQuestions] = useState([]); 
@@ -78,7 +80,7 @@ const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userDa
         <div style={{ flex: 0.1, fontFamily:'Russo', textAlign:"center"}}>Done</div>
     </div>
       <div className='Scrollable-table-div'>
-        <table className="table-container">
+        <table className="history-table-container">
           <tbody>
             {currentQuestions.length > 0 ? (
               currentQuestions.map((question, index) => (

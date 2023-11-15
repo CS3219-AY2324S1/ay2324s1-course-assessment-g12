@@ -35,15 +35,13 @@ const LikedQuestionList = () => {
 
   const fetchLikedQuestions = async (email) => {
     try {
-      console.log(email);
+  
       const response = await axios.get(`${questionURL}/questions/like`, {
         params: {
           email: email,
         }, headers: {'Cache-Control': 'no-cache'}
       });
       setLikedQuestions(response.data);
-      console.log('Liked questions: ');
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching liked questions:', error);
     }
@@ -58,14 +56,11 @@ const LikedQuestionList = () => {
       const isLiked =
         likedQuestions.length > 0 &&
         likedQuestions.some((likedQuestion) => likedQuestion.title === question.title);
-      console.log(isLiked);
       if (isLiked) {
-        console.log('its already liked');
         // If already liked, remove it from the liked questions
         const updatedLikedQuestions = likedQuestions.filter((q) => q.title !== question.title);
         setLikedQuestions(updatedLikedQuestions);
       } else {
-        console.log('its not yet liked');
         // If not liked, add it to the liked questions
         setLikedQuestions([...likedQuestions, question]);
       }

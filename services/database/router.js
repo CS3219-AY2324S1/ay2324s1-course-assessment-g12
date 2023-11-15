@@ -13,7 +13,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(async (req, res, next) => {
-    console.log("auth header "+req.header('Authorization'))
     const idToken = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!idToken) {
@@ -62,7 +61,6 @@ app.get("/user", async (req, res) => {
         if (username !== undefined) {
             response = await read.getUser(username, "username");
         } else {
-            console.log("can you hear me sos")
             response = await read.getUser(email, "email");
         }
         res.send(response);
@@ -182,7 +180,6 @@ app.get("/question", async (req, res) => {
 app.patch("/question", async (req, res) => {
     try {
         const title = req.body.title;
-        console.log(title)
         const data = req.body.data;
         await write.updateQuestion(title, data);
         res.status(200).send("Question updated");

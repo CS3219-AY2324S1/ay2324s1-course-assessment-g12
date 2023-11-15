@@ -14,12 +14,11 @@ function QuestionPage() {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    console.log(category);
+
   };
 
   const handleLevelChange = (level) => {
     setSelectedLevel(level);
-    console.log(level);
   };
 
   const handleListChange = (list) => {
@@ -34,7 +33,6 @@ function QuestionPage() {
       setSelectedPopularity('List All');
     }
     setSelectedList(list);
-    console.log(list);
   };
 
   return (

@@ -71,19 +71,19 @@ function SubmitButton() {
 
   return (
     <div className="wrapper_submit">
-      <h1 className='add-question-header'> Add a new Question:</h1>
+      <h2> Add a new<br /> Question</h2>
       <form onSubmit={handleSubmit(handleSubmission)}>
         <Grid container spacing={1}>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#CCCCCC", input: { color: "black" } }} label="Title" name="Questions" placeholder="Enter your Title" variant="filled" fullWidth required {...register("title", { required: true })} />
           </Grid>
           <Grid xs={12} item>
-            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#ffff", input: { color: "black" } }} label="Description" name="Message" multiline
+            <TextField sx={{ border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#CCCCCC", input: { color: "black" } }} label="Description" name="Message" multiline
               placeholder="Enter Question Content (in html)" variant="filled" fullWidth {...register("content", { required: true })} />
           </Grid>
           <Grid xs={12} item>
             <TextField sx={{
-              border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#FFFF",
+              border: '2px solid white', borderRadius: '0.5vh', bgcolor: "#CCCCCC",
               '& .MuiInputBase-input': {
                 color: 'black', // Change this to your desired text color
                 textAlign: 'left',
@@ -107,7 +107,7 @@ function SubmitButton() {
             />
           </Grid>
           <Grid xs={12} item>
-            <Button type="submit" variant="contained" color="primary" fullWidth> Submit</Button>
+            <Button type="submit" variant="contained" color="primary" sx={{marginY:'2vh'}}fullWidth> Submit</Button>
           </Grid>
         </Grid>
       </form>

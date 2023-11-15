@@ -27,6 +27,7 @@
     overflow-y: auto; /* Enable vertical scrolling when the content overflows */
     overflow-x:hidden;
     width: 46.6vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
   
   .user-table-container {

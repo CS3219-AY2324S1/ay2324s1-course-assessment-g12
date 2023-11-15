@@ -116,8 +116,10 @@ export default function CategoryMenuAdd({selectedCategory, onCategoryChange}) {
         sx={{
           width: '100%',
           // Add custom styling here
-          backgroundColor: 'white', // Set the background color to purple
+          backgroundColor: '#CCCCCC', // Set the background color to purple
           color: 'black',
+          border: 'white 2px solid',  
+          borderRadius: '0.5vh'
              // Add rounded corners
         }}
       >
