@@ -45,21 +45,26 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-# Running RabbitMQ Service
+# How to run the program locally
 
 ## Make sure docker is installed
-https://www.docker.com/
+https://docs.docker.com/engine/install/
 
-## Go to the rabbitMQ directory
-services\rabbitMQ
+## Request for the firebase auth key
+You can reach out on the issue of this page.
 
-## `docker-compose up`
-Execute the command to build, (re)create, start, and attach to a container for the rabbitMQ service.
+## Run the docker-compose.yaml
+run `docker compose up --detach --build`
 
-## Go to http://localhost:15672 to check whether the service is started.
-Enter guest::guest as the default username and password. You should be able to see the rabbitMQ UI management.
+## Wait untill the process is done
+You will see a new container in your docker and wait untill all images is running.
 
-## Learn More
+## Open your browser
+Access http://localhost:3000 for User 1 and Http://localhost:3006 for User 2.
+
+# Deployment
+Need to deploy manually.
+
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
