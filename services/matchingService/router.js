@@ -17,7 +17,7 @@ const hardQueue = [];
 // const server = http.createServer(app);
 const socketServer = require('socket.io')(3003, {
     cors: {
-        origin: ["http://localhost:3000", "http://localhost:3006"],
+        origin: ["http://35.198.205.80/"],
     }
 });
 

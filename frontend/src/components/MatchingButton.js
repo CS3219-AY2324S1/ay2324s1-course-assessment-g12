@@ -19,7 +19,7 @@ import { MonacoBinding } from 'y-monaco';
 import * as monaco from 'monaco-editor';
 import { createClient } from '@liveblocks/client';
 import LiveblocksProvider from "@liveblocks/yjs";
-const socket = io('http://localhost:3003');
+const socket = io('http://35.198.205.80:3003');
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
