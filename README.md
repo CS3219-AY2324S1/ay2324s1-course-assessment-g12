@@ -22,8 +22,8 @@ run `docker compose up --detach --build`
 You will see a new container in your docker and wait until all images is running.
 
 6. Open your browser
-Access [http://localhost:3000](http://localhost:3000) for User 1 and [http://localhost:3006](http://localhost:3006) for User 2.
-User 1 login details: Email: testing1233@gmail.com Password: 123456
+Access [http://localhost:3000](http://localhost:3000) for User 1 and [http://localhost:3006](http://localhost:3006) for User 2. <br>
+User 1 login details: Email: testing1233@gmail.com Password: 123456 <br>
 User 2 login details: Email: testing1234@gmail.com Password: 123456
 
 7. Reload your page
