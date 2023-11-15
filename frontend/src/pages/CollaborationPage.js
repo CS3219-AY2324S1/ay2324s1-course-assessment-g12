@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import MessagingBox from '../components/MessagingBox';
-import  io  from 'socket.io-client';
+import { io } from 'socket.io-client';
 import MatchingBtn from '../components/MatchingBtn';
 import EditorComp from '../components/EditorComp';
 import '../style/QuestionCard.css'; 
@@ -29,7 +29,7 @@ function CollaborationPage({setIsMatched}) {
   // The socket
   useEffect(() => {
     // Establish the socket connection only on the first render
-    const sock = io("http://localhost:3003");
+    const sock = io("http://35.198.205.80/match");
     sock.on("compile_result", output => {
       console.log(output)
       setOutput(output)

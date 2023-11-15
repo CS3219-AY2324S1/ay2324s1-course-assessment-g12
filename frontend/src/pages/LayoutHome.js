@@ -9,6 +9,7 @@ import CollaborationPage from './CollaborationPage';
 import { userApi } from '../apis.js';
 
 const userUrl = userApi;
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 const LayoutHome = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -20,7 +21,7 @@ const LayoutHome = () => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
           if (user) {
             console.log('User email:', user.email);
-            const response = await axios.get(`${userUrl}/user/authenticate`, { params: { "email": user.email } });
+            const response = await axios.get(`${userUrl}/user/authenticate`, { params: { "email": user.email }});
             const isAdmin = response.data;
             console.log('isAdmin:', isAdmin);
             setIsAdmin(isAdmin);

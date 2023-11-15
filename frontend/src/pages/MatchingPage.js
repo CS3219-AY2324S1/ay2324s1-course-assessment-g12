@@ -3,7 +3,7 @@ import LoginSignup from '../components/LoginSignup';
 import  io  from 'socket.io-client';
 import { set } from 'react-hook-form';
 
-const socket = io('http://localhost:3003');
+const socket = io('http://35.198.205.80/match');
 
 function MatchingPage() {
   const [isConnected, setIsConnected] = React.useState(false);
