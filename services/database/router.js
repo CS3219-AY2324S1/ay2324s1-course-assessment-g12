@@ -233,7 +233,6 @@ app.get("/questions/filter", async (req, res) => {
             response = await read.getAllQuestions();
         } else {
             response = await read.filterQuestions(categories, difficulty, limit);
-            console.log(response)
             await response.sort(function(a, b) {
                 return b.visits - a.visits;
             })

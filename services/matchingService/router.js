@@ -3,7 +3,6 @@ var app = express();
 const axios = require("axios");
 const cors = require("cors");
 const PORT = 3003;
-const backendURL = "http://localhost:3005"
 const socket = require('socket.io');
 const http = require('http');
 const uuid = require('uuid');
@@ -22,9 +21,23 @@ const socketServer = require('socket.io')(3003, {
     }
 });
 
-const queueURL = 'http://localhost:3009'
-const questionURL = 'http://localhost:3002';
-const dbURL = 'http://localhost:3005';
+const queueURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3009'
+: process.env.REACT_APP_ENV === 'docker'
+? 'http://producer:3009'
+: "http://35.198.205.80:3009";
+
+const questionURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3002'
+: process.env.REACT_APP_ENV === 'docker'
+? 'http://question:3002'
+: "http://35.198.205.80:3002";
+
+const dbURL = process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:3005'
+: process.env.REACT_APP_ENV === 'docker'
+? 'http://database:3005'
+: "http://database-service-service.default.svc.cluster.local:3005";
     // Generate a random integer between min (inclusive) and max (exclusive)
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
@@ -32,7 +45,7 @@ const dbURL = 'http://localhost:3005';
 
 // Listen to the rabbitMQ
 async function listenRabbitMQ() {
-    const connection = await amqp.connect("amqp://localhost");
+    const connection = await amqp.connect("amqp://rabbitmq");
     const channel = await connection.createChannel();
 
     // Declare Dead-Letter Exchange (DLX)

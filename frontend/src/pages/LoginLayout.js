@@ -4,8 +4,7 @@ import NavbarAdmin from '../components/NavbarAdmin';
 import RedirectIfInLogin from './RedirectIfInLogin';
 import axios from 'axios';
 import { auth } from '../firebase-config';
-
-const userUrl = 'http://localhost:3001';
+import { userApi } from '../apis.js';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

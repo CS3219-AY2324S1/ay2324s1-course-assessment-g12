@@ -7,9 +7,9 @@ import axios from 'axios';
 import QuestionHistory from '../components/QuestionHistory';
 import '../style/UserProfilePage.css';
 
-const userURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3001'
-: "http://35.198.205.80";
+import { userApi } from '../apis.js';
+
+const userURL = userApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

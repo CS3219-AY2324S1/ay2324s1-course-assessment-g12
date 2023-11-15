@@ -18,8 +18,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { auth } from '../firebase-config';
+import { userApi } from '../apis.js';
 
-const userURL = 'http://localhost:3001';
+const userURL = userApi;
 
 function CollaborationPage({setIsMatched}) {
   const navigate = useNavigate();
@@ -36,12 +37,12 @@ function CollaborationPage({setIsMatched}) {
 
     sock.on("partner_left", () => {
       console.log("partner left")
-      navigate('/UserProfile');
+      navigate('/Page/UserProfile');
       alert("Your partner has left the room, you will be redirected to the profile page")
     });
 
     sock.on("leave_room", () => {
-      navigate('/UserProfile');
+      navigate('/Page/UserProfile');
     });
     setSocket(sock); // Store the socket object in state
   }, []);

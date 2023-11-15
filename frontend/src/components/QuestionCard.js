@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import '../style/QuestionPage.css';
 import '../style/QuestionCard.css';
 import axios from 'axios';
+import { questionApi } from '../apis.js';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
-const questionUrl = 'http://localhost:3002';
+const questionUrl = questionApi;
 
 const QuestionCard = ({ question, onClose }) => {
   const [isEditing, setEditing] = useState(false);

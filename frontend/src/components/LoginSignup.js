@@ -9,13 +9,13 @@ import axios from 'axios';
 import { auth } from '../firebase-config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { userApi } from '../apis.js';
 
 
 const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
-const userURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3001'
-: "http://35.198.205.80";
+
+const userURL = userApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

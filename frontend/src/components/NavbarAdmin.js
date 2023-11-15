@@ -9,10 +9,10 @@ const NavbarAdmin = () => {
         <Typography variant="h6">
           PeerPrep
         </Typography>
-        <Button component={Link} to="/Home" color="inherit">HOME</Button>
-        <Button component={Link} to="/AdminQuestions" color="inherit">QUESTIONS</Button>
-        <Button component={Link} to="/UserProfile" color="inherit">PROFILE</Button>
-        <Button component={Link} to="/AddQuestion" color="inherit">ADD QUESTION</Button>
+        <Button component={Link} to="/Page/Home" color="inherit">HOME</Button>
+        <Button component={Link} to="/Page/AdminQuestions" color="inherit">QUESTIONS</Button>
+        <Button component={Link} to="/Page/UserProfile" color="inherit">PROFILE</Button>
+        <Button component={Link} to="/Page/AddQuestion" color="inherit">ADD QUESTION</Button>
         
       </Toolbar>
     </AppBar>

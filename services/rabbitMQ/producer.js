@@ -1,5 +1,5 @@
 const amqp = require("amqplib")
-const url = "amqp://localhost"
+const url = "amqp://rabbitmq"
 
 class Producer {
     channel;

@@ -7,10 +7,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { questionApi } from '../apis.js';
 
-const questionURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3002'
-: "http://35.198.205.80";
+const questionURL = questionApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

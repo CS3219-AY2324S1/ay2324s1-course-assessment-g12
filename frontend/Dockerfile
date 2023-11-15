@@ -6,8 +6,9 @@ RUN npm i axios dotenv
 
 COPY . .
 EXPOSE 3000
+EXPOSE 3006
 
 RUN npm run build
-ENV REACT_APP_ENV=local
+ENV REACT_APP_ENV=docker
 
 CMD ["npm", "start"]

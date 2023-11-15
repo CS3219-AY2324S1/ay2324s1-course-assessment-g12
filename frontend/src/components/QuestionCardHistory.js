@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import '../style/QuestionPage.css';
 import '../style/QuestionCard.css';
 import axios from 'axios';
+import { questionApi } from '../apis.js';
 
-const questionUrl = 'http://localhost:3002';
+const questionUrl = questionApi;
 
 const QuestionCardHistory = ({ question, onClose}) => {
   const [isEditing, setEditing] = useState(false);

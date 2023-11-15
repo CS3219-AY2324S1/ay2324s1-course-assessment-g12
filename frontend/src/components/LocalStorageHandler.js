@@ -1,13 +1,8 @@
 const id_key = "id";
 const axios = import("axios");
-<<<<<<< HEAD:frontend/src/components/LocalStorageHandler.js
-const questionURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3002'
-: "http://35.198.205.80";
-=======
-const questionsURL = "http://localhost:3002/questions";
-const questionURL = "http://localhost:3002/question";
->>>>>>> b4e2ba9d62cff767dc43e99ab79a43c29b2dba32:src/components/LocalStorageHandler.js
+import { questionApi } from '../apis.js';
+
+const questionURL = questionApi;
 
 async function getAllQuestions() {
     const response = await axios.get(questionsURL);

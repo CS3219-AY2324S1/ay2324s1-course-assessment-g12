@@ -5,5 +5,6 @@ RUN npm install
 
 COPY . .
 EXPOSE 3005
+ENV REACT_APP_ENV=docker
 
 CMD ["node", "router.js"]

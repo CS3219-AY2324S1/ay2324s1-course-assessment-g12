@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../firebase-config';
+import { userApi } from '../apis.js';
 
-const userURL = 'http://localhost:3001';
+const userURL = userApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
@@ -16,11 +17,11 @@ function RedirectIfInLogin() {
     // Use onAuthStateChanged to listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        navigate('/Home'); 
+        navigate('/Page/Home'); 
       } else {
         console.log('hello')
         // User is signed out. Redirect to the login page.
-        navigate('/LoginPage');
+        navigate('/Page/LoginPage');
       }
     });
 

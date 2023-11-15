@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import CategoryMenuAdd from './CategoryMenuAdd';
 import "../style/SubmitButton.css";
 import axios from 'axios';
+import { questionApi } from '../apis.js';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
@@ -28,9 +29,7 @@ const Difficulty = [
   { value: 'Hard', label: 'Hard' },
 ]
 
-const questionURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3002'
-: "http://35.198.205.80";
+const questionURL = questionApi;
 const authHeader = {
   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 }

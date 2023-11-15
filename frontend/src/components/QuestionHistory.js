@@ -9,8 +9,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import '../style/QuestionHistory.css';
 import QuestionCardHistory from './QuestionCardHistory';
+import { databaseApi } from '../apis.js';
 
-const questionURL = 'http://localhost:3005';
+const questionURL = databaseApi;
 
 const QuestionHistory = ({ selectedCategory, selectedLevel, selectedList, userData }) => {
   const [questions, setQuestions] = useState([]);

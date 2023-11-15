@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../firebase-config';
+import { userApi } from '../apis.js';
 
-const userURL = 'http://localhost:3001';
+const userURL = userApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

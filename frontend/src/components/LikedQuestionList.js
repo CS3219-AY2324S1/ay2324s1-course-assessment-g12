@@ -6,8 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import "../style/UserProfilePage.css";
+import { questionApi } from '../apis.js';
 
-const questionURL = 'http://localhost:3002';
+const questionURL = questionApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

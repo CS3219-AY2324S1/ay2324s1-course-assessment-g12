@@ -5,8 +5,9 @@ import RedirectIfNotAdmin from './RedirectIfNotAdmin';
 import RedirectIfNotAuthenticated from './RedirectIfNotAuthenticated';
 import axios from 'axios';
 import { auth } from '../firebase-config';
+import { userApi } from '../apis.js';
 
-const userUrl = 'http://localhost:3001';
+const userUrl = userApi;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

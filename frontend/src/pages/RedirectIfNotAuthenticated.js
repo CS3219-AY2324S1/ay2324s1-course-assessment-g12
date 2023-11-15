@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../firebase-config';
+import { userApi } from '../apis.js';
 
-const userURL = process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:3001'
-: "http://35.198.205.80";
+const userURL = userApi;
 
 function RedirectIfNotAuthenticated() {
   const navigate = useNavigate();
@@ -19,6 +18,7 @@ function RedirectIfNotAuthenticated() {
           console.log(process.env.REACT_APP_ENV)
           const idToken = await user.getIdToken(true); // Wait for the promise to resolve
           localStorage.setItem('accessToken', idToken);
+          console.log("url: " + userURL)
           const decodedToken = await axios.get(`${userURL}/user/verify`, { params: { token: idToken }, headers: {
             'Authorization': `Bearer ${idToken}`
           } });

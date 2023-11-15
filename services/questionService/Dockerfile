@@ -7,5 +7,6 @@ RUN npm i axios
 
 COPY . .
 EXPOSE 3002
+ENV REACT_APP_ENV=docker
 
 CMD ["node", "router.js"]

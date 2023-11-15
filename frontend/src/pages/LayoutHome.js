@@ -6,8 +6,9 @@ import RedirectIfNotAuthenticated from './RedirectIfNotAuthenticated';
 import axios from 'axios';
 import { auth } from '../firebase-config';
 import CollaborationPage from './CollaborationPage';
+import { userApi } from '../apis.js';
 
-const userUrl = 'http://localhost:3001';
+const userUrl = userApi;
 
 const LayoutHome = () => {
   const [isAdmin, setIsAdmin] = useState(false);

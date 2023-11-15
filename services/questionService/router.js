@@ -4,6 +4,8 @@ const axios = require("axios");
 var app = express();
 const databaseURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3005'
+: process.env.REACT_APP_ENV === 'docker'
+? 'http://database:3005'
 : "http://database-service-service.default.svc.cluster.local:3005";
 const PORT = 3002;
 const jwt = require("jsonwebtoken");
