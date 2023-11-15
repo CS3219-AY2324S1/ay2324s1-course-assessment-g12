@@ -1,0 +1,41 @@
+apiVersion: user-service/v1
+kind: Deployment
+metadata: 
+  labels:
+    app: user-service
+  name: user-service
+  namespace: default
+spec:
+replica: 3
+selector:
+  matchLabels:
+    app: user-service
+template:
+  metadata:
+    labels:
+      app: user-service
+  spec:
+    containers:
+    - image: potaters/user-service:0.1
+      name: user-service
+      ports:
+      - containerPort: 8001
+        protocol: TCP
+
+apiVersion: user-service/v1
+kind: Service
+metadata:
+  labels:
+    app: user-service
+  name: user-service
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 8001
+    protocol: TCP
+    targetPort: 8001
+  selector:
+    app: user-service
+  type: LoadBalancer
+```

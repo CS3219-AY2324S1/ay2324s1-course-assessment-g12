@@ -1,0 +1,150 @@
+.user-profile-header {
+  margin-top: 5vh;
+  width: 75.5vw;
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.user-profile-footer {
+  margin-top: 5vh;
+  width: 75.5vw; /* Use the same width as user-profile-header */
+  min-width: 75.5vw; /* Ensure a minimum width to prevent it from getting smaller */
+}
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100vh;
+  }
+
+  .liked-questions-table {
+    max-height: 40vh; /* Adjust the desired maximum height */
+    overflow-y: auto; /* Enable vertical scrolling when the content overflows */
+    overflow-x:hidden;
+    width: 46.6vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .user-table-container {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Rest of your CSS remains the same */
+  
+
+  /** for the user profile box **/ 
+  .user-profile-page {
+    margin-right: 5vh; 
+  }
+
+  /** for the like questions display **/
+  .user-menu-item-div{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 10px 0px 50px 0px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+}
+
+.user-menu-item{
+    margin-right:15px;
+}
+.user-table-container {
+    width: 100%;
+    min-width: 100vh;
+    max-height: 120vh;
+    border-collapse: collapse;
+  }
+
+  .user-table-container tr {
+    height: 10px; 
+  }
+  
+  /* Style for alternating row colors */
+  .user-table-container tbody tr:nth-child(even) {
+    background-color: #3B3B44;
+  }
+  
+  .user-table-container tbody tr:nth-child(odd) {
+    background-color: #555563;
+  }
+  
+  .user-table-container th {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .user-table-container td {
+    text-align: left;
+    padding: 8px;
+  }
+
+  .user-table-container .question-row:hover {
+    transition: background-color 0.3s ease;
+  }
+  .user-table-container .question-row:hover {
+    background-color: #8D8D95;
+  }
+
+
+  /*Question Card*/ 
+
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .question-card {
+    background: #555563;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    min-width: 100vh; 
+    max-height: 80vh; 
+    min-height: 80vh; 
+    max-width: 150vh; /* Adjust the maximum width of the card */
+    word-wrap: break-word;
+    text-align: left;
+    overflow-y: scroll;
+    overflow-x: auto;
+  }
+  
+  .question-card .card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .question-card .card-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+  }
+  
+  .question-card .card-content {
+    margin-top: 10px;
+    text-align: left;
+  }
+  
+  /*tag styles*/
+
+.tag-div{
+    border-radius: 5px; 
+  }

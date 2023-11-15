@@ -1,0 +1,28 @@
+body {
+  background-color: #282134;
+}
+
+.App {
+  text-align: center;
+  min-height: 100%;
+}
+
+.App-header {
+  width: 100%;
+  min-height: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@font-face {
+  font-family: 'Russo'; /* Font name */
+  src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Julius'; /* Font name */
+  src: url('./assets/fonts/JuliusSansOne-Regular.ttf') format('truetype');
+}

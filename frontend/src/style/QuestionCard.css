@@ -1,0 +1,39 @@
+.tag-div {
+    display: flex; 
+    align-items: flex-start;
+}
+
+.tag-div div {
+    margin-right: 3px;
+    padding: 3px 5px 3px 5px;
+    border-radius: 8px; 
+    background-color: #FF86C7;
+  }
+
+  .difficulty-easy {
+    color: lawngreen;
+  }
+  
+  .difficulty-medium {
+    color: orange;
+  }
+  
+  .difficulty-hard {
+    color: red;
+  }
+
+  .difficulty-easy-collab {
+    color: green;
+  }
+
+  .difficulty-medium-collab {
+    color: orange;
+  }
+
+  .difficulty-hard-collab {
+    color: red;
+  }
+
+.content-div {
+    margin-top: 10px; 
+}

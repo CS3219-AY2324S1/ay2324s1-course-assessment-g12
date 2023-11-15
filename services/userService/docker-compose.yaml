@@ -1,0 +1,6 @@
+version: "1"
+services:
+  user-service:
+    build: .
+    ports:
+      - "8001:3001"

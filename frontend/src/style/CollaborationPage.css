@@ -1,0 +1,61 @@
+.Collab_page {
+    font-family: sans-serif;
+    text-align: center;
+    
+   }
+
+   .collaboration-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }
+   
+   .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) ;
+    grid-template-rows: repeat(2, 1fr) ;
+    gap: 10px;
+    height: 95vh;
+    padding: 10px;
+    box-sizing: border-box;
+   }
+   
+   .messaging-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+   .coding-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+   .question-box {
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+   }
+
+.code-execution{
+    background-color: #2196F3;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+}
+.scrollable-div {
+    height: 60vh; /* Set your desired height */
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: auto; /* Hide horizontal scrolling */
+  }
+  
