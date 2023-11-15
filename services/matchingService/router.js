@@ -35,7 +35,7 @@ const questionURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3002'
 : process.env.REACT_APP_ENV === 'docker'
 ? 'http://question:3002'
-: "http://35.198.205.80:3002";
+: "http://question-service-service.default.svc.cluster.local:3002";
 
 const dbURL = process.env.REACT_APP_ENV === 'local'
 ? 'http://localhost:3005'
