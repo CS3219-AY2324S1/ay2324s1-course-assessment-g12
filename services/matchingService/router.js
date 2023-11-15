@@ -14,8 +14,8 @@ const easyQueue = [];
 const mediumQueue = [];
 const hardQueue = [];
 
-// const serverHttp = http.createServer();
-const serverHttp = http.createServer(app);
+const serverHttp = http.createServer();
+// const serverHttp = http.createServer(app);
 var socketServer = require('socket.io')(serverHttp, {
     cors: {
         origin: "*",
