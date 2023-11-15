@@ -3,7 +3,7 @@
 
 # Kubernetes Deployment
 
-View our project [here](http://http://35.198.205.80/)
+View our project [here](http://http://35.198.205.80/) deployed on Google Cloud Platform.
 
 # How to run the program locally
 
@@ -25,6 +25,9 @@ You will see a new container in your docker and wait until all images is running
 Access [http://localhost:3000](http://localhost:3000) for User 1 and [http://localhost:3006](http://localhost:3006) for User 2.
 User 1 login details: Email: testing1233@gmail.com Password: 123456
 User 2 login details: Email: testing1234@gmail.com Password: 123456
+
+7. Reload your page
+Due to the long load time, refreshing the page may be needed.
 
 # Getting Started with Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
