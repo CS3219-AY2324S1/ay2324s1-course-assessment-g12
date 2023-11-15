@@ -475,7 +475,7 @@ async function listenRabbitMQ() {
                 categories: [],
                 difficulty: difficulty,
                 limit: 'List All',
-                } 
+                }, headers: {'Cache-Control': 'no-cache'}
             });
             const idx = getRandomInt(0, response.data.length)
             const question = response.data[idx];
