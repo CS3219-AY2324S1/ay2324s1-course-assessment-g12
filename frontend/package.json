@@ -37,10 +37,7 @@
     "questionService": "concurrently \"npm run dev-questionService\" \"npm run dev-database\"",
     "matchingService": "concurrently \"npm run dev-questionService\" \"npm run dev-matchingService\" \"npm run dev-database\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start-user1": "set PORT=3000 && react-scripts start",
-    "start-user2": "set PORT=3006 && react-scripts start",
-    "test-matching": "concurrently \"npm run start-user1\" \"npm run start-user2\" \"npm run matchingService\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
