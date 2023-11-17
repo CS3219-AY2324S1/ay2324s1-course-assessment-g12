@@ -10,7 +10,6 @@ const Navbar = () => {
         <Typography variant="h6">
           PeerPrep
         </Typography>
-        <Button component={Link} to="/Home" color="inherit">HOME</Button>
         <Button component={Link} to="/Questions" color="inherit">QUESTIONS</Button>
         <Button component={Link} to="/UserProfile" color="inherit">PROFILE</Button>
         

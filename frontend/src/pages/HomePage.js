@@ -1,10 +1,11 @@
-import MatchingButton from '../components/MatchingButton';
 
 function HomePage() {
     return (
       <div className="App">
         <header className="App-header">
-          <MatchingButton />
+          <p>
+            Welcome to the PeerPrep!
+          </p>
         </header>
       </div>
     );

@@ -3,7 +3,7 @@ const axios = require("axios");
 const cors = require("cors");
 
 const PORT = 3001;
-const databaseURL = "http://localhost:3005"
+const databaseURL = "http://database:3005"
 
 var app = express();
 app.use(express.json());
@@ -70,6 +70,7 @@ app.get("/user/check/username", async (req, res) => {
 
 app.get("/user/verify", async (req, res) => {
     try {
+        console.log("Request received to verify user")
         const response = await axios.get(`${databaseURL}/user/verify`, { params: req.query, headers: req.headers });
         res.send(response.data);
     } catch (error) {

@@ -3,34 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../firebase-config';
 
-const userURL = 'http://localhost:3001';
+const userURL = 'http://user:3001';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
 
-function RedirectIfAdmin({ children }) {
+function RedirectIfInLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('HELLo')
     // Use onAuthStateChanged to listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        // User is signed in.
-        try {
-          const email = user.email; 
-
-          const isAdmin = await axios.get(`${userURL}/user/authenticate`, { params: { email: email } });
-
-          // Check if the user is an admin
-          if (!isAdmin.data) {
-            // User is not an admin, redirect to the home page
-            navigate('/Home');
-          }
-        } catch (error) {
-          console.error('Error verifying ID token:', error);
-          navigate('/LoginPage');
-        }
+        navigate('/Home'); 
       } else {
+        console.log('hello')
         // User is signed out. Redirect to the login page.
         navigate('/LoginPage');
       }
@@ -40,7 +28,7 @@ function RedirectIfAdmin({ children }) {
     return () => unsubscribe();
   }, [navigate]);
 
-  return children;
+  return null; // Since this component is for redirection only, return null
 }
 
-export default RedirectIfAdmin;
+export default RedirectIfInLogin;

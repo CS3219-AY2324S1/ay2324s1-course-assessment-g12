@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 var app = express();
-const databaseURL = "http://localhost:3005";
+const databaseURL = "http://database:3005";
 const PORT = 3002;
 const jwt = require("jsonwebtoken");
 

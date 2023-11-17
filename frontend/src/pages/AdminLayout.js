@@ -6,10 +6,9 @@ import RedirectIfNotAuthenticated from './RedirectIfNotAuthenticated';
 import axios from 'axios';
 import { auth } from '../firebase-config';
 
-const userUrl = 'http://localhost:3001';
+const userUrl = 'http://user:3001';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
-
 
 const Layout = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -43,6 +42,7 @@ const Layout = ({ children }) => {
   return (
     <div>
       <RedirectIfNotAuthenticated />
+      <RedirectIfNotAdmin/>
       {isAdmin ? <NavbarAdmin /> : <Navbar />}
       <div className="content">{children}</div>
     </div>

@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(async (req, res, next) => {
-    console.log("auth header "+req.header('Authorization'))
+    console.log("auth header " + req.header('Authorization'))
     const idToken = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!idToken) {
@@ -112,6 +112,7 @@ app.get("/user/check/username", async (req, res) => {
 
 app.get("/user/verify", async (req, res) => {
     try {
+        console.log("Request received in database service to verify user")
         const token = req.query.token;
         const uid = await read.getUidFromToken(token);
         res.status(200).send({ uid: uid });
