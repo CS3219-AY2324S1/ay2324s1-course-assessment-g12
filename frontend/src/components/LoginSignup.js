@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const levelOptions = ['Beginner', 'Intermediate', 'Expert'];
 const languageOptions = ['Python', 'Java', 'C'];
-const userURL = 'http://user:3001';
+const userURL = 'http://localhost:3001';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 

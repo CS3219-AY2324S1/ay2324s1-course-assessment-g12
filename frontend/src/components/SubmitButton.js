@@ -28,7 +28,7 @@ const Difficulty = [
   { value: 'Hard', label: 'Hard' },
 ]
 
-const questionURL = 'http://question:3002';
+const questionURL = 'http://localhost:3002';
 const authHeader = {
   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 }

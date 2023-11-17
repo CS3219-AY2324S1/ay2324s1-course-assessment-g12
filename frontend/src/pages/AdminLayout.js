@@ -6,7 +6,7 @@ import RedirectIfNotAuthenticated from './RedirectIfNotAuthenticated';
 import axios from 'axios';
 import { auth } from '../firebase-config';
 
-const userUrl = 'http://user:3001';
+const userUrl = 'http://localhost:3001';
 
 const waitForAccessToken = () => {
   return new Promise((resolve, reject) => {

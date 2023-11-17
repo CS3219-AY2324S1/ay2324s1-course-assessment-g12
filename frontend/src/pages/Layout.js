@@ -6,7 +6,7 @@ import RedirectIfNotAuthenticated from "./RedirectIfNotAuthenticated";
 import axios from "axios";
 import { auth } from "../firebase-config";
 
-const userURL = 'http://user:3001';
+const userURL = 'http://localhost:3001';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 
