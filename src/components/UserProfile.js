@@ -66,7 +66,6 @@ function UserProfile({ userData, user }) {
 
   }
   const handleDeleteAccount = async () => {
-    localStorage.removeItem('accessToken');
     try {
 
       const confirmDelete = window.confirm("Are you sure you want to delete your account?");
@@ -75,7 +74,7 @@ function UserProfile({ userData, user }) {
         try {
           //delete from db in firebase admin
           console.log(userData.username)
-          const response = await axios.delete(`${userURL}/user`, { params: {username: userData.username}});
+          const response = await axios.delete(`${userURL}/user`, { params: {username: userData.username}, headers: 'Authorization: Bearer ' + localStorage.getItem('accessToken')});
           console.log(response);
 
           // delete user from firebase client side
@@ -97,6 +96,8 @@ function UserProfile({ userData, user }) {
     } catch (error) {
       console.error('Error:', error);
     }
+    
+    localStorage.removeItem('accessToken');
   }
 
   return (

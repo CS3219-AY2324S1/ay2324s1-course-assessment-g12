@@ -57,7 +57,7 @@ const Layout = ({ children }) => {
     <div>
       <RedirectIfNotAuthenticated />
       <RedirectIfNotAdmin/>
-      {isAdmin ? <NavbarAdmin /> : <Navbar />}
+      <NavbarAdmin />
       <div className="content">{children}</div>
     </div>
   );
