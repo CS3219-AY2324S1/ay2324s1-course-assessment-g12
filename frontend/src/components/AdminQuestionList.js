@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import QuestionCard from './QuestionCard';
+import AdminQuestionCard from './AdminQuestionCard';
 import {auth} from '../firebase-config';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -210,7 +210,7 @@ const AdminQuestionList = ({ selectedCategory, selectedLevel, selectedList }) =>
 
       {selectedQuestion && (
         <div className="modal-background">
-          <QuestionCard question={selectedQuestion} onClose={handleCloseCard} />
+          <AdminQuestionCard question={selectedQuestion} onClose={handleCloseCard} />
         </div>
       )}
 
