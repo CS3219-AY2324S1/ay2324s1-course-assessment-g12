@@ -2,7 +2,7 @@
 # Setting up Assignment 4
 
 ## 1. Get Service account key for Firebase database 
-Put the file in ay2324s1-course-assessment-g12/services/database/
+Put the file `serviceAccountKey.json` in ay2324s1-course-assessment-g12/services/database/
 
 ## 2. Make sure docker is installed
 https://docs.docker.com/engine/install/ 
