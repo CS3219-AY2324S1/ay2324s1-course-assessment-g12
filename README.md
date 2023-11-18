@@ -3,14 +3,16 @@
 
 # Setting up Assignment 2
 
-## Install All Dependencies 
+## 1. Get Service account key for Firebase database 
+Put the file in ay2324s1-course-assessment-g12/services/database/
 
-# Run npm i in these directories 
+## 2. Install All Dependencies 
+Run npm i in these directories 
 - ay2324s1-course-assessment-g12/
 - ay2324s1-course-assessment-g12/services/userService/
 - ay2324s1-course-assessment-g12/services/questionService/
 - ay2324s1-course-assessment-g12/services/database/
 
-## Run the app 
+## 2. Run the app 
 Run the following script to launch the application in your browser:  
 ### `npm run launch`
